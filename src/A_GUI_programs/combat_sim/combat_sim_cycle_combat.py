@@ -72,15 +72,15 @@ def detect_if_NPC_and_display_monster_if_yes(
     :return:
     """
     if sub_list[0].lower() == "evil" or sub_list[0].lower() == "good":
-        print("\t\t", "name : hp : ac")
+        print("\t\t", "name : hp : ac : life_status")
         if selected_npc_bool:
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
                 #monster and npc are the same thing. they're just a dictionary with monster information.
                 if monster_dict_index == selected_npc_index:
-                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"])
+                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
                 else:
-                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"])
+                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
                 monster_dict_index += 1
         elif npc_interaction_menu_bool:
             interaction_option_menu_string_list = \
@@ -92,7 +92,7 @@ def detect_if_NPC_and_display_monster_if_yes(
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
                 if monster_dict_index == selected_npc_index:
-                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"])
+                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
                     gui_logic_interaction_menu_index = 0
                     for string in interaction_option_menu_string_list:
                         if gui_logic_interaction_menu_index == npc_interaction_menu_index:
@@ -101,11 +101,11 @@ def detect_if_NPC_and_display_monster_if_yes(
                             print("\t\t\t  ",string)
                         gui_logic_interaction_menu_index += 1
                 else:
-                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"])
+                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
                 monster_dict_index += 1
         else:
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
-                print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"])
+                print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
 
 def update_combat_sim_cycle_combat_interface(
         sorted_initiative_rolls_list,
@@ -288,8 +288,6 @@ def combat_sim_cycle_combat(
         #False = dead.
         #   computer has to eat less.
         monster_dict["life_status"] = True
-
-    #TODO: update GUI to represent life_status then implement take damage.
 
     """
     originally i had it as "sorted_initiative_rolls_list[0]" which stored those
