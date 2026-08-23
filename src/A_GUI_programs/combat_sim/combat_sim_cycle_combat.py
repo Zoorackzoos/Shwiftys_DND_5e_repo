@@ -13,6 +13,7 @@ from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_
     get_rows_from_dict_on_param_type_and_string
 from universal_functions.vars.spreadsheet_enums import SpreadsheetKeysEnums
 
+
 def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls_list):
     sorted_initiative_rolls_list = deepcopy(unsorted_initiative_rolls_list)
 
@@ -46,10 +47,11 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
 
     print("get_sorted_initiative_rolls_from_greatest_to_least")
     print("\tsorted them. look at it!")
-    print_2d_list(list_in_question=sorted_initiative_rolls_list,tab_amount="\t\t")
-    time.sleep(1) #this "hey i did it :DDD" text will be pasted over by another function anyway.
+    print_2d_list(list_in_question=sorted_initiative_rolls_list, tab_amount="\t\t")
+    time.sleep(1)  # this "hey i did it :DDD" text will be pasted over by another function anyway.
 
     return sorted_initiative_rolls_list
+
 
 def detect_if_NPC_and_display_monster_if_yes(
         sub_list,
@@ -60,7 +62,8 @@ def detect_if_NPC_and_display_monster_if_yes(
         npc_interaction_menu_index,
         performing_attack_bool,
         performing_damage_bool,
-        performing_heal_bool
+        performing_heal_bool,
+        damage_or_heal_integer_that_actually_a_string
 ):
     """
     used to be called "detect_if_evil_and_display_monster_if_yes"
@@ -76,46 +79,55 @@ def detect_if_NPC_and_display_monster_if_yes(
     :return:
     """
     if sub_list[0].lower() == "evil" or sub_list[0].lower() == "good":
-        print("\t\t  ", "name : hp : ac : life_status")
+        print("\t\t  ", "name : max_hp : current_hp : ac : life_status")
         if selected_npc_bool:
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
-                #monster and npc are the same thing. they're just a dictionary with monster information.
+                # monster and npc are the same thing. they're just a dictionary with monster information.
                 if monster_dict_index == selected_npc_index:
-                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
+                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
+                          monster_dict["life_status"])
                 else:
-                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
+                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
+                          monster_dict["life_status"])
                 monster_dict_index += 1
         elif npc_interaction_menu_bool:
             interaction_option_menu_string_list = \
-            [
-                "make this monster attack",
-                "make this monster take damage",
-                "make this monster heal health"
-            ]
+                [
+                    "make this monster attack",
+                    "make this monster take damage",
+                    "make this monster heal health"
+                ]
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
                 if monster_dict_index == selected_npc_index:
-                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
+                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
+                          monster_dict["life_status"])
                     gui_logic_interaction_menu_index = 0
                     for string in interaction_option_menu_string_list:
                         if gui_logic_interaction_menu_index == npc_interaction_menu_index:
-                            print("\t\t\t →",string)
+                            print("\t\t\t →", string)
                             if performing_attack_bool == True:
-                                print("\t\t\t\t →","detect_if_NPC_and_display_monster_if_yes: performing_attack_bool == True")
+                                print("\t\t\t\t →",
+                                      "detect_if_NPC_and_display_monster_if_yes: performing_attack_bool == True")
                             elif performing_damage_bool == True:
-                                print("\t\t\t\t →","how much damage does",monster_dict["Name"],"take?")
+                                print("\t\t\t\t →", "how much damage does", monster_dict["Name"], "take?")
+                                print("\t\t\t\t →", damage_or_heal_integer_that_actually_a_string)
                             elif performing_heal_bool == True:
-                                print("\t\t\t\t →","how much health does", monster_dict["Name"], "heal?")
+                                print("\t\t\t\t →", "how much health does", monster_dict["Name"], "heal?")
+                                print("\t\t\t\t →", damage_or_heal_integer_that_actually_a_string)
                         else:
-                            print("\t\t\t  ",string)
+                            print("\t\t\t  ", string)
                         gui_logic_interaction_menu_index += 1
                 else:
-                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
+                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
+                          monster_dict["life_status"])
                 monster_dict_index += 1
         else:
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
-                print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"], ":", monster_dict["AC"], ":", monster_dict["life_status"])
+                print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
+                      monster_dict["life_status"])
+
 
 def update_combat_sim_cycle_combat_interface(
         sorted_initiative_rolls_list,
@@ -124,11 +136,13 @@ def update_combat_sim_cycle_combat_interface(
         list_that_contains_dictionaries_that_are_monsters,
         selected_npc_bool,
         selected_npc_index,
+        selected_pc_bool,
         npc_interaction_menu_bool,
         npc_interaction_menu_index,
         performing_attack_bool,
         performing_damage_bool,
-        performing_heal_bool
+        performing_heal_bool,
+        damage_or_heal_integer_that_actually_a_string
 ):
     """
 
@@ -178,26 +192,31 @@ def update_combat_sim_cycle_combat_interface(
 """
     print(update_combat_sim_cycle_combat_interface_start)
 
-    #printing the NPCs and PCs
+    # printing the NPCs and PCs
     for sub_list in sorted_initiative_rolls_list:
-        #i'm comparing the names because list versus list can be fucky.
+        # i'm comparing the names because list versus list can be fucky.
         # is both a system and user selected initiative roll
         #  sub_list[0] name    #sub_list[0] name
         if (sub_list[0] == user_selected_initiative_roll[0]
                 and
-            sub_list[0] == system_selected_initiative_roll[0]):
-          print("\t!→",sub_list[0],":",sub_list[1])
-          detect_if_NPC_and_display_monster_if_yes(
-              sub_list=sub_list,
-              list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
-              selected_npc_bool=selected_npc_bool,
-              selected_npc_index=selected_npc_index,
-              npc_interaction_menu_bool=npc_interaction_menu_bool,
-              npc_interaction_menu_index=npc_interaction_menu_index,
-              performing_attack_bool=performing_attack_bool,
-              performing_damage_bool=performing_damage_bool,
-              performing_heal_bool=performing_heal_bool
-          )
+                sub_list[0] == system_selected_initiative_roll[0]):
+            if selected_pc_bool == True:
+                print("\t!→", sub_list[0], ":", sub_list[1])
+                print("\t\t  ","no pc interactions yet sorry >_<")
+            else:
+                print("\t!→", sub_list[0], ":", sub_list[1])
+                detect_if_NPC_and_display_monster_if_yes(
+                    sub_list=sub_list,
+                    list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
+                    selected_npc_bool=selected_npc_bool,
+                    selected_npc_index=selected_npc_index,
+                    npc_interaction_menu_bool=npc_interaction_menu_bool,
+                    npc_interaction_menu_index=npc_interaction_menu_index,
+                    performing_attack_bool=performing_attack_bool,
+                    performing_damage_bool=performing_damage_bool,
+                    performing_heal_bool=performing_heal_bool,
+                    damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
+                )
         # is a system selected initiative roll
         elif sub_list[0] == system_selected_initiative_roll[0]:
             print("\t! ", sub_list[0], ":", sub_list[1])
@@ -206,26 +225,32 @@ def update_combat_sim_cycle_combat_interface(
                 list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
                 selected_npc_bool=selected_npc_bool,
                 selected_npc_index=selected_npc_index,
-                npc_interaction_menu_bool = npc_interaction_menu_bool,
-                npc_interaction_menu_index = npc_interaction_menu_index,
+                npc_interaction_menu_bool=npc_interaction_menu_bool,
+                npc_interaction_menu_index=npc_interaction_menu_index,
                 performing_attack_bool=performing_attack_bool,
                 performing_damage_bool=performing_damage_bool,
-                performing_heal_bool=performing_heal_bool
+                performing_heal_bool=performing_heal_bool,
+                damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
             )
         # is a user selected initiative roll
         elif sub_list[0] == user_selected_initiative_roll[0]:
-            print("\t →", sub_list[0], ":", sub_list[1])
-            detect_if_NPC_and_display_monster_if_yes(
-                sub_list=sub_list,
-                list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
-                selected_npc_bool=selected_npc_bool,
-                selected_npc_index=selected_npc_index,
-                npc_interaction_menu_bool = npc_interaction_menu_bool,
-                npc_interaction_menu_index = npc_interaction_menu_index,
-                performing_attack_bool = performing_attack_bool,
-                performing_damage_bool = performing_damage_bool,
-                performing_heal_bool = performing_heal_bool
-            )
+            if selected_pc_bool == True:
+                print("\t →", sub_list[0], ":", sub_list[1])
+                print("\t\t  ", "no pc interactions yet sorry >_<")
+            else:
+                print("\t →", sub_list[0], ":", sub_list[1])
+                detect_if_NPC_and_display_monster_if_yes(
+                    sub_list=sub_list,
+                    list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
+                    selected_npc_bool=selected_npc_bool,
+                    selected_npc_index=selected_npc_index,
+                    npc_interaction_menu_bool=npc_interaction_menu_bool,
+                    npc_interaction_menu_index=npc_interaction_menu_index,
+                    performing_attack_bool=performing_attack_bool,
+                    performing_damage_bool=performing_damage_bool,
+                    performing_heal_bool=performing_heal_bool,
+                    damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
+                )
         else:
             print("\t  ", sub_list[0], ":", sub_list[1])
             detect_if_NPC_and_display_monster_if_yes(
@@ -233,12 +258,14 @@ def update_combat_sim_cycle_combat_interface(
                 list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
                 selected_npc_bool=selected_npc_bool,
                 selected_npc_index=selected_npc_index,
-                npc_interaction_menu_bool = npc_interaction_menu_bool,
-                npc_interaction_menu_index = npc_interaction_menu_index,
-                    performing_attack_bool = performing_attack_bool,
-                    performing_damage_bool = performing_damage_bool,
-                    performing_heal_bool = performing_heal_bool
+                npc_interaction_menu_bool=npc_interaction_menu_bool,
+                npc_interaction_menu_index=npc_interaction_menu_index,
+                performing_attack_bool=performing_attack_bool,
+                performing_damage_bool=performing_damage_bool,
+                performing_heal_bool=performing_heal_bool,
+                damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
             )
+
 
 def combat_sim_cycle_combat(
         initiative_rolls_dictionary,
@@ -246,15 +273,15 @@ def combat_sim_cycle_combat(
     if initiative_rolls_dictionary is None:
         exit("ERROR: combat_sim_cycle_combat: initative_roles_dict is None.")
 
-    #sort initiative roles based from first to last. 20 means first 1 means last.
+    # sort initiative roles based from first to last. 20 means first 1 means last.
     #   to do this i'm going to have the structure that contains this to be a list
     #   that contains lists with the 1st value in teh sub-list be the PC / NPC's
     #   name and the 2nd will be their role
     #       think about making it a list that stories tiny dictionaries instead.
     unsorted_initiative_rolls_list = []
 
-    #add the roles to the rolls list
-    for name,initiative_roll in initiative_rolls_dictionary.items():
+    # add the roles to the rolls list
+    for name, initiative_roll in initiative_rolls_dictionary.items():
         name_and_roll_list = [name, initiative_roll]
         unsorted_initiative_rolls_list.append(name_and_roll_list)
 
@@ -264,10 +291,11 @@ def combat_sim_cycle_combat(
 
     universal_terminal_clear()
 
-    #fetching the large ahh dictionary
+    # fetching the large ahh dictionary
     combat_sim_cycle_combat_path_to_monsters_csv_file = \
         "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
-    monsters_all_stats_homebrew_dict = get_dict_from_csv_file(path_to_csv_file=combat_sim_cycle_combat_path_to_monsters_csv_file)
+    monsters_all_stats_homebrew_dict = get_dict_from_csv_file(
+        path_to_csv_file=combat_sim_cycle_combat_path_to_monsters_csv_file)
 
     """
     #TDOD: make these monsters dynamic 
@@ -299,19 +327,28 @@ def combat_sim_cycle_combat(
         tab_amount=""
     )
 
-    #you'd figure i would be taught how to name variables by now but no.
-    #"fuck them kids" -every university on earth.
+    # you'd figure i would be taught how to name variables by now but no.
+    # "fuck them kids" -every university on earth.
     list_that_contains_dictionaries_that_are_monsters = \
-    [
-        goblin_list_that_contains_dict[0],
-        skeleton_list_that_contains_dict[0],
-        chromatic_blank_young_dragon_list_that_contains_dict[0]
-    ]
+        [
+            goblin_list_that_contains_dict[0],
+            skeleton_list_that_contains_dict[0],
+            chromatic_blank_young_dragon_list_that_contains_dict[0]
+        ]
 
-    #adding the "life_status" key to the dictionary we just made above.
+    """
+    current hp, or hp used by the system.
+    i can't rename HP in the spreadsheet because legacy reasons / paranoia over legacy reasons.
+    so instead i'll call hp used by the system... in order to remember the max hp when the monster heals.
+    "current hp" :-)
+    """
     for monster_dict in list_that_contains_dictionaries_that_are_monsters:
-        #True = alive.
-        #False = dead.
+        monster_dict["current_hp"] = monster_dict["HP"]
+
+    # adding the "life_status" key to the dictionary we just made above.
+    for monster_dict in list_that_contains_dictionaries_that_are_monsters:
+        # True = alive.
+        # False = dead.
         #   computer has to eat less.
         monster_dict["life_status"] = True
 
@@ -324,13 +361,18 @@ def combat_sim_cycle_combat(
     user_initiative_roll_index = 0
     system_initiative_roll_index = 0
 
-    #if you selected a NPC. not a player. this includes it a evil or a godo NPC mind you.
+    # if you selected a NPC. not a player. this includes it a evil or a godo NPC mind you.
     selected_npc_bool = False
     """
     #starts at 0, ends at whatever the NPC, either evil or good, length's is.
     #this is for the child menu
     """
     selected_npc_index = 0
+
+    """
+    currently this means nothing. it just tells the user "no pc interactions yet sorry >_<"
+    """
+    selected_pc_bool = False
 
     """
     technically you could min-max these 2 and the 2 above to be 1 variable. 
@@ -346,7 +388,7 @@ def combat_sim_cycle_combat(
     performing_damage_bool = False
     performing_heal_bool = False
 
-    #Am i ever going to learn anything good out of my classes?
+    # Am i ever going to learn anything good out of my classes?
     damage_or_heal_integer_that_actually_a_string = ""
 
     """
@@ -355,6 +397,7 @@ def combat_sim_cycle_combat(
         if only chris born was here to mock me wand program a function 
     i completely fail to understand.
     """
+
     def default_input_update_combat_sim_cycle_combat_interface():
         update_combat_sim_cycle_combat_interface(
             sorted_initiative_rolls_list=sorted_initiative_rolls_list,
@@ -363,11 +406,13 @@ def combat_sim_cycle_combat(
             list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
             selected_npc_bool=selected_npc_bool,
             selected_npc_index=selected_npc_index,
+            selected_pc_bool=selected_pc_bool,
             npc_interaction_menu_bool=npc_interaction_menu_bool,
             npc_interaction_menu_index=npc_interaction_menu_index,
             performing_attack_bool=performing_attack_bool,
             performing_damage_bool=performing_damage_bool,
-            performing_heal_bool=performing_heal_bool
+            performing_heal_bool=performing_heal_bool,
+            damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
         )
 
     # do this once with the starter indexes.
@@ -376,7 +421,7 @@ def combat_sim_cycle_combat(
     combat_cycle_keep_program_running_bool = True
 
     while combat_cycle_keep_program_running_bool:
-        #these 2 lines are so duplicate inputs aren't recorded / holding down the key does nothing
+        # these 2 lines are so duplicate inputs aren't recorded / holding down the key does nothing
         event = keyboard.read_event()
         if event.event_type == keyboard.KEY_DOWN:
             if keyboard.is_pressed("q"):
@@ -389,43 +434,45 @@ def combat_sim_cycle_combat(
             #       if we cna be honest though. fuck that. too much to understand.
             # hypothetically though you could configure this program to make that please able.
             if keyboard.is_pressed("t"):
-                if system_initiative_roll_index >= len(sorted_initiative_rolls_list)-1:
+                if system_initiative_roll_index >= len(sorted_initiative_rolls_list) - 1:
                     system_initiative_roll_index = 0
                 else:
                     system_initiative_roll_index += 1
+                selected_pc_bool = False
                 default_input_update_combat_sim_cycle_combat_interface()
 
-            #the parent menu. where you select either PCs or NPCs to go into their children menus.
-            if selected_npc_bool == False and npc_interaction_menu_bool == False\
+            # the parent menu. where you select either PCs or NPCs to go into their children menus.
+            if selected_npc_bool == False and npc_interaction_menu_bool == False \
                     and performing_attack_bool == False and performing_damage_bool == False and performing_heal_bool == False:
 
-                #navigation. no actions here.
+                # navigation. no actions here.
                 if keyboard.is_pressed("up"):
                     if user_initiative_roll_index > 0:
                         user_initiative_roll_index += -1
+                        selected_pc_bool = False
                         default_input_update_combat_sim_cycle_combat_interface()
                 elif keyboard.is_pressed("down"):
-                    if user_initiative_roll_index < len(sorted_initiative_rolls_list)-1:
+                    if user_initiative_roll_index < len(sorted_initiative_rolls_list) - 1:
                         user_initiative_roll_index += 1
+                        selected_pc_bool = False
                         default_input_update_combat_sim_cycle_combat_interface()
 
-                #action(s)
+                # action(s)
                 elif keyboard.is_pressed("right"):
                     name_of_selected_npc_or_pc = sorted_initiative_rolls_list[user_initiative_roll_index][0].lower()
                     if name_of_selected_npc_or_pc == "evil" or name_of_selected_npc_or_pc == "good":
                         selected_npc_bool = True
                     else:
-                        #TODO: make update GUI function say "no interactions with PCs implemented yet"
-                        pass
+                        selected_pc_bool = True
                     default_input_update_combat_sim_cycle_combat_interface()
 
-            #the child menu where you select monsters to do interaction actions on them.
-            elif selected_npc_bool == True and npc_interaction_menu_bool == False\
+            # the child menu where you select monsters to do interaction actions on them.
+            elif selected_npc_bool == True and npc_interaction_menu_bool == False \
                     and performing_attack_bool == False and performing_damage_bool == False and performing_heal_bool == False:
-                #basically the same functionality in the if statement
-                #except instead of in the parent NPC or PC menu
-                #you're in the NPC's child monster menu.
-                #from which you can make them do an attack, take damage or heal damage.
+                # basically the same functionality in the if statement
+                # except instead of in the parent NPC or PC menu
+                # you're in the NPC's child monster menu.
+                # from which you can make them do an attack, take damage or heal damage.
 
                 # navigation, no actions here.
                 if keyboard.is_pressed("up"):
@@ -433,7 +480,7 @@ def combat_sim_cycle_combat(
                         selected_npc_index -= 1
                         default_input_update_combat_sim_cycle_combat_interface()
                 elif keyboard.is_pressed("down"):
-                    if selected_npc_index < len(list_that_contains_dictionaries_that_are_monsters)-1:
+                    if selected_npc_index < len(list_that_contains_dictionaries_that_are_monsters) - 1:
                         selected_npc_index += 1
                         default_input_update_combat_sim_cycle_combat_interface()
 
@@ -460,7 +507,7 @@ def combat_sim_cycle_combat(
                         npc_interaction_menu_index -= 1
                         default_input_update_combat_sim_cycle_combat_interface()
                 elif keyboard.is_pressed("down"):
-                    if npc_interaction_menu_index < len(list_that_contains_dictionaries_that_are_monsters)-1:
+                    if npc_interaction_menu_index < len(list_that_contains_dictionaries_that_are_monsters) - 1:
                         npc_interaction_menu_index += 1
                         default_input_update_combat_sim_cycle_combat_interface()
 
@@ -468,24 +515,27 @@ def combat_sim_cycle_combat(
                 elif keyboard.is_pressed("left"):
                     selected_npc_bool = True
                     npc_interaction_menu_bool = False
-                    #don't modify the selected_npc_index.
+                    # don't modify the selected_npc_index.
                     npc_interaction_menu_index = 0
                     default_input_update_combat_sim_cycle_combat_interface()
                 elif keyboard.is_pressed("right"):
-                    #monster does an attack
+                    # monster does an attack
                     if npc_interaction_menu_index == 0:
+                        print("this hasn't been implmeneted yet sorry :-(")
+                        """
                         performing_attack_bool = True
                         default_input_update_combat_sim_cycle_combat_interface()
-                    #monster takes damage
+                        """
+                    # monster takes damage
                     elif npc_interaction_menu_index == 1:
                         performing_damage_bool = True
                         default_input_update_combat_sim_cycle_combat_interface()
-                    #monster heals health
+                    # monster heals health
                     elif npc_interaction_menu_index == 2:
                         performing_heal_bool = True
                         default_input_update_combat_sim_cycle_combat_interface()
 
-            elif performing_attack_bool == True or performing_damage_bool == True or performing_heal_bool == True:
+            elif performing_damage_bool == True or performing_heal_bool == True:
                 # navigation
                 if keyboard.is_pressed("left"):
                     performing_attack_bool = False
@@ -494,13 +544,47 @@ def combat_sim_cycle_combat(
                     default_input_update_combat_sim_cycle_combat_interface()
 
                 if event.name == "backspace":
-                    #in python-ese. this means "take away the last character from the left in a string"
+                    # in python-ese. this means "take away the last character from the left in a string"
                     # balls --> ball
                     damage_or_heal_integer_that_actually_a_string = damage_or_heal_integer_that_actually_a_string[:-1]
                     default_input_update_combat_sim_cycle_combat_interface()
-                    print(damage_or_heal_integer_that_actually_a_string)
 
                 if event.name.isdigit():
                     damage_or_heal_integer_that_actually_a_string += event.name
                     default_input_update_combat_sim_cycle_combat_interface()
-                    print(damage_or_heal_integer_that_actually_a_string)
+
+                if keyboard.is_pressed("right"):
+                    """
+                    i was debating on whether to make a limit so you couldn't over-heal or over-kill a monster
+                    but since we're also displaying the max hp as well. i think it's more functional to have that be
+                    under the user's decretion.
+                    """
+                    if performing_damage_bool == True:
+                        """
+                        list <-- directories <-- keys <-- values :-D
+                        """
+                        list_that_contains_dictionaries_that_are_monsters[selected_npc_index]["current_hp"] = \
+                            (int(list_that_contains_dictionaries_that_are_monsters[selected_npc_index]["current_hp"])
+                             -
+                             int(damage_or_heal_integer_that_actually_a_string))
+
+                        if list_that_contains_dictionaries_that_are_monsters[selected_npc_index]["current_hp"] <= 0:
+                            list_that_contains_dictionaries_that_are_monsters[selected_npc_index]["life_status"] = False
+
+                        performing_damage_bool = False
+                        damage_or_heal_integer_that_actually_a_string = ""
+                        default_input_update_combat_sim_cycle_combat_interface()
+
+                    elif performing_heal_bool == True:
+                        list_that_contains_dictionaries_that_are_monsters[selected_npc_index]["current_hp"] = \
+                            (int(list_that_contains_dictionaries_that_are_monsters[selected_npc_index]["current_hp"])
+                             +
+                             int(damage_or_heal_integer_that_actually_a_string))
+
+                        # I never resurrect monsters. But, hypothetically if you wanted to the option is there :-/.
+                        if list_that_contains_dictionaries_that_are_monsters[selected_npc_index]["current_hp"] >= 0:
+                            list_that_contains_dictionaries_that_are_monsters[selected_npc_index]["life_status"] = True
+
+                        performing_heal_bool = False
+                        damage_or_heal_integer_that_actually_a_string = ""
+                        default_input_update_combat_sim_cycle_combat_interface()
