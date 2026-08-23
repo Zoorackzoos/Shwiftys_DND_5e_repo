@@ -14,45 +14,6 @@ from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_
 from universal_functions.vars.spreadsheet_enums import SpreadsheetKeysEnums
 
 
-def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls_list):
-    """
-    sorts the unsorted_initiative_rolls_list and returns the sorted initiative rolls.. list
-
-    :param unsorted_initiative_rolls_list:
-    :return:
-    """
-    sorted_initiative_rolls_list = deepcopy(unsorted_initiative_rolls_list)
-
-    sorted_initiative_rolls_length = len(sorted_initiative_rolls_list)
-
-    for i in range(sorted_initiative_rolls_length):
-        for j in range(sorted_initiative_rolls_length):
-
-            # if a initiative roll is none, then just remove it because we can't use it.
-            if sorted_initiative_rolls_list[i][1] is None:
-                sorted_initiative_rolls_list.pop(i)
-                sorted_initiative_rolls_length -= 1
-                return get_sorted_initiative_rolls_from_greatest_to_least(sorted_initiative_rolls_list)
-            if sorted_initiative_rolls_list[j][1] is None:
-                sorted_initiative_rolls_list.pop(j)
-                sorted_initiative_rolls_length -= 1
-                return get_sorted_initiative_rolls_from_greatest_to_least(sorted_initiative_rolls_list)
-
-            if sorted_initiative_rolls_list[i][1] > sorted_initiative_rolls_list[j][1]:
-                # this is moving them. might want to re-do this later.
-                temp_list_one = sorted_initiative_rolls_list[i]
-                temp_list_two = sorted_initiative_rolls_list[j]
-                sorted_initiative_rolls_list[i] = temp_list_two
-                sorted_initiative_rolls_list[j] = temp_list_one
-
-    print("get_sorted_initiative_rolls_from_greatest_to_least")
-    print("\tsorted them. look at it!")
-    print_2d_list(list_in_question=sorted_initiative_rolls_list, tab_amount="\t\t")
-    time.sleep(1)  # this "hey i did it :DDD" text will be pasted over by another function anyway.
-
-    return sorted_initiative_rolls_list
-
-
 def detect_if_NPC_and_display_monster_if_yes(
         sub_list,
         list_that_contains_dictionaries_that_are_monsters,
