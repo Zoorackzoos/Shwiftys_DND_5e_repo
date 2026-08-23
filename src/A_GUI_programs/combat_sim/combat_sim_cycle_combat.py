@@ -260,9 +260,14 @@ def combat_sim_cycle_combat(
         name_and_roll_list = [name, initiative_roll]
         unsorted_initiative_rolls_list.append(name_and_roll_list)
 
-    sorted_initiative_rolls_list = get_sorted_initiative_rolls_from_greatest_to_least(
-        unsorted_initiative_rolls_list=unsorted_initiative_rolls_list
-    )
+    # get rid of the None values
+    none_searcher_index = 0
+    while none_searcher_index < len(unsorted_initiative_rolls_list):
+        if unsorted_initiative_rolls_list[none_searcher_index][1] == None:
+            unsorted_initiative_rolls_list.pop(none_searcher_index)
+        none_searcher_index += 1
+
+    sorted_initiative_rolls_list = unsorted_initiative_rolls_list.sort()
 
     universal_terminal_clear()
 
