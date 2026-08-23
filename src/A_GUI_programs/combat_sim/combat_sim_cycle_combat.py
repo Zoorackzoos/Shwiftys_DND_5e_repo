@@ -15,6 +15,12 @@ from universal_functions.vars.spreadsheet_enums import SpreadsheetKeysEnums
 
 
 def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls_list):
+    """
+    sorts the unsorted_initiative_rolls_list and returns the sorted initiative rolls.. list
+
+    :param unsorted_initiative_rolls_list:
+    :return:
+    """
     sorted_initiative_rolls_list = deepcopy(unsorted_initiative_rolls_list)
 
     sorted_initiative_rolls_length = len(sorted_initiative_rolls_list)
@@ -32,12 +38,6 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
                 sorted_initiative_rolls_length -= 1
                 return get_sorted_initiative_rolls_from_greatest_to_least(sorted_initiative_rolls_list)
 
-            """
-            print(sorted_initiative_rolls_list)
-            print(sorted_initiative_rolls_length)
-            print("\t", sorted_initiative_rolls_list[i][1])
-            print("\t", sorted_initiative_rolls_list[j][1])
-            """
             if sorted_initiative_rolls_list[i][1] > sorted_initiative_rolls_list[j][1]:
                 # this is moving them. might want to re-do this later.
                 temp_list_one = sorted_initiative_rolls_list[i]
@@ -145,33 +145,44 @@ def update_combat_sim_cycle_combat_interface(
         damage_or_heal_integer_that_actually_a_string
 ):
     """
+    This is also called "the update function" in other comment.s
+    Any time I need a new GUI blurb dynamically, I usually add a new variable, and a if statement here.
 
-    ##GUI statement
-    make it look like this
-    ```
-    update_combat_sim_cycle_combat_interface
-        you are in combat now.
-        the '→' character indicates which PC / NPC 's you've selected.
-        the '!" character indicates which PC / NPC 's turn it is to play.
-        Use the UP and DOWN arrow key to go between PCs or NPCs.
-        Use the RIGHT arrow on a NPC to go to a menu
-        from there you can either:
-            * make them do an attack. Either hit something or a make someone else do a saving throw.
-            * make them take damage which an integer you input.
-            * make them heal with an integer you input.
-        Use the "T" button to cycle through turns once the selected one has ended. (T for turn)
-
-        !→ Evil: 5
-            name : hp : ac
-            goblin : 10 : 15
-            skeleton : 15 : 13
-            Dragon, Chromatic, Black, Young : 130 : 18
-          Micheal: 4
-          Thalis: 3
-          Forest: 2
-          Mikey: 1
-    ```
+    :param sorted_initiative_rolls_list:
+        list of mini lists. 1st value = name, 2nd value = initiative roll (integer)
+    :param user_selected_initiative_roll:
+        AKA "sorted_initiative_rolls_list[user_initiative_roll_index]". The index increases or decreased based on how
+        the user pressed the up or down arrow. It updates dynamically here to show which menu option is selected
+    :param system_selected_initiative_roll:
+        AKA "sorted_initiative_rolls_list[system_initative_roll_index]". That index increased based on how many times
+        "t" was pressed to increment the turn.
+    :param list_that_contains_dictionaries_that_are_monsters:
+        list --> dictionary --> keys --> values.
+    :param selected_npc_bool:
+        if you pressed right while on a NPC in the menu, this is triggered to draw the child menu which allows you to
+        select the specific NPC.
+    :param selected_npc_index:
+        this is a index to let the GUI know where you are in the specific NPC selection menu.
+        also used to tell the damage and heal logic which monster to modify.
+    :param selected_pc_bool:
+        doesn't really do anything right now because design-wise PCs are not advocated for.
+    :param npc_interaction_menu_bool:
+        tells the GUI you've selected a specific NPC, and now you want to choose which interaction to do on it.
+    :param npc_interaction_menu_index:
+        tells the GUI where you are in the interaction menu.
+    :param performing_attack_bool:
+        tells the GUI you want the monster to attack
+        #TODO: give this more context because this feature isn't implemented yet
+    :param performing_damage_bool:
+        tells the GUI and the logic minorly that the user is inputting a integer that is the damage
+         being dealt to the monster
+    :param performing_heal_bool:
+        the same as performing_damage_bool but healing instead of damaging.
+    :param damage_or_heal_integer_that_actually_a_string:
+        this integer holds the damage a monster is dealt or the health a monster is healed.
+        this is only a positive number. heal or hurt is determined by the bools.
     :return:
+        returns nothing. this is a GUI printer.
     """
     universal_terminal_clear()
 
@@ -273,11 +284,14 @@ def combat_sim_cycle_combat(
     if initiative_rolls_dictionary is None:
         exit("ERROR: combat_sim_cycle_combat: initative_roles_dict is None.")
 
+    """
     # sort initiative roles based from first to last. 20 means first 1 means last.
-    #   to do this i'm going to have the structure that contains this to be a list
-    #   that contains lists with the 1st value in teh sub-list be the PC / NPC's
-    #   name and the 2nd will be their role
-    #       think about making it a list that stories tiny dictionaries instead.
+    #   to do this i'm going to have 'the structure that contains this' to be:
+    #   a list
+    #   that contains lists 
+    #       with the 1st value in the sub-list be the PC / NPC's name
+    #       the 2nd will be their roll (integer)
+    """
     unsorted_initiative_rolls_list = []
 
     # add the roles to the rolls list
@@ -391,14 +405,12 @@ def combat_sim_cycle_combat(
     # Am i ever going to learn anything good out of my classes?
     damage_or_heal_integer_that_actually_a_string = ""
 
-    """
-    there's probably a less shit way to do this in order to save lines but considering the 
-    variables involved update so frequently within this scope. IDK. 
-        if only chris born was here to mock me wand program a function 
-    i completely fail to understand.
-    """
-
     def default_input_update_combat_sim_cycle_combat_interface():
+        """
+        basically feeds all the variables above into the update function.
+        it's here so i don't have to add all the parameters myself when I call it.
+        :return:
+        """
         update_combat_sim_cycle_combat_interface(
             sorted_initiative_rolls_list=sorted_initiative_rolls_list,
             user_selected_initiative_roll=sorted_initiative_rolls_list[user_initiative_roll_index],
