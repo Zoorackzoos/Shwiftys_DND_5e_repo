@@ -1,4 +1,4 @@
-#src/universal_functions/get_average_damage.py
+# src/universal_functions/get_average_damage.py
 
 def get_average_damage(dice_dict, tab_amount="\t"):
     """

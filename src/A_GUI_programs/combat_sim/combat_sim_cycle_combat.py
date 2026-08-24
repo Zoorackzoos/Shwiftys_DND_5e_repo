@@ -3,7 +3,6 @@ import datetime
 from pathlib import Path
 
 import keyboard
-from fontTools.merge.util import current_time
 
 from A_GUI_programs.combat_sim.get_sorted_initiative_rolls_from_greatest_to_least import \
     get_sorted_initiative_rolls_from_greatest_to_least
@@ -14,6 +13,7 @@ from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
     get_rows_from_dict_on_param_type_and_string
 from universal_functions.vars.spreadsheet_enums import SpreadsheetKeysEnums
+
 
 def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters):
     """

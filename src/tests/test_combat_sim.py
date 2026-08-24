@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from GUI_programs.combat_sim.get_damage_and_get_chance_to_hit import get_chance_to_hit, get_damage
+from A_GUI_programs.combat_sim.get_damage_and_get_chance_to_hit import get_chance_to_hit
 
 
 class TestCombatSim(unittest.TestCase):

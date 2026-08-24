@@ -2,7 +2,6 @@ import csv
 from pathlib import Path
 from helper_functions.get_value_and_get_normalized_name_from_monster_or_encounter_dict import get_normalized_encounter_or_monster_name,get_value_from_encounter_or_monster_dict
 
-#TODO: fix this
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_ENCOUNTER_FEEDBACK_SPREADSHEET = (
     PROJECT_ROOT / "sheets" / "encounter_feedback.csv"

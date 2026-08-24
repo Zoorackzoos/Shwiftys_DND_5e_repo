@@ -1,17 +1,17 @@
 """
 the goal of this file is to:
 1. ✅ calculate initiative and use a step system
-   ❌ to tell you who's initiative it is
-2. ❌take in damage against monsters and tell if they're dead or not. hp stored as a variable
-3. ❌take in healing against monsters and tell they're new hp value. hp stored as a variable
-4. ❌have monster dictionaries stored in a array.
+   ✅ to tell you who's initiative it is
+2. ✅ take in damage against monsters and tell if they're dead or not. hp stored as a variable
+3. ✅ take in healing against monsters and tell they're new hp value. hp stored as a variable
+4. ❌ have monster dictionaries stored in a array.
     a. instead of crafting markdown files that contain the stat block for every new monster
        so this program is normalized...
        instead i will put in values to the spreadsheet from the "update_homebrew_monster.py"
        keys.
     b. from there i can craft temp dictionaries and put them in the array. or something similar.
     c. the monster list will be modified in the source code, not via the GUI.
-5. ❌smooth GUi interface. interaction instructions top,
+5. ✅ smooth GUi interface. interaction instructions top,
    get_damage_and_chance_to_hit.py stuff middle, verbose bullshit below that.
 """
 import time

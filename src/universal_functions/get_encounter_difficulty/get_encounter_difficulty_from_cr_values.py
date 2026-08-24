@@ -1,4 +1,3 @@
-from src.universal_functions import get_xp_from_single_enemy_CR
 from src.universal_functions.get_encounter_difficulty.get_encounter_difficulty_from_xp_values import \
     get_encounter_difficulty_from_xp_values
 from src.universal_functions.get_xp_from_single_enemy_CR import get_xp_from_single_enemy_cr

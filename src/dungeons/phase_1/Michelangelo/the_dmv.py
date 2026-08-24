@@ -3,7 +3,6 @@ from src.universal_functions.get_encounter_difficulty.get_encounter_difficulty_f
     get_encounter_difficulty_from_cr_values
 from src.universal_functions.spreadsheet_stuff.spreadsheet_updaters.update_encounter_feedback_spreadsheet import \
     update_encounter_feedback_spreadsheet
-from src.universal_functions.vars import spreadsheet_enums
 from src.universal_functions.vars.spreadsheet_enums import SpreadsheetKeysEnums
 
 player_levels = [6, 6, 6, 6]

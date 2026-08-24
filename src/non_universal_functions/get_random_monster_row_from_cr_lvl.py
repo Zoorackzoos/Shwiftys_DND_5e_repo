@@ -1,7 +1,6 @@
 import random
 
 from src.non_universal_functions.get_random_cr_from_list import get_random_cr_from_list
-from src.universal_functions.display.print_2d_list import print_2d_list
 from src.universal_functions.display.print_2d_list_that_contains_dictionaries import \
     print_2d_list_that_contains_dictionaries
 from src.universal_functions.display.print_dictionary_nicely import print_dictionary_nicely
