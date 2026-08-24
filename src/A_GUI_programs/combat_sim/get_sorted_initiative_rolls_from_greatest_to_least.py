@@ -73,7 +73,6 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
     print(tab_amount,"unsorted_initiative_rolls_list =\n",tab_amount,unsorted_initiative_rolls_list)
     print(tab_amount,"length_of_unsorted_initiative_rolls_list =",length_of_unsorted_initiative_rolls_list)
     print()
-    exit(999)
 
     num_of_times_iterated = 0
     modified_list_bool = False
@@ -96,7 +95,7 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
                 print(tab_amount, "\t\t sorted_initiative_rolls_list[",i,"]",sorted_initiative_rolls_list[i])
                 sorted_initiative_rolls_list.pop(i)
                 length_of_unsorted_initiative_rolls_list = len(unsorted_initiative_rolls_list) - 1
-                print(tab_amount, "\t\t unsorted_initiative_rolls_list =\n", tab_amount, unsorted_initiative_rolls_list)
+                print(tab_amount, "\t\t unsorted_initiative_rolls_list =\n\t\t", tab_amount, unsorted_initiative_rolls_list)
                 print(tab_amount, "\t\t length_of_unsorted_initiative_rolls_list =",
                       length_of_unsorted_initiative_rolls_list)
 
@@ -116,7 +115,7 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
                 print(tab_amount, "\t\t sorted_initiative_rolls_list[",j,"]",sorted_initiative_rolls_list[j])
                 sorted_initiative_rolls_list.pop(j)
                 length_of_unsorted_initiative_rolls_list = len(unsorted_initiative_rolls_list) - 1
-                print(tab_amount, "\t\t unsorted_initiative_rolls_list =\n", tab_amount, unsorted_initiative_rolls_list)
+                print(tab_amount, "\t\t unsorted_initiative_rolls_list =\n\t\t", tab_amount, unsorted_initiative_rolls_list)
                 print(tab_amount, "\t\t length_of_unsorted_initiative_rolls_list =",
                       length_of_unsorted_initiative_rolls_list)
 
@@ -162,8 +161,8 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
 
             # debug stuff
             if num_of_times_iterated >= 100:
-                print("shit")
-                exit(999)
+                print("ERROR: get_sorted_initiative_rolls_from_greatest_to_least: num_of_times_iterated exceeded 100")
+                exit(1)
         # iteration
         print(tab_amount+"i:",i,"+ 1 -->",(i + 1))
         i += 1

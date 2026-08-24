@@ -1,15 +1,12 @@
 import contextlib
-import time
-from copy import deepcopy
+from pathlib import Path
 
 import keyboard
-from sympy.physics import pring
 
 from A_GUI_programs.combat_sim.get_sorted_initiative_rolls_from_greatest_to_least import \
     get_sorted_initiative_rolls_from_greatest_to_least
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
-from universal_functions.display.print_2d_list import print_2d_list
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
     get_dict_from_csv_file
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
@@ -263,10 +260,12 @@ def combat_sim_cycle_combat(
         name_and_roll_list = [name, initiative_roll]
         unsorted_initiative_rolls_list.append(name_and_roll_list)
 
-    # get rid of the None values
-    none_searcher_index = 0
+    log_directory = Path("sorting_algo_log_folder")
+    log_directory.mkdir(exist_ok=True)
 
-    with open("sorting_algorithm.log", "w") as log_file:
+    log_file_path = log_directory / "TERMINAL_OUTPUT_get_sorted_initiative_rolls_from_greatest_to_least.log"
+
+    with open(log_file_path, "w") as log_file:
         with contextlib.redirect_stdout(log_file):
             sorted_initiative_rolls_list = get_sorted_initiative_rolls_from_greatest_to_least(
                 unsorted_initiative_rolls_list=unsorted_initiative_rolls_list
