@@ -97,7 +97,28 @@ calculus_monster_continuity_monster_dict = \
         spreadsheet_enums.SpreadsheetKeysEnums.BONUS_ACTION_DAMAGE.value :
             0,
         "actions" :
-            [{'name': 'necrotize', 'action_type': 'action', 'attack_type': 'saving_throw', 'save_dc': 16, 'save_stat': 'wis', 'damage': '1d12 + 2d6 + 2', 'damage_type': 'necrotic', 'range': 120}, {'name': 'cause motor failure', 'action_type': 'bonus_action', 'attack_type': 'saving_throw', 'save_dc': 15, 'save_stat': 'cha', 'range': 120, 'notes': 'next time you move you will go prone'}, {'name': 'heal ally', 'action_type': 'bonus_action', 'attack_type': 'utility', 'range': 120, 'notes': 'heal a ally for 8d4. he can only do this once.'}],
+            [
+                {'name': 'necrotize',
+                 'action_type': 'action',
+                 'attack_type': 'saving_throw',
+                 'save_dc': 16,
+                 'save_stat': 'wis',
+                 'damage': '1d12 + 2d6 + 2',
+                 'damage_type': 'necrotic',
+                 'range': 120},
+                {'name': 'cause motor failure',
+                 'action_type': 'bonus_action',
+                 'attack_type': 'saving_throw',
+                 'save_dc': 15,
+                 'save_stat': 'cha',
+                 'range': 120,
+                 'notes': 'next time you move you will go prone'},
+                {'name': 'heal ally',
+                 'action_type': 'bonus_action',
+                 'attack_type': 'utility',
+                 'range': 120,
+                 'notes': 'heal a ally for 8d4. he can only do this once.'}
+            ],
     }
 
 
