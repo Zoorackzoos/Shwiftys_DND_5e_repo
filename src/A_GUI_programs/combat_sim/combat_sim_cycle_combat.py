@@ -1,7 +1,9 @@
 import contextlib
+import datetime
 from pathlib import Path
 
 import keyboard
+from fontTools.merge.util import current_time
 
 from A_GUI_programs.combat_sim.get_sorted_initiative_rolls_from_greatest_to_least import \
     get_sorted_initiative_rolls_from_greatest_to_least
@@ -260,10 +262,14 @@ def combat_sim_cycle_combat(
         name_and_roll_list = [name, initiative_roll]
         unsorted_initiative_rolls_list.append(name_and_roll_list)
 
+    current_time_var = str(datetime.datetime.now())[0:10]
+
     log_directory = Path("sorting_algo_log_folder")
     log_directory.mkdir(exist_ok=True)
 
-    log_file_path = log_directory / "TERMINAL_OUTPUT_get_sorted_initiative_rolls_from_greatest_to_least.log"
+    log_file_name = current_time_var + "_TERMINAL_OUTPUT_get_sorted_initiative_rolls_from_greatest_to_least.log"
+
+    log_file_path = log_directory / log_file_name
 
     with open(log_file_path, "w") as log_file:
         with contextlib.redirect_stdout(log_file):
