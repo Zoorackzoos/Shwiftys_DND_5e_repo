@@ -147,7 +147,12 @@ def update_combat_sim_cycle_combat_interface(
         tells the GUI where you are in the interaction menu.
     :param performing_attack_bool:
         tells the GUI you want the monster to attack
-        #TODO: give this more context because this feature isn't implemented yet
+        from there you can:
+        * select the monster's attack action
+        * whether you have a action left
+        * depending on the action,
+            * it tells you what it got to hit and what damage
+            * it tells you what the attacked person must get as a save and the damage.
     :param performing_damage_bool:
         tells the GUI and the logic minorly that the user is inputting a integer that is the damage
          being dealt to the monster

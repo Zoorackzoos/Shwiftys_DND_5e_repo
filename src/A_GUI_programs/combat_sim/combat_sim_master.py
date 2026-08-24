@@ -4,15 +4,28 @@ the goal of this file is to:
    ✅ to tell you who's initiative it is
 2. ✅ take in damage against monsters and tell if they're dead or not. hp stored as a variable
 3. ✅ take in healing against monsters and tell they're new hp value. hp stored as a variable
-4. ❌ have monster dictionaries stored in a array.
-    a. instead of crafting markdown files that contain the stat block for every new monster
-       so this program is normalized...
-       instead i will put in values to the spreadsheet from the "update_homebrew_monster.py"
-       keys.
-    b. from there i can craft temp dictionaries and put them in the array. or something similar.
-    c. the monster list will be modified in the source code, not via the GUI.
+4. 🤙 have monster dictionaries stored in a list.
+    a. i was just speculating on how monsters would work here.
+    b. they're in a list, but like. the attack feature isn't there.
+    c. the spreadsheet would need a way to hold the action / attack information. and i'm not sure about that.
 5. ✅ smooth GUi interface. interaction instructions top,
    get_damage_and_chance_to_hit.py stuff middle, verbose bullshit below that.
+6. ❌ monsters can attack with accurate attack information
+7. ❌ utility abilities are showcased
+8. ❌ GUI shows how many actions / multiattacks a monster has left in the attack GUI
+    a. so if you have a monster attack, and they can attack twice the gui would say
+    something like 1/2 actions used or something.
+9. ❌ monster list selections screen
+    a. like you are asked which encounter you want to run.
+    b. this means you have to have manually loaded monsters
+    c. and those monsters have to have acceptable spreadsheet values.
+10. ❌ make action "markdown to dictionary" parser.
+    a. i'll read a stat block, put that information into a markdown file
+    b. i'll put that markdown file through the markdown parser,
+     and it will create a list of dictionaries that will store the attack information
+    c. that information will be stored in teh spreadsheet cells.
+        i. is that a good idea though?
+        ii. counter question, it's not lik putting each action in their separate cell is a better idea.
 """
 import time
 
