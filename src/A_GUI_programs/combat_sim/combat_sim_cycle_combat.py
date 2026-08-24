@@ -29,8 +29,7 @@ def detect_if_NPC_and_display_monster_if_yes(
         damage_or_heal_integer_that_actually_a_string
 ):
     """
-    used to be called "detect_if_evil_and_display_monster_if_yes"
-    but need refactor for friendly NPCs. so just NPC.
+    displays good or evil NPC monsters.
 
     :param sub_list:
         is a lost of 2 elements. name, and a int. the int is the initiative roll.
