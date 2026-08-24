@@ -2,6 +2,11 @@
 i was losing my marbles over a sorting algorithm.
 i did this in sophomore year of high school dawg i can't fumble this bad.
 """
+import time
+from copy import deepcopy
+
+from universal_functions.display.print_2d_list import print_2d_list
+
 
 def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls_list):
     """
@@ -46,11 +51,132 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
         you reset to [0][0] it' just easier to call the function again
 
         i've done this without recursion before. almost 10 years ago....
-        
+        i kinda forgot how to :-/
 
     :param unsorted_initiative_rolls_list:
     :return:
     """
+    print("get_sorted_initiative_rolls_from_greatest_to_least")
+    tab_amount = "\t"
+    sorted_initiative_rolls_list = deepcopy(unsorted_initiative_rolls_list)
+
+    i = 0
+    j = 0
+
+    """
+    6 - 1 = 5
+    we need 5 because indexing starts at 0 :-3
+    """
+    length_of_unsorted_initiative_rolls_list = len(unsorted_initiative_rolls_list) - 1
+    print(tab_amount,"unsorted_initiative_rolls_list =\n",tab_amount,unsorted_initiative_rolls_list)
+    print(tab_amount,"length_of_unsorted_initiative_rolls_list =",length_of_unsorted_initiative_rolls_list)
+    print()
+
+    num_of_times_iterated = 0
+    modified_list_bool = False
+
+    print(tab_amount,"beginning loop")
+    tab_amount += "\t"
+    while i < length_of_unsorted_initiative_rolls_list:
+        # after the greatest value is found, we don't want the slot 0 to be slot 1 again.
+        j = i
+        while j < length_of_unsorted_initiative_rolls_list:
+
+
+            #debug / display
+            print(tab_amount,num_of_times_iterated)
+            print(tab_amount+"\tsorted_initiative_rolls_list[",i,"]",sorted_initiative_rolls_list[i])
+            print(tab_amount+"\tsorted_initiative_rolls_list[",j,"]",sorted_initiative_rolls_list[j])
+
+            if sorted_initiative_rolls_list[i][1] == None:
+                print(tab_amount, "\t\t Popping / Removing")
+                print(tab_amount, "\t\t sorted_initiative_rolls_list[",i,"]",sorted_initiative_rolls_list[i])
+                sorted_initiative_rolls_list.pop(i)
+                length_of_unsorted_initiative_rolls_list = len(unsorted_initiative_rolls_list) - 1
+                print(tab_amount, "\t\t unsorted_initiative_rolls_list =\n", tab_amount, unsorted_initiative_rolls_list)
+                print(tab_amount, "\t\t length_of_unsorted_initiative_rolls_list =",
+                      length_of_unsorted_initiative_rolls_list)
+
+                print(tab_amount + "\t\t modified_list_bool =", modified_list_bool)
+                print(tab_amount + "\t\t i =",i)
+                print(tab_amount + "\t\t j =",j)
+                print(tab_amount + "\t\t -->", )
+                modified_list_bool = True
+                i = 0
+                j = 0
+                print(tab_amount + "\t\t modified_list_bool =", modified_list_bool)
+                print(tab_amount + "\t\t i =", i)
+                print(tab_amount + "\t\t j =", j)
+
+            if sorted_initiative_rolls_list[j][1] == None:
+                print(tab_amount, "\t\t Popping / Removing")
+                print(tab_amount, "\t\t sorted_initiative_rolls_list[",j,"]",sorted_initiative_rolls_list[j])
+                sorted_initiative_rolls_list.pop(j)
+                length_of_unsorted_initiative_rolls_list = len(unsorted_initiative_rolls_list) - 1
+                print(tab_amount, "\t\t unsorted_initiative_rolls_list =\n", tab_amount, unsorted_initiative_rolls_list)
+                print(tab_amount, "\t\t length_of_unsorted_initiative_rolls_list =",
+                      length_of_unsorted_initiative_rolls_list)
+
+                print(tab_amount + "\t\t modified_list_bool =", modified_list_bool)
+                print(tab_amount + "\t\t i =", i)
+                print(tab_amount + "\t\t j =", j)
+                print(tab_amount + "\t\t -->", )
+                modified_list_bool = True
+                i = 0
+                j = 0
+                print(tab_amount + "\t\t modified_list_bool =", modified_list_bool)
+                print(tab_amount + "\t\t i =", i)
+                print(tab_amount + "\t\t j =", j)
+
+            if sorted_initiative_rolls_list[i][1] < sorted_initiative_rolls_list[j][1]:
+                print(tab_amount + "\t\t Moving")
+                print(tab_amount + "\t\t sorted_initiative_rolls_list[", i, "] = ",sorted_initiative_rolls_list[i])
+                print(tab_amount + "\t\t sorted_initiative_rolls_list[", j, "] = ",sorted_initiative_rolls_list[j])
+                print(tab_amount + "\t\t sorted_initiative_rolls_list[", i, "][1] = ", sorted_initiative_rolls_list[i][1])
+                print(tab_amount + "\t\t sorted_initiative_rolls_list[", j, "][1] = ", sorted_initiative_rolls_list[j][1])
+                print(tab_amount + "\t\t",sorted_initiative_rolls_list[i][1], "<",sorted_initiative_rolls_list[j][1])
+                temp_i = sorted_initiative_rolls_list[i]
+                temp_j = sorted_initiative_rolls_list[j]
+                sorted_initiative_rolls_list[i] = temp_j
+                sorted_initiative_rolls_list[j] = temp_i
+                print(tab_amount + "\t\t sorted_initiative_rolls_list =\n\t\t\t",tab_amount,sorted_initiative_rolls_list)
+
+                print(tab_amount + "\t\t modified_list_bool =",modified_list_bool)
+                print(tab_amount + "\t\t i =", i)
+                print(tab_amount + "\t\t j =", j)
+                print(tab_amount + "\t\t -->",)
+                modified_list_bool = True
+                i = 0
+                j = 0
+                print(tab_amount + "\t\t modified_list_bool =",modified_list_bool)
+                print(tab_amount + "\t\t i =", i)
+                print(tab_amount + "\t\t j =", j)
+
+            # iteration
+            print(tab_amount+"\tnum_of_times_iterated :",num_of_times_iterated," + 1 -->",(num_of_times_iterated + 1))
+            num_of_times_iterated += 1
+            print(tab_amount+"\tj :",j,"+ 1 --> ",(j + 1))
+            j += 1
+
+            # debug stuff
+            if num_of_times_iterated >= 100:
+                print("shit")
+                exit(999)
+        # iteration
+        print(tab_amount+"i:",i,"+ 1 --> ",(i + 1))
+        i += 1
+        print(tab_amount+"j:",j,"--> 0")
+        j = 0
+
+        if modified_list_bool == True:
+            print("\t\t\tresetting because modified_list_bool was True")
+            modified_list_bool = False
+
+    print("i < length_of_unsorted_initiative_rolls_list")
+    print(i, "<", length_of_unsorted_initiative_rolls_list)
+    print(i < length_of_unsorted_initiative_rolls_list)
+    print(sorted_initiative_rolls_list)
+    exit(999)
 
     print("get_sorted_initiative_rolls_from_greatest_to_least")
     print("\tsorted them. look at it!")

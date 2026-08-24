@@ -4,6 +4,8 @@ from copy import deepcopy
 import keyboard
 from sympy.physics import pring
 
+from A_GUI_programs.combat_sim.get_sorted_initiative_rolls_from_greatest_to_least import \
+    get_sorted_initiative_rolls_from_greatest_to_least
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from universal_functions.display.print_2d_list import print_2d_list
@@ -262,12 +264,10 @@ def combat_sim_cycle_combat(
 
     # get rid of the None values
     none_searcher_index = 0
-    while none_searcher_index < len(unsorted_initiative_rolls_list):
-        if unsorted_initiative_rolls_list[none_searcher_index][1] == None:
-            unsorted_initiative_rolls_list.pop(none_searcher_index)
-        none_searcher_index += 1
 
-    sorted_initiative_rolls_list = unsorted_initiative_rolls_list.sort()
+    sorted_initiative_rolls_list = get_sorted_initiative_rolls_from_greatest_to_least(
+        unsorted_initiative_rolls_list=unsorted_initiative_rolls_list
+    )
 
     universal_terminal_clear()
 
