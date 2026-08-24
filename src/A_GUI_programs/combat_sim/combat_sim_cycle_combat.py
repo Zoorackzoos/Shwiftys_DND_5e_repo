@@ -15,6 +15,31 @@ from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_
     get_rows_from_dict_on_param_type_and_string
 from universal_functions.vars.spreadsheet_enums import SpreadsheetKeysEnums
 
+def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters):
+    """
+    Scans all monster dicts once and returns a function that formats a single
+    monster dict into an aligned "name : max_hp : current_hp : ac : life_status"
+    row, padded to the widest value seen in each column.
+
+    claude made this
+    """
+    columns = ["Name", "HP", "current_hp", "AC", "life_status"]
+    labels = {"Name": "name", "HP": "max_hp", "current_hp": "current_hp", "AC": "ac", "life_status": "life_status"}
+
+    widths = {}
+    for col in columns:
+        max_width = len(labels[col])
+        for monster_dict in list_that_contains_dictionaries_that_are_monsters:
+            max_width = max(max_width, len(str(monster_dict[col])))
+        widths[col] = max_width
+
+    def format_header():
+        return " : ".join(f"{labels[col]:<{widths[col]}}" for col in columns)
+
+    def format_row(monster_dict):
+        return " : ".join(f"{str(monster_dict[col]):<{widths[col]}}" for col in columns)
+
+    return format_header, format_row
 
 def detect_if_NPC_and_display_monster_if_yes(
         sub_list,
@@ -30,29 +55,19 @@ def detect_if_NPC_and_display_monster_if_yes(
 ):
     """
     displays good or evil NPC monsters.
-
-    :param sub_list:
-        is a lost of 2 elements. name, and a int. the int is the initiative roll.
-    :param list_that_contains_dictionaries_that_are_monsters:
-        this is a list of dictionaries that are monsters. monster information
-    :param monster_selection_index:
-        if this is -1, then it's False, for no monster is selected.
-         if it's any other integer, then a monster is selected.
-    :return:
+    claude updated this
     """
     if sub_list[0].lower() == "evil" or sub_list[0].lower() == "good":
-        print("\t\t  ", "name : max_hp : current_hp : ac : life_status")
+        format_header, format_row = _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters)
+        print("\t\t  ", format_header())
+
         if selected_npc_bool:
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
-                # monster and npc are the same thing. they're just a dictionary with monster information.
-                if monster_dict_index == selected_npc_index:
-                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
-                          monster_dict["life_status"])
-                else:
-                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
-                          monster_dict["life_status"])
+                marker = "\t\t →" if monster_dict_index == selected_npc_index else "\t\t  "
+                print(marker, format_row(monster_dict))
                 monster_dict_index += 1
+
         elif npc_interaction_menu_bool:
             interaction_option_menu_string_list = \
                 [
@@ -63,8 +78,7 @@ def detect_if_NPC_and_display_monster_if_yes(
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
                 if monster_dict_index == selected_npc_index:
-                    print("\t\t →", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
-                          monster_dict["life_status"])
+                    print("\t\t →", format_row(monster_dict))
                     gui_logic_interaction_menu_index = 0
                     for string in interaction_option_menu_string_list:
                         if gui_logic_interaction_menu_index == npc_interaction_menu_index:
@@ -82,13 +96,12 @@ def detect_if_NPC_and_display_monster_if_yes(
                             print("\t\t\t  ", string)
                         gui_logic_interaction_menu_index += 1
                 else:
-                    print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
-                          monster_dict["life_status"])
+                    print("\t\t  ", format_row(monster_dict))
                 monster_dict_index += 1
+
         else:
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
-                print("\t\t  ", monster_dict["Name"], ":", monster_dict["HP"],":",monster_dict["current_hp"], ":", monster_dict["AC"], ":",
-                      monster_dict["life_status"])
+                print("\t\t  ", format_row(monster_dict))
 
 
 def update_combat_sim_cycle_combat_interface(
