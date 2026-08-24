@@ -54,7 +54,7 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
         i kinda forgot how to :-/
             I've done this in java a million times. but making a java-like scanner
             is very difficult in python for some reason.
-                the muslce memory is faililng.
+                the muscle memory is failing.
 
     :param unsorted_initiative_rolls_list:
     :return:
@@ -73,6 +73,7 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
     print(tab_amount,"unsorted_initiative_rolls_list =\n",tab_amount,unsorted_initiative_rolls_list)
     print(tab_amount,"length_of_unsorted_initiative_rolls_list =",length_of_unsorted_initiative_rolls_list)
     print()
+    exit(999)
 
     num_of_times_iterated = 0
     modified_list_bool = False

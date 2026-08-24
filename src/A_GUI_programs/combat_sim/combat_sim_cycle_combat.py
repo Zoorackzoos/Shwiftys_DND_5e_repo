@@ -1,3 +1,4 @@
+import contextlib
 import time
 from copy import deepcopy
 
@@ -265,9 +266,11 @@ def combat_sim_cycle_combat(
     # get rid of the None values
     none_searcher_index = 0
 
-    sorted_initiative_rolls_list = get_sorted_initiative_rolls_from_greatest_to_least(
-        unsorted_initiative_rolls_list=unsorted_initiative_rolls_list
-    )
+    with open("sorting_algorithm.log", "w") as log_file:
+        with contextlib.redirect_stdout(log_file):
+            sorted_initiative_rolls_list = get_sorted_initiative_rolls_from_greatest_to_least(
+                unsorted_initiative_rolls_list=unsorted_initiative_rolls_list
+            )
 
     universal_terminal_clear()
 
