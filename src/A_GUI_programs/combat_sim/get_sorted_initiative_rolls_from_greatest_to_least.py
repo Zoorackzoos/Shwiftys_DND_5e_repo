@@ -52,6 +52,9 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
 
         i've done this without recursion before. almost 10 years ago....
         i kinda forgot how to :-/
+            I've done this in java a million times. but making a java-like scanner
+            is very difficult in python for some reason.
+                the muslce memory is faililng.
 
     :param unsorted_initiative_rolls_list:
     :return:
@@ -64,10 +67,9 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
     j = 0
 
     """
-    6 - 1 = 5
-    we need 5 because indexing starts at 0 :-3
+    completely geeked if i should have had a - 1 on this or not.
     """
-    length_of_unsorted_initiative_rolls_list = len(unsorted_initiative_rolls_list) - 1
+    length_of_unsorted_initiative_rolls_list = len(unsorted_initiative_rolls_list)# - 1
     print(tab_amount,"unsorted_initiative_rolls_list =\n",tab_amount,unsorted_initiative_rolls_list)
     print(tab_amount,"length_of_unsorted_initiative_rolls_list =",length_of_unsorted_initiative_rolls_list)
     print()
@@ -146,8 +148,7 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
                 print(tab_amount + "\t\t j =", j)
                 print(tab_amount + "\t\t -->",)
                 modified_list_bool = True
-                i = 0
-                j = 0
+
                 print(tab_amount + "\t\t modified_list_bool =",modified_list_bool)
                 print(tab_amount + "\t\t i =", i)
                 print(tab_amount + "\t\t j =", j)
@@ -155,7 +156,7 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
             # iteration
             print(tab_amount+"\tnum_of_times_iterated :",num_of_times_iterated," + 1 -->",(num_of_times_iterated + 1))
             num_of_times_iterated += 1
-            print(tab_amount+"\tj :",j,"+ 1 --> ",(j + 1))
+            print(tab_amount+"\tj :",j,"+ 1 -->",(j + 1))
             j += 1
 
             # debug stuff
@@ -163,23 +164,23 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
                 print("shit")
                 exit(999)
         # iteration
-        print(tab_amount+"i:",i,"+ 1 --> ",(i + 1))
+        print(tab_amount+"i:",i,"+ 1 -->",(i + 1))
         i += 1
         print(tab_amount+"j:",j,"--> 0")
         j = 0
 
         if modified_list_bool == True:
-            print("\t\t\tresetting because modified_list_bool was True")
+            print(tab_amount,"\t\tresetting  modified_list_bool from True to False")
             modified_list_bool = False
 
-    print("i < length_of_unsorted_initiative_rolls_list")
-    print(i, "<", length_of_unsorted_initiative_rolls_list)
-    print(i < length_of_unsorted_initiative_rolls_list)
-    print(sorted_initiative_rolls_list)
-    exit(999)
+    print(tab_amount,"i < length_of_unsorted_initiative_rolls_list")
+    print(tab_amount,i, "<", length_of_unsorted_initiative_rolls_list)
+    print(tab_amount,i < length_of_unsorted_initiative_rolls_list)
+    #print(sorted_initiative_rolls_list)
 
-    print("get_sorted_initiative_rolls_from_greatest_to_least")
-    print("\tsorted them. look at it!")
+    print()
+
+    print(tab_amount,"sorted them. look at it!")
     print_2d_list(list_in_question=sorted_initiative_rolls_list, tab_amount="\t\t")
     time.sleep(1)  # this "hey i did it :DDD" text will be pasted over by another function anyway.
 
