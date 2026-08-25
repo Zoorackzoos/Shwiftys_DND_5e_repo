@@ -14,8 +14,13 @@ make the backend and front end squeaky clean like a slip and slide.
 from universal_functions.display.print_2d_list_that_contains_dictionaries import \
     print_2d_list_that_contains_dictionaries
 from universal_functions.display.print_dictionary_nicely import print_dictionary_nicely
+from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
+    get_dict_from_csv_file
+from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
+    get_rows_from_dict_on_param_type_and_string
 from universal_functions.stat_block_interpreter.interpret_markdown_stat_block import \
     interpret_markdown_stat_block_into_python_file
+from universal_functions.vars.spreadsheet_enums import SpreadsheetKeysEnums
 from update_homebrew_monster_spreadsheet import update_homebrew_monster_spreadsheet
 
 
@@ -25,40 +30,46 @@ def interpret_actions_only_markdown_file_and_update_spreadsheet_based_on_name(
 ):
     print(tab_amount,"interpret_actions_only_markdown_file_and_update_spreadsheet_based_on_name")
     tab_amount += "\t"
-    raw_monster_properties_dictionary = interpret_markdown_stat_block_into_python_file(
+
+    """
+    get the actions key and it's value 
+    this is 1/2 of the puzzle
+    """
+    smaller_input_monster_properties_dictionary = interpret_markdown_stat_block_into_python_file(
         path_to_markdown_file="temp_monster_directory/" + temp_monster_file_name + ".md",
         path_to_python_file="temp_monster_directory/" + temp_monster_file_name + ".py",
         generate_file=False,
         tab_amount=tab_amount
     )
-    print(tab_amount,"raw_monster_properties_dictionary")
+    print(tab_amount,"smaller_input_monster_properties_dictionary")
     print_dictionary_nicely(
-        dict_in_question=raw_monster_properties_dictionary,
+        dict_in_question=smaller_input_monster_properties_dictionary,
         tab_amount=tab_amount+"\t"
     )
-    raw_monster_properties_dictionary_actions_only = raw_monster_properties_dictionary["actions"]
+    smaller_input_dictionary_actions_only = smaller_input_monster_properties_dictionary["actions"]
+    smaller_input_name_only = smaller_input_monster_properties_dictionary["name"]
 
-    print(tab_amount,"these are the actions of the monster known as \""+raw_monster_properties_dictionary["name"]+"\"")
-    print_2d_list_that_contains_dictionaries(
-        list_dict_variable=raw_monster_properties_dictionary_actions_only,
-        tab_amount=tab_amount+"\t"
-    )
-
-    tiny_monster_dict = \
-        {
-            "name" : raw_monster_properties_dictionary["name"],
-            "actions" : raw_monster_properties_dictionary_actions_only
-        }
-
-    print(tab_amount,"tiny_monster_dict")
-    print_dictionary_nicely(
-        dict_in_question=tiny_monster_dict,
-        tab_amount=tab_amount+"\t"
-    )
-
+    """
+    get the rest of teh spreadsheet values, form teh spreadsheet
+    this is 1/2 of the puzzle
+    if we don't do this then the spreadsheet updates without 99% of it's values
+    """
     path_to_monsters_csv_file = "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
+    all_monsters_homebrew_dict = get_dict_from_csv_file(
+        path_to_csv_file=path_to_monsters_csv_file,
+        tab_amount=tab_amount
+    )
+    merging_monster_values = get_rows_from_dict_on_param_type_and_string(
+        dict_in_question=all_monsters_homebrew_dict,
+        param_type=SpreadsheetKeysEnums.NAME.value,
+        string=smaller_input_name_only,
+        tab_amount=tab_amount
+    )
+
+    merging_monster_values["actions"] = smaller_input_dictionary_actions_only
+
     update_homebrew_monster_spreadsheet(
-        monster_dict=tiny_monster_dict,
+        monster_dict=merging_monster_values,
         tab_amount=tab_amount,
         path_to_monsters_csv_file=path_to_monsters_csv_file
     )

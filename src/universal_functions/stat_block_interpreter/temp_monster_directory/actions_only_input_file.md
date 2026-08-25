@@ -1,7 +1,7 @@
-# goblin
+# Goblin
 
 # metadata
-name: goblin
+name: Goblin
 
 # actions
 
