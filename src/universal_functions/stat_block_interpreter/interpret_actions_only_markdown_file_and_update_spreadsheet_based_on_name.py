@@ -66,13 +66,13 @@ def interpret_actions_only_markdown_file_and_update_spreadsheet_based_on_name(
         param_type=SpreadsheetKeysEnums.NAME.value,
         string=smaller_input_name_only,
         tab_amount=tab_amount
-    )
+    )[0]
 
-    merged_monster_values = deepcopy(legacy_monster_values[0])
+    merged_monster_values = deepcopy(legacy_monster_values)
     merged_monster_values["actions"] = smaller_input_dictionary_actions_only
 
     update_homebrew_monster_spreadsheet(
-        monster_dict=legacy_monster_values,
+        monster_dict=merged_monster_values,
         tab_amount=tab_amount,
         path_to_monsters_csv_file=path_to_monsters_csv_file
     )
