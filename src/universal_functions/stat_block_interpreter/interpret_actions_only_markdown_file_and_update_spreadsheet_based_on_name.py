@@ -11,6 +11,8 @@ work pipline is as follows
 from there i can better pull the action information for the combat sim and can
 make the backend and front end squeaky clean like a slip and slide.
 """
+from copy import deepcopy
+
 from universal_functions.display.print_2d_list_that_contains_dictionaries import \
     print_2d_list_that_contains_dictionaries
 from universal_functions.display.print_dictionary_nicely import print_dictionary_nicely
@@ -59,17 +61,18 @@ def interpret_actions_only_markdown_file_and_update_spreadsheet_based_on_name(
         path_to_csv_file=path_to_monsters_csv_file,
         tab_amount=tab_amount
     )
-    merging_monster_values = get_rows_from_dict_on_param_type_and_string(
+    legacy_monster_values = get_rows_from_dict_on_param_type_and_string(
         dict_in_question=all_monsters_homebrew_dict,
         param_type=SpreadsheetKeysEnums.NAME.value,
         string=smaller_input_name_only,
         tab_amount=tab_amount
     )
 
-    merging_monster_values["actions"] = smaller_input_dictionary_actions_only
+    merged_monster_values = deepcopy(legacy_monster_values[0])
+    merged_monster_values["actions"] = smaller_input_dictionary_actions_only
 
     update_homebrew_monster_spreadsheet(
-        monster_dict=merging_monster_values,
+        monster_dict=legacy_monster_values,
         tab_amount=tab_amount,
         path_to_monsters_csv_file=path_to_monsters_csv_file
     )
