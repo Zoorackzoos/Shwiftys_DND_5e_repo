@@ -1,18 +1,18 @@
-# Goblin
+# Skeleton
 
 # metadata
-name: Goblin
+name: Skeleton
 
 # actions
 
-## scimitar
+## shortsword
 
 action\_type: action  
 attack\_type: melee  
 hit\_modifier: 4  
 range: 5  
 damage: 1d6 \+ 2  
-damage\_type: slashing
+damage\_type: piercing
 
 ## shortbow
 
