@@ -846,6 +846,7 @@ def interpret_markdown_stat_block_into_python_file(
         path_to_markdown_file,
         path_to_python_file,
         dict_variable_name=None,
+        generate_file=True,
         tab_amount="\t"
 ):
     """
@@ -877,8 +878,9 @@ def interpret_markdown_stat_block_into_python_file(
     path_to_python_file = Path(path_to_python_file)
     path_to_python_file.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(path_to_python_file, "w", encoding="utf-8") as file:
-        file.write(python_file_text)
+    if generate_file:
+        with open(path_to_python_file, "w", encoding="utf-8") as file:
+            file.write(python_file_text)
 
     print(tab_amount, "path_to_python_file =", path_to_python_file)
     print(tab_amount, "python stat block dictionary file created")
@@ -886,10 +888,8 @@ def interpret_markdown_stat_block_into_python_file(
     return monster_properties
 
 if __name__ == "__main__":
-    """
+    temp_monster_file_name = "actions_only_input_file"
     interpret_markdown_stat_block_into_python_file(
-        path_to_markdown_file="temp_monster_directory/Template Monster, Parser Trial.md",
-        path_to_python_file="temp_monster_directory/Template Monster, Parser Trial.py"
+        path_to_markdown_file="temp_monster_directory/"+temp_monster_file_name+".md",
+        path_to_python_file="temp_monster_directory/"+temp_monster_file_name+".py"
     )
-    """
-    pass
