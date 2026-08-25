@@ -130,7 +130,7 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
                 print(tab_amount + "\t\t i =", i)
                 print(tab_amount + "\t\t j =", j)
 
-            if sorted_initiative_rolls_list[i][1] < sorted_initiative_rolls_list[j][1]:
+            if int(sorted_initiative_rolls_list[i][1]) < int(sorted_initiative_rolls_list[j][1]):
                 print(tab_amount + "\t\t Moving")
                 print(tab_amount + "\t\t sorted_initiative_rolls_list[", i, "] = ",sorted_initiative_rolls_list[i])
                 print(tab_amount + "\t\t sorted_initiative_rolls_list[", j, "] = ",sorted_initiative_rolls_list[j])
@@ -152,6 +152,19 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
                 print(tab_amount + "\t\t modified_list_bool =",modified_list_bool)
                 print(tab_amount + "\t\t i =", i)
                 print(tab_amount + "\t\t j =", j)
+            else:
+                """
+                #i had a issue where the numbers were compared as 
+                if they were strings. this is here as a legacy debug feature
+                """
+                print(tab_amount + "\t\tnot moving")
+                print(tab_amount + "\t\t sorted_initiative_rolls_list[", i, "] = ", sorted_initiative_rolls_list[i])
+                print(tab_amount + "\t\t sorted_initiative_rolls_list[", j, "] = ", sorted_initiative_rolls_list[j])
+                print(tab_amount + "\t\t sorted_initiative_rolls_list[", i, "][1] = ",sorted_initiative_rolls_list[i][1])
+                print(tab_amount + "\t\t sorted_initiative_rolls_list[", j, "][1] = ",sorted_initiative_rolls_list[j][1])
+                print(tab_amount + "\t\t", sorted_initiative_rolls_list[i][1], "<", sorted_initiative_rolls_list[j][1])
+                print(tab_amount + "\t\t", "sorted_initiative_rolls_list[i][1] < sorted_initiative_rolls_list[j][1]")
+                print(tab_amount + "\t\t", sorted_initiative_rolls_list[i][1] < sorted_initiative_rolls_list[j][1])
 
             # iteration
             print(tab_amount+"\tnum_of_times_iterated :",num_of_times_iterated," + 1 -->",(num_of_times_iterated + 1))
