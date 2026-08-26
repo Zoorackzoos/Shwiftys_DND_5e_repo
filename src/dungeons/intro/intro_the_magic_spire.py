@@ -4,7 +4,7 @@ from src.universal_functions.get_encounter_difficulty.get_encounter_difficulty_f
     get_encounter_difficulty_from_cr_values
 from src.universal_functions.spreadsheet_stuff.spreadsheet_updaters.update_encounter_feedback_spreadsheet import \
     update_encounter_feedback_spreadsheet
-from src.universal_functions.vars import spreadsheet_enums
+from universal_functions.vars.enums import spreadsheet_enums
 
 intro_the_magic_spire_path_to_monsters_csv_file = "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
 intro_the_magic_spire_path_to_encounter_csv_file = "../../../sheets/encounter_feedback/encounter_feedback.csv"

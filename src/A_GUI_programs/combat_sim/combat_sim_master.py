@@ -26,6 +26,7 @@ the goal of this file is to:
     c. that information will be stored in teh spreadsheet cells.
         i. is that a good idea though?
         ii. counter question, it's not lik putting each action in their separate cell is a better idea.
+11. ❌ design and implement legendary actions
 """
 import time
 
@@ -79,9 +80,6 @@ def combat_sim_master():
         pass
     else:
         initiative_rolls_dictionary = take_initiative_roles()
-
-    combat_sim_master_path_to_monsters_all_stats_homebrew_csv_file = \
-    "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
 
     combat_sim_cycle_combat(
         initiative_rolls_dictionary=initiative_rolls_dictionary,

@@ -4,7 +4,7 @@ from pathlib import Path
 from src.universal_functions.craft_cr_from_monster_stat_block import (
     plug_monster_var_values_into_get_cr_from_monster,
 )
-from src.universal_functions.vars import spreadsheet_enums
+from universal_functions.vars.enums import spreadsheet_enums
 
 #This is referring to the headers in the markdown files
 KNOWN_TOP_LEVEL_SECTIONS = \
@@ -628,7 +628,8 @@ def infer_cr_helper_values_from_monster_dict(monster_dict, tab_amount="\t"):
     if len(recharge_damages) > 0:
         inferred_values[spreadsheet_enums.SpreadsheetKeysEnums.RECHARGE_DAMAGE.value] = max(recharge_damages)
     if len(legendary_action_damages) > 0:
-        inferred_values[spreadsheet_enums.SpreadsheetKeysEnums.LEGENDARY_ACTION_DAMAGE.value] = max(legendary_action_damages)
+        inferred_values[
+            spreadsheet_enums.SpreadsheetKeysEnums.LEGENDARY_ACTION_DAMAGE.value] = max(legendary_action_damages)
         inferred_values[spreadsheet_enums.SpreadsheetKeysEnums.HAS_LEGENDARY_ACTION.value] = True
     if utility_ability_count > 0:
         inferred_values[spreadsheet_enums.SpreadsheetKeysEnums.ABILITY_COUNT.value] = utility_ability_count

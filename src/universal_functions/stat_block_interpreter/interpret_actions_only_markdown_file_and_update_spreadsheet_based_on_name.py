@@ -13,8 +13,6 @@ make the backend and front end squeaky clean like a slip and slide.
 """
 from copy import deepcopy
 
-from universal_functions.display.print_2d_list_that_contains_dictionaries import \
-    print_2d_list_that_contains_dictionaries
 from universal_functions.display.print_dictionary_nicely import print_dictionary_nicely
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
     get_dict_from_csv_file
@@ -22,7 +20,7 @@ from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_
     get_rows_from_dict_on_param_type_and_string
 from universal_functions.stat_block_interpreter.interpret_markdown_stat_block import \
     interpret_markdown_stat_block_into_python_file
-from universal_functions.vars.spreadsheet_enums import SpreadsheetKeysEnums
+from universal_functions.vars.enums.spreadsheet_enums import SpreadsheetKeysEnums
 from update_homebrew_monster_spreadsheet import update_homebrew_monster_spreadsheet
 
 

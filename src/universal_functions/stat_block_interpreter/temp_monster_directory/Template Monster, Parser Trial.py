@@ -1,5 +1,4 @@
-from src.universal_functions.vars import spreadsheet_enums
-
+from universal_functions.vars.enums import spreadsheet_enums
 
 template_monster_parser_trial_monster_dict = \
     {
