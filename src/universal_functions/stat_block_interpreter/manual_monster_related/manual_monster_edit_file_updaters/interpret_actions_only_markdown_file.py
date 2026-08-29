@@ -10,6 +10,23 @@ work pipline is as follows
 
 from there i can better pull the action information for the combat sim and can
 make the backend and front end squeaky clean like a slip and slide.
+
+UPDATE:
+    I realized, technically we don't need this workflow
+    Since I like to use enums to maintain consistency i could just create my own python
+
+    dictionary file & variable. so instead of
+        write in markdown file --> run markdown interpreter
+        <----------------------------------------
+        generate system-only python file --> update spreadsheet
+
+    it is instead:
+        write in python dictionary file --> update spreadsheet
+
+    This is why designers exist :-)
+    However, "interpret_actions_only_markdown_file_and_update_spreadsheet_based_on_name.py"
+    still has a use for less savvy users.
+        if that were to be a thing :-/.
 """
 from copy import deepcopy
 
@@ -23,10 +40,12 @@ from universal_functions.stat_block_interpreter.interpret_markdown_stat_block im
 from universal_functions.vars.enums.spreadsheet_enums import SpreadsheetKeysEnums
 from update_homebrew_monster_spreadsheet import update_homebrew_monster_spreadsheet
 
+actions_only_input_file_path = \
+    "../manual_monster_edit_files/actions_only_input_file.md"
 
 def interpret_actions_only_markdown_file_and_update_spreadsheet_based_on_name(
         tab_amount="\t",
-        temp_monster_file_name="actions_only_input_file",
+        temp_monster_file_name=actions_only_input_file_path,
 ):
     print(tab_amount,"interpret_actions_only_markdown_file_and_update_spreadsheet_based_on_name")
     tab_amount += "\t"
@@ -54,7 +73,8 @@ def interpret_actions_only_markdown_file_and_update_spreadsheet_based_on_name(
     this is 1/2 of the puzzle
     if we don't do this then the spreadsheet updates without 99% of it's values
     """
-    path_to_monsters_csv_file = "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
+    path_to_monsters_csv_file = \
+        "../../../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
     all_monsters_homebrew_dict = get_dict_from_csv_file(
         path_to_csv_file=path_to_monsters_csv_file,
         tab_amount=tab_amount

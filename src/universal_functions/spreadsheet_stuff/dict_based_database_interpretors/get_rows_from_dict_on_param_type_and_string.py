@@ -30,6 +30,24 @@ def get_rows_from_dict_on_param_type_and_string(dict_in_question, param_type, st
         if param_type in dict_in_question[i]:
             if string.lower() == dict_in_question[i][param_type].lower():
                 return_rows.append(dict_in_question[i])
+
+    """
+    if this wasn't here, you would be returning a blank list anyway.
+    That's bad!
+    """
+    if len(return_rows) == 0:
+        """
+        "204 when the page is present and the query got properly processed
+        but produced no results AND THAT'S OK
+
+        (e.g. searching users by date of birth and it just so happens that
+        no user has this date of birth. That's not an error, an empty result
+        is just one possible result -- and will just display an empty results
+        table in the frontend)"
+        https://stackoverflow.com/questions/5604816/whats-the-most-appropriate-http-status-code-for-an-item-not-found-error-page
+        """
+        exit(204)
+
     print(tab_amount, "the string \"", string, "\" showed up", len(return_rows), "times in the param_type", param_type)
 
     return return_rows

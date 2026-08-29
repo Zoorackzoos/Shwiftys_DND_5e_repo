@@ -51,6 +51,8 @@ class SpreadsheetKeysEnums(Enum):
     RECHARGE_DAMAGE = "recharge_damage"
     LIMITED_USE_DAMAGE = "limited_use_damage"
     BONUS_ACTION_DAMAGE = "bonus_action_damage"
+    #added due to combat sim attack feature
+    ACTIONS = "actions"
 
 class SizeEnums(Enum):
     TINY = "Tiny"
