@@ -255,7 +255,8 @@ def take_initiative_roles():
 
             if keyboard.is_pressed("q"):
                 if confirm_quit_via_keyboard():
-                    initiative_keep_program_running_bool = False
+                    print("\tquitting...")
+                    exit(0)
 
             #the arrow keys
             if keyboard.is_pressed("up"):
