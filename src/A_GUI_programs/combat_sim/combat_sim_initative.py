@@ -119,7 +119,13 @@ def update_initiative_roles_screen_and_return_user_input(
     if failed_initiative_input_bool == True:
         print("your input wasn't in the acceptable_user_input_list. please try again.")
 
-def get_if_initiative_input_is_duplicate_input(initiative_value):
+def get_if_initiative_input_is_duplicate_input(
+        initiative_value,
+        selected_dictionary_key,
+        initiative_rolls_dictionary
+):
+    if initiative_value == initiative_rolls_dictionary[selected_dictionary_key]:
+        return False
     for value in initiative_rolls_dictionary.values():
         if value == initiative_value:
             return True
@@ -308,6 +314,8 @@ def take_initiative_roles():
                     event = keyboard.read_event()
 
                     if event.event_type == keyboard.KEY_DOWN:
+                        if event.name == "left":
+                            break
 
                         # Numbers
                         if (event.name.isdigit() or
@@ -328,7 +336,11 @@ def take_initiative_roles():
                                 initiative_value = None
                                 in_loop_failed_initiative_input_bool = True
                                 break
-                            elif get_if_initiative_input_is_duplicate_input(initiative_value):
+                            elif get_if_initiative_input_is_duplicate_input(
+                                    initiative_value=initiative_value,
+                                    selected_dictionary_key=selected_dictionary_key,
+                                    initiative_rolls_dictionary=initiative_rolls_dictionary
+                            ):
                                 initiative_value = None
                                 in_loop_duplicate_initiative_input_bool = True
                                 break
@@ -339,7 +351,10 @@ def take_initiative_roles():
                             else:
                                 break
 
-                initiative_rolls_dictionary[selected_dictionary_key] = initiative_value
+                if initiative_value == "":
+                    initiative_rolls_dictionary[selected_dictionary_key] = None
+                else:
+                    initiative_rolls_dictionary[selected_dictionary_key] = initiative_value
 
                 update_initiative_roles_screen_and_return_user_input(
                     duplicate_initiative_input_bool=in_loop_duplicate_initiative_input_bool,
