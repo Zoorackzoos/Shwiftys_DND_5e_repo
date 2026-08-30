@@ -65,44 +65,75 @@ from universal_functions.enums import spreadsheet_enums, markdown_interpreter_re
 actions_only_input_file_monster_dict = \
     {
         spreadsheet_enums.SpreadsheetKeysEnums.NAME.value :
-            'Troll, Greatmaw',
+            'Devil, Chain',
         spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value :
             [
+                #------------------------TRAITS START -----------------------
                 {
                     markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
-                        "Bite",
+                        "Devil's Sight",
                     markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
-                        markdown_interpreter_related_enums.ActionTypeEnums.ACTION.value,
+                        markdown_interpreter_related_enums.ActionTypeEnums.PASSIVE.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
-                        markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value,
-                    markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value:
-                        9,
-                    markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
-                        5,
-                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
-                        "3d12 + 5",
-                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
-                        markdown_interpreter_related_enums.DamageTypeEnums.PIERCING.value,
+                        markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
-                        "if it is a Large or smaller creature it is grappled (escape "
-                        "DC 17). Until this grapple ends, the target is restrained, "
-                        "and the troll can't use its bite attack on another target. "
+                        "Magical darkness doesn't impede the devil's darkvision."
                 },
                 {
                     markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
-                        "Claw",
+                        "Magic Resistance",
+                    markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
+                        markdown_interpreter_related_enums.ActionTypeEnums.PASSIVE.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
+                        markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
+                        "The devil has advantage on saving throws against spells and other magical effects."
+                },
+                # ------------------------TRAITS END -----------------------
+                {
+                    markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
+                        "Chain",
                     markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
                         markdown_interpreter_related_enums.ActionTypeEnums.ACTION.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
                         markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value:
-                        9,
+                        8,
                     markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
-                        5,
+                        10,
                     markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
-                        "2d6 + 5",
+                        "2d6 + 4",
                     markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
-                        markdown_interpreter_related_enums.DamageTypeEnums.SLASHING.value
+                        markdown_interpreter_related_enums.DamageTypeEnums.SLASHING.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
+                        "The target is grappled (escape DC 14) if the devil isn't already grappling a creature. Until this grapple ends, the target is restrained and takes 7 (2d6) piercing damage at the start of each of its turns."
+                },
+                {
+                    markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
+                        "Animate Chains",
+                    markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
+                        markdown_interpreter_related_enums.ActionTypeEnums.RECHARGEABLE_ACTION.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
+                        markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
+                        "Up to four chains the devil can see within 60 feet of it magically sprout razor-­edged barbs and animate under the devil's control, provided that the chains aren't being worn or carried."
+                        "Each animated chain is an object with AC 20, 20 hit points, resistance to piercing damage, and immunity to psychic and thunder damage. When the devil uses multiattack on its turn, it can use each animated chain to make one additional chain attack. An animated chain can grapple one creature of its own but can't make attacks while grappling. An animated chain reverts to its inanimate state if reduced to 0 hit points or if the devil is incapacitated or dies."
+                },
+                {
+                    markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
+                        "Unnerving Mask",
+                    markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
+                        markdown_interpreter_related_enums.ActionTypeEnums.PASSIVE.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
+                        markdown_interpreter_related_enums.AttackTypeEnums.SAVING_THROW.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.SAVE_DC.value:
+                        14,
+                    markdown_interpreter_related_enums.ActionKeyEnums.SAVE_STAT:
+                        spreadsheet_enums.SpreadsheetKeysEnums.WIS.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
+                        30,
+                    markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
+                        "When a creature the devil can see starts its turn within 30 feet of the devil, the devil can create the illusion that it looks like one of the creature's departed loved ones or bitter enemies. If the creature can see the devil, it must succeed on a DC 14 Wisdom saving throw or be frightened until the end of its turn."
                 },
                 {
                     markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
@@ -120,7 +151,7 @@ actions_only_input_file_monster_dict = \
                     markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
                         markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
-                        "The troll makes four attacks: two with its bite and two with its claws."
+                        "The devil makes two attacks with its chains."
                 }
             ],
     }
