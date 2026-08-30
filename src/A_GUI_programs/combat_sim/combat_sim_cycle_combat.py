@@ -260,6 +260,7 @@ def update_combat_sim_cycle_combat_interface(
 
 def combat_sim_cycle_combat(
         initiative_rolls_dictionary,
+        list_that_contains_dictionaries_that_are_monsters
 ):
     if initiative_rolls_dictionary is None:
         exit("ERROR: combat_sim_cycle_combat: initative_roles_dict is None.")
@@ -295,51 +296,6 @@ def combat_sim_cycle_combat(
             )
 
     universal_terminal_clear()
-
-    # fetching the large ahh dictionary
-    combat_sim_cycle_combat_path_to_monsters_csv_file = \
-        "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
-    monsters_all_stats_homebrew_dict = get_dict_from_csv_file(
-        path_to_csv_file=combat_sim_cycle_combat_path_to_monsters_csv_file)
-
-    """
-    #TDOD: make these monsters dynamic 
-    a goblin
-    a skeleton
-    a "Dragon, Chromatic, Black, Young"
-    
-    the reason they're called monster_name[0] in the dictionary delcartion
-    is becuase this funciton "get_rows..." retruns a list of dictionaries.
-        since my query is specfici enough were it returns a list with 1 dictionary
-        we just use list[0] to get that 1 monster.
-    """
-    goblin_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=SpreadsheetKeysEnums.NAME.value,
-        string="goblin",
-        tab_amount=""
-    )
-    skeleton_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=SpreadsheetKeysEnums.NAME.value,
-        string="skeleton",
-        tab_amount=""
-    )
-    chromatic_blank_young_dragon_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=SpreadsheetKeysEnums.NAME.value,
-        string="Dragon, Chromatic, Black, Young",
-        tab_amount=""
-    )
-
-    # you'd figure i would be taught how to name variables by now but no.
-    # "fuck them kids" -every university on earth.
-    list_that_contains_dictionaries_that_are_monsters = \
-        [
-            goblin_list_that_contains_dict[0],
-            skeleton_list_that_contains_dict[0],
-            chromatic_blank_young_dragon_list_that_contains_dict[0]
-        ]
 
     """
     current hp, or hp used by the system.
@@ -429,7 +385,8 @@ def combat_sim_cycle_combat(
         if event.event_type == keyboard.KEY_DOWN:
             if keyboard.is_pressed("q"):
                 if confirm_quit_via_keyboard():
-                    combat_cycle_keep_program_running_bool = False
+                    print("quiting...")
+                    exit(0)
 
             # makes you understand who's turn it is.
             # in my games the enemies have their collective term.
