@@ -1,24 +1,24 @@
-# DND 5e CR versus player calculator
+# Shwiftys_DND_5e_repo
 
-## cataclysmic TODO
-```pycon
-#TODO: i'm discontinuing the encounter difficulty calculator because of the following reasons 1. it's not accurage, things rated as deadly ahve been easy for ages now. 2. it's not sustainable. 3. fuck piss dick fuck piss dick fuck.
-"""
-while the encounters themselves are not going to be
- updated unless i'm neurotic enough to update them
-  and their master spreadsheet anyway. i will still 
-  have combat calculators and some computer minigames 
-  if i have free time.
-  
-in this edict there's the issue that i'm gonna be updating the monster stat block haphazardly
-ergo- ad-hacally. 
-    fucking tech bro vocab...
-so in that i'm going to have to make a decision if there's gonna be phase 1 or phase 2 calculus monsters.
-and as of now, i'd rather give myself a punch in the face that make decisions
+# combat sim
 
-so again. haphazard updating. 
-"""
-```
+## data entry for actions information in the spreadsheet
+you have 2 options
+* input info in the ```actions_only_input_file.md``` file
+  * from there run ```interpret_actions_only_markdown_file.py``` from which it automatically updates the spreadsheet given the name of the monster in the "metadata" header in the markdown
+  * it's important to note that the markdown file has to be very specific or else the file will have "unpredictable hevaoir"
+    * like racoon.
+* input info in ```actions_only_input_file.py``` file
+  * from there run ```update_actions_only_python_file.py``` which is also, updates the spreadsheet automatically given the name you put in the file
+  * i guess this would be more difficult for less experienced users. but who tf is gonna use this repo other than me? lbh
+
+# difficulty predictor
+This has been discontinued. if i were to continue. i would have to:
+1. redesign how much data i would put into the algorithm (all of it naturally)
+2. define the algorithm that would deal with both CR, PC power levels and probably some more things
+3. database schema of the encounter feedback
+4. integration of the combat ssim so automatic data is generated
+   1. awoooga :-P
 
 ## description
 used to calculate combat difficulty in dungeons
