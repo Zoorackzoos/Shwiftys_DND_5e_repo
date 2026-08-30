@@ -65,40 +65,24 @@ from universal_functions.enums import spreadsheet_enums, markdown_interpreter_re
 actions_only_input_file_monster_dict = \
     {
         spreadsheet_enums.SpreadsheetKeysEnums.NAME.value :
-            'Goblin',
+            'Zombie, Cat',
         spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value :
             [
                 {
                     markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
-                        "Scimitar",
+                        "Claws",
                     markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
                         markdown_interpreter_related_enums.ActionTypeEnums.ACTION.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
                         markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value:
-                        4,
+                        0,
                     markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
                         5,
                     markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
-                        "1d6 + 2",
+                        "1",
                     markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
                         markdown_interpreter_related_enums.DamageTypeEnums.SLASHING.value
                 },
-                {
-                    markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
-                        "shortbow",
-                    markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
-                        markdown_interpreter_related_enums.ActionTypeEnums.ACTION.value,
-                    markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
-                        markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value,
-                    markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value:
-                        4,
-                    markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
-                        80,
-                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
-                        "1d6 + 2",
-                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
-                        markdown_interpreter_related_enums.DamageTypeEnums.PIERCING.value
-                }
             ],
     }
