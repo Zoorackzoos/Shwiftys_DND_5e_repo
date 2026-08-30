@@ -75,6 +75,52 @@ def get_one_ancient_gold_dragon(
     ]
     return monster_list
 
+def get_technodrome_2nd_floor_west_enterance(
+    monsters_all_stats_homebrew_dict
+):
+    #TODO: make a macro sourcing for the code so i only have to write strings intead of createing temp vars
+    zombie_cat = get_rows_from_dict_on_param_type_and_string(
+        dict_in_question=monsters_all_stats_homebrew_dict,
+        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
+        string="Zombie, Cat"
+    )[0]
+    goblin_dict = get_rows_from_dict_on_param_type_and_string(
+        dict_in_question=monsters_all_stats_homebrew_dict,
+        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
+        string="Goblin"
+    )[0]
+    rad_slime = get_rows_from_dict_on_param_type_and_string(
+        dict_in_question=monsters_all_stats_homebrew_dict,
+        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
+        string="Slime, Rad"
+    )[0]
+    greatmaw_troll = get_rows_from_dict_on_param_type_and_string(
+        dict_in_question=monsters_all_stats_homebrew_dict,
+        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
+        string="Troll, Greatmaw"
+    )[0]
+    chain_devil = get_rows_from_dict_on_param_type_and_string(
+        dict_in_question=monsters_all_stats_homebrew_dict,
+        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
+        string="Devil, Chain"
+    )[0]
+    giant_rat_dict = get_rows_from_dict_on_param_type_and_string(
+        dict_in_question=monsters_all_stats_homebrew_dict,
+        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
+        string="Misc. Creature, Giant Rat",
+    )[0]
+
+    monster_list = \
+    [
+        zombie_cat, zombie_cat, zombie_cat, zombie_cat, zombie_cat,
+        goblin_dict, goblin_dict, goblin_dict, goblin_dict, goblin_dict,
+        rad_slime, rad_slime, rad_slime, rad_slime,
+        greatmaw_troll, greatmaw_troll,
+        chain_devil, chain_devil, chain_devil,
+        giant_rat_dict, giant_rat_dict, giant_rat_dict,
+    ]
+    return monster_list
+
 def update_monster_list_selection_screen_GUI(
     list_of_monster_lists,
     monster_selection_screen_parent_index,
