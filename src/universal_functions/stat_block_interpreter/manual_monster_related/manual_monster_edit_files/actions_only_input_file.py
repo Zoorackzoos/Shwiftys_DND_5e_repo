@@ -65,24 +65,24 @@ from universal_functions.enums import spreadsheet_enums, markdown_interpreter_re
 actions_only_input_file_monster_dict = \
     {
         spreadsheet_enums.SpreadsheetKeysEnums.NAME.value :
-            'Zombie, Cat',
+            'Slime, Rad',
         spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value :
             [
                 {
                     markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
-                        "Claws",
+                        "Pseudopod",
                     markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
                         markdown_interpreter_related_enums.ActionTypeEnums.ACTION.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
                         markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value:
-                        0,
+                        4,
                     markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
                         5,
                     markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
-                        "1",
+                        "4d6",
                     markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
-                        markdown_interpreter_related_enums.DamageTypeEnums.SLASHING.value
+                        markdown_interpreter_related_enums.DamageTypeEnums.FIRE.value
                 },
             ],
     }
