@@ -2,6 +2,9 @@ import keyboard
 
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
+from universal_functions.display.print_2d_list_that_contains_dictionaries import \
+    print_2d_list_that_contains_dictionaries
+from universal_functions.display.print_dictionary_nicely import print_dictionary_nicely
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
     get_rows_from_dict_on_param_type_and_string
 from universal_functions.vars.enums import spreadsheet_enums
@@ -74,8 +77,19 @@ def get_one_ancient_gold_dragon(
 
 def update_monster_list_selection_screen_GUI(
     list_of_monster_lists,
-    monster_selection_screen_parent_index
+    monster_selection_screen_parent_index,
+    monster_selection_are_you_sure_menu_trigger_bool
 ):
+    """
+    later on you could add a child menu index system and have it so if someone
+    right arrows on a monster it could expand to show you all of it's properties within reason
+        that's feature creep though. i'm not doing it.
+
+    :param list_of_monster_lists:
+    :param monster_selection_screen_parent_index:
+    :param monster_selection_are_you_sure_menu_trigger_bool:
+    :return:
+    """
     universal_terminal_clear()
 
     tab_amount = "\t"
@@ -97,11 +111,21 @@ def update_monster_list_selection_screen_GUI(
     sub_list_loop_index = 0
 
     for sub_list in list_of_monster_lists:
-        if sub_list_loop_index == monster_selection_screen_parent_index:
-            print(tab_amount, "→ ", sub_list[0])
+        if monster_selection_are_you_sure_menu_trigger_bool:
+            if sub_list_loop_index == monster_selection_screen_parent_index:
+                print(tab_amount, "→ ", sub_list[0])
+                print(tab_amount + "\t→ ", "are you sure you want to select this monster list?")
+                for monster_dict in sub_list[1]:
+                    print(tab_amount+"\t  ",monster_dict["Name"])
+            else:
+                print(tab_amount, "  ", sub_list[0])
+            sub_list_loop_index +=1
         else:
-            print(tab_amount, "  ", sub_list[0])
-        sub_list_loop_index +=1
+            if sub_list_loop_index == monster_selection_screen_parent_index:
+                print(tab_amount, "→ ", sub_list[0])
+            else:
+                print(tab_amount, "  ", sub_list[0])
+            sub_list_loop_index +=1
 
 
 
@@ -164,46 +188,78 @@ def combat_sim_get_monster_list_thru_menu(
                 get_one_ancient_gold_dragon(
                     monsters_all_stats_homebrew_dict=monsters_all_stats_homebrew_dict
                 )
+            ],
+            #this is for a GUI element. it's less ad-hac code to deal with this here.
+            [
+                "!!!!! create a monster list !!!!!",
+                "ERROR: list_of_monster_lists: tried calling create a monster list string"
             ]
         ]
 
     # to keep player cursor in correct position
     monster_selection_screen_parent_index = 0
 
-    monster_list_selection_screen_keep_going_bool = True
+    monster_selection_are_you_sure_menu_trigger_bool = False
 
     def default_update_monster_list_selection_screen_GUI():
         update_monster_list_selection_screen_GUI(
             list_of_monster_lists=list_of_monster_lists,
-            monster_selection_screen_parent_index=monster_selection_screen_parent_index
+            monster_selection_screen_parent_index=monster_selection_screen_parent_index,
+            monster_selection_are_you_sure_menu_trigger_bool=monster_selection_are_you_sure_menu_trigger_bool
         )
+
+    # return value :-3
+    return_value_monster_list = None
 
     default_update_monster_list_selection_screen_GUI()
 
+    monster_list_selection_screen_keep_going_bool = True
     while monster_list_selection_screen_keep_going_bool:
         event = keyboard.read_event()
         if event.event_type == keyboard.KEY_DOWN:
+
             if event.name == "q":
                 if confirm_quit_via_keyboard():
                     print("quiting...")
                     exit(0)
-
-            #navigation
-            if event.name == "up":
-                if monster_selection_screen_parent_index <= 0:
-                    pass
                 else:
-                    monster_selection_screen_parent_index -= 1
-                default_update_monster_list_selection_screen_GUI()
-                print("up")
-            if event.name == "down":
-                if monster_selection_screen_parent_index >= len(list_of_monster_lists)-1:
-                    pass
-                else:
-                    monster_selection_screen_parent_index += 1
-                default_update_monster_list_selection_screen_GUI()
+                    default_update_monster_list_selection_screen_GUI()
 
-            if event.name == "left":
-                pass
-            if event.name == "right":
-                pass
+            if monster_selection_are_you_sure_menu_trigger_bool == False:
+                #navigation
+                if event.name == "up":
+                    if monster_selection_are_you_sure_menu_trigger_bool == False:
+                        if monster_selection_screen_parent_index <= 0:
+                            pass
+                        else:
+                            monster_selection_screen_parent_index -= 1
+                    default_update_monster_list_selection_screen_GUI()
+
+                if event.name == "down":
+                    if monster_selection_are_you_sure_menu_trigger_bool == False:
+                        if monster_selection_screen_parent_index >= len(list_of_monster_lists)-1:
+                            pass
+                        else:
+                            monster_selection_screen_parent_index += 1
+                    default_update_monster_list_selection_screen_GUI()
+
+                if event.name == "left":
+                    pass
+                if event.name == "right":
+                    if monster_selection_screen_parent_index == len(list_of_monster_lists)-1:
+                        pass
+                    else:
+                        monster_selection_are_you_sure_menu_trigger_bool = True
+                        default_update_monster_list_selection_screen_GUI()
+            elif monster_selection_are_you_sure_menu_trigger_bool == True:
+                if event.name == "left":
+                    monster_selection_are_you_sure_menu_trigger_bool = False
+                    default_update_monster_list_selection_screen_GUI()
+                if event.name == "right":
+                    monster_list_selection_screen_keep_going_bool = False
+                    return_value_monster_list = list_of_monster_lists[monster_selection_screen_parent_index]
+
+    print_2d_list_that_contains_dictionaries(
+        list_dict_variable=return_value_monster_list[1]
+    )
+    return return_value_monster_list[1]
