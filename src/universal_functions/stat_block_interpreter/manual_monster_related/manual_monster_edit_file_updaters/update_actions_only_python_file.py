@@ -37,7 +37,7 @@ def update_actions_only_python_file(
         actions_only_input_file_monster_dict)[SpreadsheetKeysEnums.ACTIONS.value]
 
     update_homebrew_monster_spreadsheet(
-        monster_dict=actions_only_input_file_monster_dict,
+        monster_dict=merged_monster_values,
         path_to_monsters_csv_file=path_to_monsters_csv_file,
         tab_amount=tab_amount,
     )
