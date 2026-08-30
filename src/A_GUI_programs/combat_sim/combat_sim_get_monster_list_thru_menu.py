@@ -75,7 +75,7 @@ def get_one_ancient_gold_dragon(
     ]
     return monster_list
 
-def get_technodrome_2nd_floor_west_enterance(
+def get_technodrome_2nd_floor_west_entrance(
     monsters_all_stats_homebrew_dict
 ):
     #TODO: make a macro sourcing for the code so i only have to write strings intead of createing temp vars
@@ -232,6 +232,12 @@ def combat_sim_get_monster_list_thru_menu(
             [
                 "one_ancient_gold_dragon",
                 get_one_ancient_gold_dragon(
+                    monsters_all_stats_homebrew_dict=monsters_all_stats_homebrew_dict
+                )
+            ],
+            [
+                "technodrome_2nd_floor_west_entrance",
+                get_technodrome_2nd_floor_west_entrance(
                     monsters_all_stats_homebrew_dict=monsters_all_stats_homebrew_dict
                 )
             ],
