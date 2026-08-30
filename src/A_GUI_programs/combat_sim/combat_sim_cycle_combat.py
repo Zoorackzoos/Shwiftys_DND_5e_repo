@@ -347,6 +347,9 @@ def combat_sim_cycle_combat(
     # Am i ever going to learn anything good out of my classes?
     damage_or_heal_integer_that_actually_a_string = ""
 
+    attack_selection_menu_bool = False
+    attack_selection_menu_index = 0
+
     def default_input_update_combat_sim_cycle_combat_interface():
         """
         basically feeds all the variables above into the update function.
@@ -366,7 +369,9 @@ def combat_sim_cycle_combat(
             performing_attack_bool=performing_attack_bool,
             performing_damage_bool=performing_damage_bool,
             performing_heal_bool=performing_heal_bool,
-            damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
+            damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string,
+            attack_selection_menu_bool=attack_selection_menu_bool,
+            attack_selection_menu_index=attack_selection_menu_index
         )
 
     # do this once with the starter indexes.
@@ -476,11 +481,7 @@ def combat_sim_cycle_combat(
                 elif keyboard.is_pressed("right"):
                     # monster does an attack
                     if npc_interaction_menu_index == 0:
-                        print("this hasn't been implmeneted yet sorry :-(")
-                        """
-                        performing_attack_bool = True
-                        default_input_update_combat_sim_cycle_combat_interface()
-                        """
+                        attack_selection_menu_bool = True
                     # monster takes damage
                     elif npc_interaction_menu_index == 1:
                         performing_damage_bool = True
