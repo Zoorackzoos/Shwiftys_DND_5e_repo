@@ -12,6 +12,23 @@ will not be placed here. they are in "spreadsheet_enums.py"
 """
 from enum import Enum
 
+class ActionKeyEnums(Enum):
+    NAME = "name"
+    ACTION_TYPE = "action_type"
+    ATTACK_TYPE = "attack_type"
+
+    # martial attacks only
+    HIT_MODIFIER = "hit_modifier"
+    # magic or whatever else only
+    SAVE_DC = "save_dc"
+    SAVE_STAT = "save_stat"
+
+    DAMAGE = "damage"
+    DAMAGE_TYPE = "damage_type"
+    RANGE = "range"
+    NOTES = "notes"
+
+
 class ActionTypeEnums(Enum):
     ACTION = "action"
     BONUS_ACTION = "bonus_action"
@@ -32,4 +49,21 @@ class AttackTypeEnums(Enum):
     RANGED_ATTACK = "ranged_attack"
     SAVING_THROW = "saving_throw"
     UTILITY = "utility"
-    AUTO_HIT = "auto_hit" # this is used for magic missle and it's dervatives
+    AUTO_HIT = "auto_hit" # this is used for magic missile and it's derivatives
+
+#TODO: think about how you structure your enums in this repo's directory.
+class DamageTypeEnums(Enum):
+    SLASHING = "slashing"
+    PIERCING = "piercing"
+    BLUDGEONING = "bludgeoning"
+    COLD = "cold"
+    POISON = "poison"
+    ACID = "acid"
+    PSYCHIC = "psychic"
+    FIRE = "fire"
+    NECROTIC = "necrotic"
+    RADIANT = "radiant"
+    FORCE = "force"
+    THUNDER = "thunder"
+    LIGHTNING = "lightning"
+    

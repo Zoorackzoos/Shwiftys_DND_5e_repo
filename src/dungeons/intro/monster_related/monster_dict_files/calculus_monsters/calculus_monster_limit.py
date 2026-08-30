@@ -3,7 +3,7 @@ from src.universal_functions.craft_cr_from_monster_stat_block import plug_monste
 from src.universal_functions.get_average_damage import get_average_damage
 from src.universal_functions.spreadsheet_stuff.spreadsheet_updaters.update_homebrew_monster_spreadsheet import \
     update_homebrew_monster_spreadsheet
-from universal_functions.vars.enums import spreadsheet_enums
+from universal_functions.enums import spreadsheet_enums
 from src.universal_functions.vars.get_stringified_list_of_enums import get_stringified_list_of_enums
 
 calculus_monster_limit_monster_dict = \

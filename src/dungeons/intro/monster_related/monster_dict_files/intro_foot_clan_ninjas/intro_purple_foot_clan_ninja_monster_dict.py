@@ -1,6 +1,6 @@
 # for the love of your life.
 from src.universal_functions.get_average_damage import get_average_damage
-from universal_functions.vars.enums import spreadsheet_enums
+from universal_functions.enums import spreadsheet_enums
 from src.universal_functions.vars.get_stringified_list_of_enums import get_stringified_list_of_enums
 
 

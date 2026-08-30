@@ -4,10 +4,10 @@ from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from universal_functions.display.print_2d_list_that_contains_dictionaries import \
     print_2d_list_that_contains_dictionaries
-from universal_functions.display.print_dictionary_nicely import print_dictionary_nicely
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
     get_rows_from_dict_on_param_type_and_string
-from universal_functions.vars.enums import spreadsheet_enums
+from universal_functions.enums import spreadsheet_enums
+
 
 def get_default_monster_list(
     monsters_all_stats_homebrew_dict

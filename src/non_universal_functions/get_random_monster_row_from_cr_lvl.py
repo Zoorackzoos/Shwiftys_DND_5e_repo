@@ -8,7 +8,7 @@ from src.universal_functions.spreadsheet_stuff.dict_based_database_interpretors.
     get_dict_from_csv_file
 from src.universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
     get_rows_from_dict_on_param_type_and_string
-from universal_functions.vars.enums import spreadsheet_enums
+from universal_functions.enums import spreadsheet_enums
 
 path_to_monsters_csv_file = "../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
 

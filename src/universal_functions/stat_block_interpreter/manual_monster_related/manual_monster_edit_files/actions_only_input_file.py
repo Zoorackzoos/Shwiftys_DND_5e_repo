@@ -55,41 +55,50 @@ the values between "name" and "actions" are:
         * recharge damage
         * limited use damage
         * bonus action damage
+
+    this uses enums in:
+    * spreadsheet_enums.py
+    * markdown_interpreter_related_enums.py
 """
-from universal_functions.vars.enums import spreadsheet_enums, markdown_interpeter_related_enums
+from universal_functions.enums import spreadsheet_enums, markdown_interpreter_related_enums
 
 actions_only_input_file_monster_dict = \
     {
         spreadsheet_enums.SpreadsheetKeysEnums.NAME.value :
             'Goblin',
-        "actions" :
+        spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value :
             [
                 {
-                    "name": "scimitar",
-                    "action_type": markdown_interpeter_related_enums.ActionTypeEnums.ACTION.value,
-                    "attack_type": markdown_interpeter_related_enums.AttackTypeEnums.MELEE_ATTACK.value,
-                    "hit_modifier": 4,
+                    markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
+                        "Scimitar",
+                    markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
+                        markdown_interpreter_related_enums.ActionTypeEnums.ACTION.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
+                        markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value:
+                        4,
+                    markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
+                        5,
+                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
+                        "1d6 + 2",
+                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
+                        markdown_interpreter_related_enums.DamageTypeEnums.SLASHING.value
                 },
                 {
-                    'name': 'action \\- test spark',
-                    'action_type': 'action',
-                    'attack_type': 'ranged_spell_attack',
-                    'hit_modifier': 4,
-                    'damage': '1d6 + 2',
-                    'damage_type': 'fire',
-                    'range': 60,
-                    'notes': 'Link in the action name should become plain text.'
-                 },
-                {
-                    'name': 'action \\- bad math shove',
-                    'action_type': 'bonus_action',
-                    'attack_type': 'saving_throw',
-                    'save_dc': 11,
-                    'save_stat': 'str',
-                    'damage': '1d4 \\- 1',
-                    'damage_type': 'bludgeoning',
-                    'range': 5,
-                    'notes': 'Negative constants should not scare the parser.'
-                 }
+                    markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
+                        "shortbow",
+                    markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
+                        markdown_interpreter_related_enums.ActionTypeEnums.ACTION.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
+                        markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value:
+                        4,
+                    markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
+                        80,
+                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
+                        "1d6 + 2",
+                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
+                        markdown_interpreter_related_enums.DamageTypeEnums.PIERCING.value
+                }
             ],
     }

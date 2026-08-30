@@ -34,7 +34,7 @@ class SpreadsheetKeysEnums(Enum):
     LANGUAGES = "Languages"
     ADDITIONAL = "Additional"
     AVERAGE_DAMAGE = "average_damage" # needed
-    ATTACK_MODIFIER = "attack_modifier" # needed
+    ATTACK_MODIFIER = "attack_modifier" # needed. also in "markdown_interpreter_related_enums.py"
     #everything bellow defaults in the crafter as 0 or "not"
     HAS_LEGENDARY_ACTION = "has_legendary_action"
     LEGENDARY_ACTION_DAMAGE = "legendary_action_damage"

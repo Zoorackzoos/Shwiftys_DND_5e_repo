@@ -11,7 +11,7 @@ from src.universal_functions.stat_block_interpreter.interpret_markdown_stat_bloc
     build_replacement_python_dictionary_file_text_from_monster_dict,
     infer_cr_helper_values_from_monster_dict,
 )
-from universal_functions.vars.enums import spreadsheet_enums
+from universal_functions.enums import spreadsheet_enums
 
 calculus_monster_polynomial_monster_dict = \
     {

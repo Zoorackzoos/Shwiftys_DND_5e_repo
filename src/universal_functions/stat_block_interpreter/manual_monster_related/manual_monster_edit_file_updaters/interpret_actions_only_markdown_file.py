@@ -37,7 +37,7 @@ from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_
     get_rows_from_dict_on_param_type_and_string
 from universal_functions.stat_block_interpreter.interpret_markdown_stat_block import \
     interpret_markdown_stat_block_into_python_file
-from universal_functions.vars.enums.spreadsheet_enums import SpreadsheetKeysEnums
+from universal_functions.enums.spreadsheet_enums import SpreadsheetKeysEnums
 from update_homebrew_monster_spreadsheet import update_homebrew_monster_spreadsheet
 
 actions_only_input_file_path = \

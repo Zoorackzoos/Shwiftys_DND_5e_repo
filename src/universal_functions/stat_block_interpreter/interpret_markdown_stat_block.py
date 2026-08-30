@@ -4,7 +4,7 @@ from pathlib import Path
 from src.universal_functions.craft_cr_from_monster_stat_block import (
     plug_monster_var_values_into_get_cr_from_monster,
 )
-from universal_functions.vars.enums import spreadsheet_enums
+from universal_functions.enums import spreadsheet_enums
 
 #This is referring to the headers in the markdown files
 KNOWN_TOP_LEVEL_SECTIONS = \

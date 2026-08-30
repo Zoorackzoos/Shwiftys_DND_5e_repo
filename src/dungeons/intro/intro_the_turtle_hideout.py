@@ -6,7 +6,7 @@ from src.universal_functions.get_encounter_difficulty.get_encounter_difficulty_f
 from src.universal_functions.get_xp_from_single_enemy_CR import get_xp_from_single_enemy_cr
 from src.universal_functions.spreadsheet_stuff.spreadsheet_updaters.update_encounter_feedback_spreadsheet import \
     update_encounter_feedback_spreadsheet
-from universal_functions.vars.enums.spreadsheet_enums import SpreadsheetKeysEnums
+from universal_functions.enums.spreadsheet_enums import SpreadsheetKeysEnums
 
 intro_the_turtle_hideout_path_to_monster_csv_file = "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
 

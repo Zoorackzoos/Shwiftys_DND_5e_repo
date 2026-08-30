@@ -38,7 +38,7 @@ from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_
     get_dict_from_csv_file
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
     get_rows_from_dict_on_param_type_and_string
-from universal_functions.vars.enums.spreadsheet_enums import SpreadsheetKeysEnums
+from universal_functions.enums.spreadsheet_enums import SpreadsheetKeysEnums
 
 def get_default_monster_list(
         monsters_all_stats_homebrew_dict

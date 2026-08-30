@@ -2,7 +2,7 @@
 # D&D 5E Monster CR Calculator
 # Based on the 2014 DMG monster creation math.
 # =====================================================
-from universal_functions.vars.enums import spreadsheet_enums
+from universal_functions.enums import spreadsheet_enums
 
 CR_TABLE = [
     {"CR": 0, "hp_min": 1, "hp_max": 6, "dpr_min": 0, "dpr_max": 1, "ac": 13, "attack_bonus": 3, "save_dc": 13},

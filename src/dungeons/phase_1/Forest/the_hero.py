@@ -2,7 +2,7 @@ from src.dungeons.phase_1.Michelangelo.the_dmv import path_to_monsters_csv_file
 from src.universal_functions.get_cr_from_precise_monster_search import get_cr_from_precise_monster_search
 from src.universal_functions.get_encounter_difficulty.get_encounter_difficulty_from_cr_values import \
     get_encounter_difficulty_from_cr_values
-from universal_functions.vars.enums import spreadsheet_enums
+from universal_functions.enums import spreadsheet_enums
 from update_encounter_feedback_spreadsheet import update_encounter_feedback_spreadsheet
 
 path_to_monsters_csv_file = \

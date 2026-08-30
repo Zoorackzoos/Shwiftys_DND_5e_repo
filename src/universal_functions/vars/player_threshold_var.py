@@ -1,3 +1,7 @@
+"""
+This is used to predict difficulty.
+the final number of a encounter goes against a combo of PC threshold numbers.
+"""
 player_threshold_var = \
 {
     1:  {"easy": 25,   "medium": 50,   "hard": 75,   "deadly": 100},
