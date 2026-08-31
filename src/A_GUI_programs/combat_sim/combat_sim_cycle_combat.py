@@ -43,7 +43,6 @@ def detect_if_NPC_and_display_monster_if_yes(
         selected_npc_index,
         npc_interaction_menu_bool,
         npc_interaction_menu_index,
-        performing_attack_bool,
         performing_damage_bool,
         performing_heal_bool,
         damage_or_heal_integer_that_actually_a_string,
@@ -80,9 +79,9 @@ def detect_if_NPC_and_display_monster_if_yes(
                     for string in interaction_option_menu_string_list:
                         if gui_logic_interaction_menu_index == npc_interaction_menu_index:
                             print("\t\t\t →", string)
-                            if performing_attack_bool == True:
+                            if attack_selection_menu_bool == True:
                                 print("\t\t\t\t →",
-                                      "detect_if_NPC_and_display_monster_if_yes: performing_attack_bool == True")
+                                      "detect_if_NPC_and_display_monster_if_yes: attack_selection_menu_bool == True")
                             elif performing_damage_bool == True:
                                 print("\t\t\t\t →", "how much damage does", monster_dict["Name"], "take?")
                                 print("\t\t\t\t →", damage_or_heal_integer_that_actually_a_string)
@@ -111,7 +110,6 @@ def update_combat_sim_cycle_combat_interface(
         selected_pc_bool,
         npc_interaction_menu_bool,
         npc_interaction_menu_index,
-        performing_attack_bool,
         performing_damage_bool,
         performing_heal_bool,
         damage_or_heal_integer_that_actually_a_string,
@@ -144,14 +142,6 @@ def update_combat_sim_cycle_combat_interface(
         tells the GUI you've selected a specific NPC, and now you want to choose which interaction to do on it.
     :param npc_interaction_menu_index:
         tells the GUI where you are in the interaction menu.
-    :param performing_attack_bool:
-        tells the GUI you want the monster to attack
-        from there you can:
-        * select the monster's attack action
-        * whether you have a action left
-        * depending on the action,
-            * it tells you what it got to hit and what damage
-            * it tells you what the attacked person must get as a save and the damage.
     :param performing_damage_bool:
         tells the GUI and the logic minorly that the user is inputting a integer that is the damage
          being dealt to the monster
@@ -160,6 +150,14 @@ def update_combat_sim_cycle_combat_interface(
     :param damage_or_heal_integer_that_actually_a_string:
         this integer holds the damage a monster is dealt or the health a monster is healed.
         this is only a positive number. heal or hurt is determined by the bools.
+    :param attack_selection_menu_bool
+     tells the GUI you want the monster to attack
+        from there you can:
+        * select the monster's attack action
+        * whether you have a action left
+        * depending on the action,
+            * it tells you what it got to hit and what damage
+            * it tells you what the attacked person must get as a save and the damage.
     :return:
         returns nothing. this is a GUI printer.
     """
@@ -190,7 +188,6 @@ def update_combat_sim_cycle_combat_interface(
             selected_npc_index=selected_npc_index,
             npc_interaction_menu_bool=npc_interaction_menu_bool,
             npc_interaction_menu_index=npc_interaction_menu_index,
-            performing_attack_bool=performing_attack_bool,
             performing_damage_bool=performing_damage_bool,
             performing_heal_bool=performing_heal_bool,
             damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string,
@@ -317,7 +314,6 @@ def combat_sim_cycle_combat(
     npc_interaction_menu_bool = False
     npc_interaction_menu_index = 0
 
-    performing_attack_bool = False
     performing_damage_bool = False
     performing_heal_bool = False
 
@@ -343,7 +339,6 @@ def combat_sim_cycle_combat(
             selected_pc_bool=selected_pc_bool,
             npc_interaction_menu_bool=npc_interaction_menu_bool,
             npc_interaction_menu_index=npc_interaction_menu_index,
-            performing_attack_bool=performing_attack_bool,
             performing_damage_bool=performing_damage_bool,
             performing_heal_bool=performing_heal_bool,
             damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string,
@@ -380,7 +375,7 @@ def combat_sim_cycle_combat(
 
             # the parent menu. where you select either PCs or NPCs to go into their children menus.
             if selected_npc_bool == False and npc_interaction_menu_bool == False \
-                    and performing_attack_bool == False and performing_damage_bool == False and performing_heal_bool == False:
+                    and attack_selection_menu_bool == False and performing_damage_bool == False and performing_heal_bool == False:
 
                 # navigation. no actions here.
                 if keyboard.is_pressed("up"):
@@ -405,7 +400,7 @@ def combat_sim_cycle_combat(
 
             # the child menu where you select monsters to do interaction actions on them.
             elif selected_npc_bool == True and npc_interaction_menu_bool == False \
-                    and performing_attack_bool == False and performing_damage_bool == False and performing_heal_bool == False:
+                    and attack_selection_menu_bool == False and performing_damage_bool == False and performing_heal_bool == False:
                 # basically the same functionality in the if statement
                 # except instead of in the parent NPC or PC menu
                 # you're in the NPC's child monster menu.
@@ -436,7 +431,7 @@ def combat_sim_cycle_combat(
 
             # child-child menu. where you actually do the attack, take damage or heal actions.
             elif selected_npc_bool == False and npc_interaction_menu_bool == True \
-                    and performing_attack_bool == False and performing_damage_bool == False and performing_heal_bool == False:
+                    and attack_selection_menu_bool == False and performing_damage_bool == False and performing_heal_bool == False:
 
                 # navigation
                 if keyboard.is_pressed("up"):
@@ -471,7 +466,7 @@ def combat_sim_cycle_combat(
             elif performing_damage_bool == True or performing_heal_bool == True:
                 # navigation
                 if keyboard.is_pressed("left"):
-                    performing_attack_bool = False
+                    attack_selection_menu_bool = False
                     performing_damage_bool = False
                     performing_heal_bool = False
                     default_input_update_combat_sim_cycle_combat_interface()
