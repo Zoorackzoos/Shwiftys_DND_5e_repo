@@ -597,9 +597,7 @@ def combat_sim_cycle_combat(
                 if keyboard.is_pressed("down"):
                     number_of_actions_monster_can_preform_that_include_traits_and_passives = \
                         list_that_contains_dictionaries_that_are_monsters[selected_npc_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value]
-                    for action in number_of_actions_monster_can_preform_that_include_traits_and_passives:
-                        print(action)
-                        print()
+                    print(number_of_actions_monster_can_preform_that_include_traits_and_passives)
 
                     """
                     DANGER
