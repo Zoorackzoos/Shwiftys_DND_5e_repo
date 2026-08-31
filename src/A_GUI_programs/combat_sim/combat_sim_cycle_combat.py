@@ -112,9 +112,7 @@ def update_combat_sim_cycle_combat_interface(
         performing_attack_bool,
         performing_damage_bool,
         performing_heal_bool,
-        damage_or_heal_integer_that_actually_a_string,
-        attack_selection_menu_bool,
-        attack_selection_menu_index
+        damage_or_heal_integer_that_actually_a_string
 ):
     """
     This is also called "the update function" in other comment.s
@@ -180,20 +178,6 @@ def update_combat_sim_cycle_combat_interface(
 """
     print(update_combat_sim_cycle_combat_interface_start)
 
-    def default_detect_if_NPC_and_display_monster_if_yes():
-        detect_if_NPC_and_display_monster_if_yes(
-            sub_list=sub_list,
-            list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
-            selected_npc_bool=selected_npc_bool,
-            selected_npc_index=selected_npc_index,
-            npc_interaction_menu_bool=npc_interaction_menu_bool,
-            npc_interaction_menu_index=npc_interaction_menu_index,
-            performing_attack_bool=performing_attack_bool,
-            performing_damage_bool=performing_damage_bool,
-            performing_heal_bool=performing_heal_bool,
-            damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
-        )
-
     # printing the NPCs and PCs
     for sub_list in sorted_initiative_rolls_list:
         # i'm comparing the names because list versus list can be fucky.
@@ -207,11 +191,33 @@ def update_combat_sim_cycle_combat_interface(
                 print("\t\t  ","no pc interactions yet sorry >_<")
             else:
                 print("\t!→", sub_list[0], ":", sub_list[1])
-
+                detect_if_NPC_and_display_monster_if_yes(
+                    sub_list=sub_list,
+                    list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
+                    selected_npc_bool=selected_npc_bool,
+                    selected_npc_index=selected_npc_index,
+                    npc_interaction_menu_bool=npc_interaction_menu_bool,
+                    npc_interaction_menu_index=npc_interaction_menu_index,
+                    performing_attack_bool=performing_attack_bool,
+                    performing_damage_bool=performing_damage_bool,
+                    performing_heal_bool=performing_heal_bool,
+                    damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
+                )
         # is a system selected initiative roll
         elif sub_list[0] == system_selected_initiative_roll[0]:
             print("\t! ", sub_list[0], ":", sub_list[1])
-            default_detect_if_NPC_and_display_monster_if_yes()
+            detect_if_NPC_and_display_monster_if_yes(
+                sub_list=sub_list,
+                list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
+                selected_npc_bool=selected_npc_bool,
+                selected_npc_index=selected_npc_index,
+                npc_interaction_menu_bool=npc_interaction_menu_bool,
+                npc_interaction_menu_index=npc_interaction_menu_index,
+                performing_attack_bool=performing_attack_bool,
+                performing_damage_bool=performing_damage_bool,
+                performing_heal_bool=performing_heal_bool,
+                damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
+            )
         # is a user selected initiative roll
         elif sub_list[0] == user_selected_initiative_roll[0]:
             if selected_pc_bool == True:
@@ -219,10 +225,32 @@ def update_combat_sim_cycle_combat_interface(
                 print("\t\t  ", "no pc interactions yet sorry >_<")
             else:
                 print("\t →", sub_list[0], ":", sub_list[1])
-                default_detect_if_NPC_and_display_monster_if_yes()
+                detect_if_NPC_and_display_monster_if_yes(
+                    sub_list=sub_list,
+                    list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
+                    selected_npc_bool=selected_npc_bool,
+                    selected_npc_index=selected_npc_index,
+                    npc_interaction_menu_bool=npc_interaction_menu_bool,
+                    npc_interaction_menu_index=npc_interaction_menu_index,
+                    performing_attack_bool=performing_attack_bool,
+                    performing_damage_bool=performing_damage_bool,
+                    performing_heal_bool=performing_heal_bool,
+                    damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
+                )
         else:
             print("\t  ", sub_list[0], ":", sub_list[1])
-            default_detect_if_NPC_and_display_monster_if_yes()
+            detect_if_NPC_and_display_monster_if_yes(
+                sub_list=sub_list,
+                list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
+                selected_npc_bool=selected_npc_bool,
+                selected_npc_index=selected_npc_index,
+                npc_interaction_menu_bool=npc_interaction_menu_bool,
+                npc_interaction_menu_index=npc_interaction_menu_index,
+                performing_attack_bool=performing_attack_bool,
+                performing_damage_bool=performing_damage_bool,
+                performing_heal_bool=performing_heal_bool,
+                damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
+            )
 
 
 def combat_sim_cycle_combat(
