@@ -1,3 +1,4 @@
+import ast
 import contextlib
 import datetime
 from pathlib import Path
@@ -58,6 +59,8 @@ def detect_if_NPC_and_display_monster_if_yes(
         format_header, format_row = _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters)
         print("\t\t  ", format_header())
 
+        # printing the selected monster and it's buddies.
+        # but NOT the available actions.
         if selected_npc_bool:
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
@@ -396,6 +399,12 @@ def combat_sim_cycle_combat(
                 selected_pc_bool = False
                 default_input_update_combat_sim_cycle_combat_interface()
 
+            """
+            i had a conniption fit here trying to diagnose a bug.
+            selected_npc_bool is only for when you're in the NPC selection menu
+            but once you're in the NPC ** interaction ** menu the npc_interaction_menu_bool has to stay. 
+                from there the secular bools can be turned on / off.
+            """
             # the parent menu. where you select either PCs or NPCs to go into their children menus.
             if (selected_npc_bool == False and
                 npc_interaction_menu_bool == False and
@@ -470,7 +479,7 @@ def combat_sim_cycle_combat(
                     npc_interaction_menu_index = 0
                     default_input_update_combat_sim_cycle_combat_interface()
 
-            # child-child menu. attack / heal / damage seleciton menu
+            # child-child menu. attack / heal / damage selection menu
             elif (selected_npc_bool == False and
                   npc_interaction_menu_bool == True and
                   attack_selection_menu_bool == False and
@@ -490,8 +499,8 @@ def combat_sim_cycle_combat(
                 # actions
                 elif keyboard.is_pressed("left"):
                     # go back to the NPC selection menu
-                    selected_npc_bool = False
-                    npc_interaction_menu_bool = True
+                    selected_npc_bool = True
+                    npc_interaction_menu_bool = False
                     attack_selection_menu_bool = False
                     performing_damage_bool = False
                     performing_heal_bool = False
@@ -502,14 +511,15 @@ def combat_sim_cycle_combat(
                     # monster does an attack
                     if npc_interaction_menu_index == 0:
                         selected_npc_bool = False
-                        npc_interaction_menu_bool = False
+                        npc_interaction_menu_bool = True
                         attack_selection_menu_bool = True
                         performing_damage_bool = False
                         performing_heal_bool = False
+                        default_input_update_combat_sim_cycle_combat_interface()
                     # monster takes damage
                     elif npc_interaction_menu_index == 1:
                         selected_npc_bool = False
-                        npc_interaction_menu_bool = False
+                        npc_interaction_menu_bool = True
                         attack_selection_menu_bool = False
                         performing_damage_bool = True
                         performing_heal_bool = False
@@ -517,14 +527,14 @@ def combat_sim_cycle_combat(
                     # monster heals health
                     elif npc_interaction_menu_index == 2:
                         selected_npc_bool = False
-                        npc_interaction_menu_bool = False
+                        npc_interaction_menu_bool = True
                         attack_selection_menu_bool = False
                         performing_damage_bool = False
                         performing_heal_bool = True
                         default_input_update_combat_sim_cycle_combat_interface()
 
             elif (selected_npc_bool == False and
-                  npc_interaction_menu_bool == False and
+                  npc_interaction_menu_bool == True and
                   attack_selection_menu_bool == False and
                   (performing_damage_bool == True or
                   performing_heal_bool == True)):
@@ -532,6 +542,8 @@ def combat_sim_cycle_combat(
 
                 # navigation
                 if keyboard.is_pressed("left"):
+                    selected_npc_bool = False
+                    npc_interaction_menu_bool = True
                     attack_selection_menu_bool = False
                     performing_damage_bool = False
                     performing_heal_bool = False
@@ -585,35 +597,34 @@ def combat_sim_cycle_combat(
 
             # this is where you select a attack
             elif (selected_npc_bool == False and
-                  npc_interaction_menu_bool == False and
+                  npc_interaction_menu_bool == True and
                   attack_selection_menu_bool == True and
                   performing_damage_bool == False and
                   performing_heal_bool == False):
+
+                selected_monster_actions = \
+                    ast.literal_eval(
+                        list_that_contains_dictionaries_that_are_monsters[selected_npc_index][
+                            spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value]
+                    )
 
                 # navigation
                 if keyboard.is_pressed("up"):
                     if attack_selection_menu_index > 0:
                         attack_selection_menu_index -= 1
+                        default_input_update_combat_sim_cycle_combat_interface()
                 if keyboard.is_pressed("down"):
-                    number_of_actions_monster_can_preform_that_include_traits_and_passives = \
-                        list_that_contains_dictionaries_that_are_monsters[selected_npc_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value]
-                    print(number_of_actions_monster_can_preform_that_include_traits_and_passives)
-
-                    """
-                    DANGER
-                    the action list dictionary is a string
-                    you need a "list of dictionaries that ocntains actions" parser
-                    """
-
-                    """
-                    if (attack_selection_menu_index 
-                        <
-                        len(monster_dict))
+                    if (attack_selection_menu_index < len(selected_monster_actions)):
                         attack_selection_menu_index += 1
-                    """
+                        default_input_update_combat_sim_cycle_combat_interface()
 
                 if keyboard.is_pressed("left"):
-                    pass
+                    selected_npc_bool = False
+                    npc_interaction_menu_bool = True
+                    attack_selection_menu_bool = False
+                    performing_damage_bool = False
+                    performing_heal_bool = False
+                    default_input_update_combat_sim_cycle_combat_interface()
                 if keyboard.is_pressed("right"):
                     pass
 

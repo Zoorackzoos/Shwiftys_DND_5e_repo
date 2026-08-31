@@ -46,6 +46,11 @@ def get_list_of_dictionaries_that_contain_actions(
         -chat gpt
     thanks chat 🥀🥀🥀
 
+    i'll never call this function but i will keep this around just in case i need to add a new feature
+    for whatever reason :-/
+    like the same reason dads keep random tool objects
+    #TODO: kill this funciton.
+
     :param incoming_list_of_dictionaries_that_contain_actions_string:
     :param tab_amount:
     :return:
