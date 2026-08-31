@@ -1,6 +1,9 @@
+import ast
+
+
 def get_list_of_dictionaries_that_contain_actions(
         incoming_list_of_dictionaries_that_contain_actions_string,
-        tab_amount="\t"
+        tab_amount=""
 ):
     """
     in order to properly get the stored values of a monster's actions
@@ -39,19 +42,37 @@ def get_list_of_dictionaries_that_contain_actions(
         to the.... non string versoin of that.
         it returns the list that contins dicitonaries
 
+    "have you tried ast.literal_eval ?"
+        -chat gpt
+    thanks chat 🥀🥀🥀
+
     :param incoming_list_of_dictionaries_that_contain_actions_string:
     :param tab_amount:
     :return:
     """
-    print(tab_amount,"get_list_of_dictionaries_that_contain_actions")
-    tab_amount += "\t"
+    print(
+        tab_amount,
+        "get_list_of_dictionaries_that_contain_actions"
+    )
 
-    # the return value 🥀🥀🥀
     return_list_of_dicts_that_contain_actions = \
-        [
+        ast.literal_eval(
+            incoming_list_of_dictionaries_that_contain_actions_string
+        )
 
-        ]
+    return return_list_of_dicts_that_contain_actions
 
-    for char in incoming_list_of_dictionaries_that_contain_actions_string:
-        #wait a minute
+if __name__ == "__main__":
+    # "Goblin" actions
+    example_string = "[{'name': 'Scimitar', 'action_type': 'action', 'attack_type': 'melee_attack', 'hit_modifier': 4, 'range': 5, 'damage': '1d6 + 2', 'damage_type': 'slashing'}, {'name': 'shortbow', 'action_type': 'action', 'attack_type': 'ranged_attack', 'hit_modifier': 4, 'range': 80, 'damage': '1d6 + 2', 'damage_type': 'piercing'}]"
 
+    print(type(example_string))
+    print(example_string)
+
+    print()
+
+    example_string_put_thru_function = get_list_of_dictionaries_that_contain_actions(
+                    incoming_list_of_dictionaries_that_contain_actions_string=example_string
+                )
+    print(type(example_string_put_thru_function))
+    print(example_string_put_thru_function)
