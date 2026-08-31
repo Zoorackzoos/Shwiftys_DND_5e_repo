@@ -38,6 +38,32 @@ def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monste
 
     return format_header, format_row
 
+def _build_action_row_formatter(actions_list):
+    """
+    Scans all action dicts once and returns a function that formats a single
+    action dict into an aligned
+    "name : action_type : attack_type : hit_modifier : range : damage : damage_type"
+    row, padded to the widest value seen in each column.
+
+    claude made this
+    """
+    columns = ["name", "action_type", "attack_type", "hit_modifier", "range", "damage", "damage_type"]
+
+    widths = {}
+    for col in columns:
+        max_width = len(col)
+        for action in actions_list:
+            max_width = max(max_width, len(str(action[col])))
+        widths[col] = max_width
+
+    def format_header():
+        return " : ".join(f"{col:<{widths[col]}}" for col in columns)
+
+    def format_row(action):
+        return " : ".join(f"{str(action[col]):<{widths[col]}}" for col in columns)
+
+    return format_header, format_row
+
 def detect_if_NPC_and_display_monster_if_yes(
         sub_list,
         list_that_contains_dictionaries_that_are_monsters,
@@ -53,7 +79,20 @@ def detect_if_NPC_and_display_monster_if_yes(
 ):
     """
     displays good or evil NPC monsters.
-    claude updated this
+    claude updated this, it was only to make things like this:
+        ```
+        name : action_type : attack_type : hit_modifier : range : damage : damage_type
+        Scimitar : action : melee_attack : 4 : 5 : 1d6 + 2 : slashing
+        shortbow : action : ranged_attack : 4 : 80 : 1d6 + 2 : piercing
+        ```
+    into this:
+        ```
+        name     : action_type : attack_type   : hit_modifier : range : damage  : damage_type
+        Scimitar : action      : melee_attack  : 4            : 5     : 1d6 + 2 : slashing
+        shortbow : action      : ranged_attack : 4            : 80    : 1d6 + 2 : piercing
+        ```
+    both for the monsters and the actions dictionaries.
+        better than codex 😏
     """
     if sub_list[0].lower() == "evil" or sub_list[0].lower() == "good":
         format_header, format_row = _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters)
@@ -85,12 +124,14 @@ def detect_if_NPC_and_display_monster_if_yes(
                             print("\t\t\t →", string)
                             if attack_selection_menu_bool == True:
                                 temp_action_index = 0
-                                print("\t\t\t\t  ","name",":","action_type",":","attack_type",":","hit_modifier",":","range",":","damage",":","damage_type")
-                                for action in ast.literal_eval(list_that_contains_dictionaries_that_are_monsters[monster_dict_index]["actions"]):
-                                    if temp_action_index == attack_selection_menu_index:
-                                        print("\t\t\t\t →",action["name"],":",action["action_type"],":",action['attack_type'],":",action["hit_modifier"],":",action["range"],":",action["damage"],":",action["damage_type"])
-                                    else:
-                                        print("\t\t\t\t  ",action["name"],":",action["action_type"],":",action['attack_type'],":",action["hit_modifier"],":",action["range"],":",action["damage"],":",action["damage_type"])
+                                actions_list = ast.literal_eval(
+                                    list_that_contains_dictionaries_that_are_monsters[monster_dict_index]["actions"]
+                                )
+                                action_format_header, action_format_row = _build_action_row_formatter(actions_list)
+                                print("\t\t\t\t  ", action_format_header())
+                                for action in actions_list:
+                                    marker = "\t\t\t\t →" if temp_action_index == attack_selection_menu_index else "\t\t\t\t  "
+                                    print(marker, action_format_row(action))
                                     temp_action_index += 1
                             elif performing_damage_bool == True:
                                 print("\t\t\t\t →", "how much damage does", monster_dict["Name"], "take?")
