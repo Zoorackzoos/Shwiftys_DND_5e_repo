@@ -84,8 +84,14 @@ def detect_if_NPC_and_display_monster_if_yes(
                         if gui_logic_interaction_menu_index == npc_interaction_menu_index:
                             print("\t\t\t →", string)
                             if attack_selection_menu_bool == True:
-                                print("\t\t\t\t →",
-                                      "detect_if_NPC_and_display_monster_if_yes: attack_selection_menu_bool == True")
+                                temp_action_index = 0
+                                print("\t\t\t\t  ","name",":","action_type",":","attack_type",":","hit_modifier",":","range",":","damage",":","damage_type")
+                                for action in ast.literal_eval(list_that_contains_dictionaries_that_are_monsters[monster_dict_index]["actions"]):
+                                    if temp_action_index == attack_selection_menu_index:
+                                        print("\t\t\t\t →",action["name"],":",action["action_type"],":",action['attack_type'],":",action["hit_modifier"],":",action["range"],":",action["damage"],":",action["damage_type"])
+                                    else:
+                                        print("\t\t\t\t  ",action["name"],":",action["action_type"],":",action['attack_type'],":",action["hit_modifier"],":",action["range"],":",action["damage"],":",action["damage_type"])
+                                    temp_action_index += 1
                             elif performing_damage_bool == True:
                                 print("\t\t\t\t →", "how much damage does", monster_dict["Name"], "take?")
                                 print("\t\t\t\t →", damage_or_heal_integer_that_actually_a_string)
@@ -614,7 +620,7 @@ def combat_sim_cycle_combat(
                         attack_selection_menu_index -= 1
                         default_input_update_combat_sim_cycle_combat_interface()
                 if keyboard.is_pressed("down"):
-                    if (attack_selection_menu_index < len(selected_monster_actions)):
+                    if attack_selection_menu_index < len(selected_monster_actions):
                         attack_selection_menu_index += 1
                         default_input_update_combat_sim_cycle_combat_interface()
 
