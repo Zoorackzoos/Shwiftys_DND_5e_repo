@@ -167,9 +167,43 @@ def detect_if_NPC_and_display_monster_if_yes(
 
                                                     print("\t\t\t\t\t  ", "chance to hit =", chance_to_hit)
                                                     print("\t\t\t\t\t  ", "damage =", damage)
+                                                    print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
+                                                elif ( action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                       ==
+                                                       markdown_interpreter_related_enums.AttackTypeEnums.SAVING_THROW.value ):
+                                                    print("\t\t\t\t\t  ", "save_stat =",action[markdown_interpreter_related_enums.ActionKeyEnums.SAVE_STAT.value])
+                                                    print("\t\t\t\t\t  ", "save_dc =",action[markdown_interpreter_related_enums.ActionKeyEnums.SAVE_DC.value])
+                                                    print("\t\t\t\t\t  ", "damage =",get_damage
+                                                        (
+                                                            damage_dice=get_parsed_dict_from_dice_string
+                                                                (
+                                                                    dice_string=action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
+                                                                )
+                                                        )
+                                                    )
+                                                    print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
+                                                elif (action[
+                                                          markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                      ==
+                                                      markdown_interpreter_related_enums.AttackTypeEnums.AUTO_HIT.value):
+                                                    print("\t\t\t\t\t  ","This is a auto-hit attack so it just hits it's target")
+                                                    print("\t\t\t\t\t  ", "damage =", get_damage
+                                                        (
+                                                            damage_dice=get_parsed_dict_from_dice_string
+                                                                (
+                                                                    dice_string=action[
+                                                                        markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
+                                                                )
+                                                        )
+                                                    )
+                                                    print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
+                                                elif (action[
+                                                          markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                      ==
+                                                      markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value):
+                                                    print("\t\t\t\t\t  ","This is a utility, AKA aa trait. so there's no attack to execute.")
                                                 else:
-                                                    print(
-                                                        "DEBUG: detect_if_NPC_and_display_monster_if_yes: no other attacks implmeented yet. crying and pissing and shidding commencing.")
+                                                    print("\t\t\t\t\t  ","The system cannot identify the attack_type this action has.")
                                         else:
                                             print("\t\t\t\t  ", action_format_row(action))
                                         temp_action_index += 1
