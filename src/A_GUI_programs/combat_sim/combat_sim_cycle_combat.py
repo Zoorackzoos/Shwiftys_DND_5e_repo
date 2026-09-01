@@ -2,6 +2,7 @@ import ast
 import contextlib
 import datetime
 from pathlib import Path
+from pickle import EMPTY_LIST
 
 import keyboard
 
@@ -139,30 +140,38 @@ def detect_if_NPC_and_display_monster_if_yes(
                                     action_format_header, action_format_row = _build_action_row_formatter(actions_list)
                                     print("\t\t\t\t  ", action_format_header())
                                     for action in actions_list:
-                                        #TODO: refactor this tiny if statement so the big one right next to it consumes it.
-                                        marker = "\t\t\t\t →" if temp_action_index == attack_selection_menu_index else "\t\t\t\t  "
-                                        print(marker, action_format_row(action))
-                                        if executed_attack_bool == True and temp_action_index == attack_selection_menu_index:
+                                        #marker = "\t\t\t\t →" if temp_action_index == attack_selection_menu_index else "\t\t\t\t  "
+                                        #print(marker, action_format_row(action))
+                                        if temp_action_index == attack_selection_menu_index:
+                                            print("\t\t\t\t →",action_format_row(action))
+                                            if executed_attack_bool == True:
 
-                                            # it's a martial attack. so like melee or ranged
-                                            if ((action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                                                ==
-                                                markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value)
-                                                or
-                                                (action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                                                 ==
-                                                 markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value)):
+                                                # it's a martial attack. so like melee or ranged
+                                                if ((action[
+                                                         markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                     ==
+                                                     markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value)
+                                                        or
+                                                        (action[
+                                                             markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                         ==
+                                                         markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value)):
 
-                                                # pass a simple string to int conversion, into a funciton. to get the chance to hit
-                                                chance_to_hit = get_chance_to_hit(hit_modifier=int(action[markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value]))
-                                                parsed_damage_dice_dict = get_parsed_dict_from_dice_string(dice_string=action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value])
-                                                damage = get_damage(damage_dice=parsed_damage_dice_dict)
+                                                    # pass a simple string to int conversion, into a funciton. to get the chance to hit
+                                                    chance_to_hit = get_chance_to_hit(hit_modifier=int(action[
+                                                                                                           markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value]))
+                                                    parsed_damage_dice_dict = get_parsed_dict_from_dice_string(
+                                                        dice_string=action[
+                                                            markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value])
+                                                    damage = get_damage(damage_dice=parsed_damage_dice_dict)
 
-                                                print("\t\t\t\t\t  ","chance to hit =",chance_to_hit)
-                                                print("\t\t\t\t\t  ","damage =",damage)
-                                            else:
-                                                print("DEBUG: detect_if_NPC_and_display_monster_if_yes: no other attacks implmeented yet. crying and pissing and shidding commencing.")
-                                                exit(999)
+                                                    print("\t\t\t\t\t  ", "chance to hit =", chance_to_hit)
+                                                    print("\t\t\t\t\t  ", "damage =", damage)
+                                                else:
+                                                    print(
+                                                        "DEBUG: detect_if_NPC_and_display_monster_if_yes: no other attacks implmeented yet. crying and pissing and shidding commencing.")
+                                        else:
+                                            print("\t\t\t\t  ", action_format_row(action))
                                         temp_action_index += 1
                             elif performing_damage_bool == True:
                                 print("\t\t\t\t →", "how much damage does", monster_dict["Name"], "take?")
@@ -690,8 +699,11 @@ def combat_sim_cycle_combat(
 
                 no_actions_present_bool = False
 
+                selected_monster_actions = []
+
                 if (list_that_contains_dictionaries_that_are_monsters[selected_npc_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value] != None and
-                    list_that_contains_dictionaries_that_are_monsters[selected_npc_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value] != ""):
+                    list_that_contains_dictionaries_that_are_monsters[selected_npc_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value] != "" and
+                    list_that_contains_dictionaries_that_are_monsters[selected_npc_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value] is not EMPTY_LIST):
                     selected_monster_actions = \
                         ast.literal_eval(
                             list_that_contains_dictionaries_that_are_monsters[selected_npc_index][
@@ -714,7 +726,7 @@ def combat_sim_cycle_combat(
                         pass
                     else:
                         executed_attack_bool = False
-                        if attack_selection_menu_index < len(selected_monster_actions):
+                        if attack_selection_menu_index < len(selected_monster_actions)-1:
                             attack_selection_menu_index += 1
                             default_input_update_combat_sim_cycle_combat_interface()
 

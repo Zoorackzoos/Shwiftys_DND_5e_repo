@@ -6,7 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/universal_functions/spreadsheet_stuff/spreadsheet_updaters" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="~\Desktop\code_files\0 perssonal\python_projects\DND_5E_CR_versus_player_calculator\.venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.14 (DND_5E_CR_versus_player_calculator) (6)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
