@@ -65,21 +65,15 @@ from universal_functions.enums import spreadsheet_enums, markdown_interpreter_re
 actions_only_input_file_monster_dict = \
     {
         spreadsheet_enums.SpreadsheetKeysEnums.NAME.value :
-            'Misc. Creature, Giant Rat',
+            'Dragon, Chromatic, Black, Young',
         spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value :
             [
                 #------------------------ TRAITS START -----------------------
                 {
                     markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
-                        "Keen Smell",
+                        "Amphibious",
                     markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
-                        "The rat has advantage on Wisdom (Perception) checks that rely on smell."
-                },
-                {
-                    markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
-                        "Pack Tactics",
-                    markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
-                        "The rat has advantage on an attack roll against a creature if at least one of the rat's allies is within 5 ft. of the creature and the ally isn't incapacitated."
+                        "The dragon can breathe air and water."
                 },
                 # ------------------------ TRAITS END -----------------------
                 # ----------------------- ATTACK START ----------------
@@ -91,18 +85,52 @@ actions_only_input_file_monster_dict = \
                     markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
                         markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value:
-                        4,
+                        7,
                     markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
-                        5,
+                        10,
                     markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
-                        "1d4 + 2",
+                        "2d10 + 1d8 + 4",
                     markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
                         markdown_interpreter_related_enums.DamageTypeEnums.PIERCING.value,
                 },
+                {
+                    markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
+                        "Claw",
+                    markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
+                        markdown_interpreter_related_enums.ActionTypeEnums.ACTION.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
+                        markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value:
+                        7,
+                    markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
+                        5,
+                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
+                        "2d6 + 4",
+                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
+                        markdown_interpreter_related_enums.DamageTypeEnums.SLASHING.value,
+                },
+                {
+                    markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
+                        "Acid Breath",
+                    markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
+                        markdown_interpreter_related_enums.ActionTypeEnums.RECHARGEABLE_ACTION.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
+                        markdown_interpreter_related_enums.AttackTypeEnums.SAVING_THROW.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.SAVE_STAT.value:
+                        spreadsheet_enums.SavingThrowsEnums.DEX.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.SAVE_DC.value:
+                        14,
+                    markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value:
+                        30,
+                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value:
+                        "11d8",
+                    markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value:
+                        markdown_interpreter_related_enums.DamageTypeEnums.ACID.value,
+                },
                 # ----------------------- ATTACK END ----------------
 
-                #keep this around and comment it out or in because you'll see this alot
-                """
+                # ----------------------- MULTI ATTACK START --------------------------
+
                 {
                     markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
                         "Multiattack",
@@ -111,8 +139,9 @@ actions_only_input_file_monster_dict = \
                     markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
                         markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
-                        "The devil makes two attacks with its chains."
+                        "The dragon makes three attacks: one with its bite and two with its claws."
                 }
-                """
+
+                # ----------------------- MULTI ATTACK END --------------------------
             ],
     }
