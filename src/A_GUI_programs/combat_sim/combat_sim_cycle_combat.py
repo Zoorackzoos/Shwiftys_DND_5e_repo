@@ -15,22 +15,33 @@ from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from universal_functions.enums import spreadsheet_enums, markdown_interpreter_related_enums
 
 
+def _make_hyperlink(display_text, url):
+    """
+    Wraps display_text in an OSC 8 terminal hyperlink escape sequence pointing
+    to url. Supported by Windows Terminal, PyCharm's terminal, and most modern
+    terminals -- NOT supported by plain cmd.exe, which will show raw escape
+    codes instead.
+    """
+    if url != None or url != "":
+        return f"\033]8;;{url}\033\\ {display_text} \033]8;;\033\\"
+    return display_text
+
 def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters):
     """
     Scans all monster dicts once and returns a function that formats a single
-    monster dict into an aligned "name : max_hp : current_hp : ac : life_status"
+    monster dict into an aligned "name : max_hp : current_hp : ac : life_status : url"
     row, padded to the widest value seen in each column.
 
     claude made this
     """
-    # spreadsheet has capital case. my markdown interpreter enums are all lowercase.
     columns = \
         [
             spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
             spreadsheet_enums.SpreadsheetKeysEnums.HP.value,
-            "current_hp",  # current hp & life_status is system only vars.
+            "current_hp",
             spreadsheet_enums.SpreadsheetKeysEnums.AC.value,
-            "life_status"  # current hp & life_status is system only vars.
+            "life_status",
+            spreadsheet_enums.SpreadsheetKeysEnums.URL.value
         ]
     labels = \
         {
@@ -38,21 +49,39 @@ def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monste
             spreadsheet_enums.SpreadsheetKeysEnums.HP.value: "max_hp",
             "current_hp": "current_hp",
             spreadsheet_enums.SpreadsheetKeysEnums.AC.value: "ac",
-            "life_status": "life_status"
+            "life_status": "life_status",
+            spreadsheet_enums.SpreadsheetKeysEnums.URL.value: "url"
         }
+
+    url_col = spreadsheet_enums.SpreadsheetKeysEnums.URL.value
+    url_display_text = "link"  # short, fixed-width label shown instead of the raw URL
 
     widths = {}
     for col in columns:
         max_width = len(labels[col])
         for monster_dict in list_that_contains_dictionaries_that_are_monsters:
-            max_width = max(max_width, len(str(monster_dict[col])))
+            if col == url_col:
+                # width is based on the short display text, NOT the actual URL,
+                # since the URL itself is invisible to the column layout
+                value_length = len(url_display_text)
+            else:
+                value_length = len(str(monster_dict[col]))
+            max_width = max(max_width, value_length)
         widths[col] = max_width
 
     def format_header():
         return " : ".join(f"{labels[col]:<{widths[col]}}" for col in columns)
 
     def format_row(monster_dict):
-        return " : ".join(f"{str(monster_dict[col]):<{widths[col]}}" for col in columns)
+        parts = []
+        for col in columns:
+            if col == url_col:
+                raw_url = str(monster_dict[col])
+                padded_display = f"{url_display_text:<{widths[col]}}"
+                parts.append(_make_hyperlink(padded_display, raw_url))
+            else:
+                parts.append(f"{str(monster_dict[col]):<{widths[col]}}")
+        return " : ".join(parts)
 
     return format_header, format_row
 
