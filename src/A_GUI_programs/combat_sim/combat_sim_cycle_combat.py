@@ -1,13 +1,18 @@
+import ast
 import contextlib
 import datetime
 from pathlib import Path
+from pickle import EMPTY_LIST
 
 import keyboard
 
+from A_GUI_programs.combat_sim.get_damage_and_get_chance_to_hit import get_chance_to_hit, get_damage
+from A_GUI_programs.combat_sim.get_parsed_dict_from_dice_string import get_parsed_dict_from_dice_string
 from A_GUI_programs.combat_sim.get_sorted_initiative_rolls_from_greatest_to_least import \
     get_sorted_initiative_rolls_from_greatest_to_least
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
+from universal_functions.enums import spreadsheet_enums, markdown_interpreter_related_enums
 
 
 def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters):
@@ -36,6 +41,32 @@ def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monste
 
     return format_header, format_row
 
+def _build_action_row_formatter(actions_list):
+    """
+    Scans all action dicts once and returns a function that formats a single
+    action dict into an aligned
+    "name : action_type : attack_type : hit_modifier : range : damage : damage_type"
+    row, padded to the widest value seen in each column.
+
+    claude made this
+    """
+    columns = ["name", "action_type", "attack_type", "hit_modifier", "range", "damage", "damage_type"]
+
+    widths = {}
+    for col in columns:
+        max_width = len(col)
+        for action in actions_list:
+            max_width = max(max_width, len(str(action[col])))
+        widths[col] = max_width
+
+    def format_header():
+        return " : ".join(f"{col:<{widths[col]}}" for col in columns)
+
+    def format_row(action):
+        return " : ".join(f"{str(action[col]):<{widths[col]}}" for col in columns)
+
+    return format_header, format_row
+
 def detect_if_NPC_and_display_monster_if_yes(
         sub_list,
         list_that_contains_dictionaries_that_are_monsters,
@@ -43,19 +74,36 @@ def detect_if_NPC_and_display_monster_if_yes(
         selected_npc_index,
         npc_interaction_menu_bool,
         npc_interaction_menu_index,
-        performing_attack_bool,
         performing_damage_bool,
         performing_heal_bool,
-        damage_or_heal_integer_that_actually_a_string
+        damage_or_heal_integer_that_actually_a_string,
+        attack_selection_menu_bool,
+        attack_selection_menu_index,
+        executed_attack_bool
 ):
     """
     displays good or evil NPC monsters.
-    claude updated this
+    claude updated this, it was only to make things like this:
+        ```
+        name : action_type : attack_type : hit_modifier : range : damage : damage_type
+        Scimitar : action : melee_attack : 4 : 5 : 1d6 + 2 : slashing
+        shortbow : action : ranged_attack : 4 : 80 : 1d6 + 2 : piercing
+        ```
+    into this:
+        ```
+        name     : action_type : attack_type   : hit_modifier : range : damage  : damage_type
+        Scimitar : action      : melee_attack  : 4            : 5     : 1d6 + 2 : slashing
+        shortbow : action      : ranged_attack : 4            : 80    : 1d6 + 2 : piercing
+        ```
+    both for the monsters and the actions dictionaries.
+        better than codex 😏
     """
     if sub_list[0].lower() == "evil" or sub_list[0].lower() == "good":
         format_header, format_row = _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters)
         print("\t\t  ", format_header())
 
+        # printing the selected monster and it's buddies.
+        # but NOT the available actions.
         if selected_npc_bool:
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
@@ -78,9 +126,87 @@ def detect_if_NPC_and_display_monster_if_yes(
                     for string in interaction_option_menu_string_list:
                         if gui_logic_interaction_menu_index == npc_interaction_menu_index:
                             print("\t\t\t →", string)
-                            if performing_attack_bool == True:
-                                print("\t\t\t\t →",
-                                      "detect_if_NPC_and_display_monster_if_yes: performing_attack_bool == True")
+                            if attack_selection_menu_bool == True:
+                                if (list_that_contains_dictionaries_that_are_monsters[monster_dict_index]["actions"] == None or
+                                    list_that_contains_dictionaries_that_are_monsters[monster_dict_index]["actions"] == ""):
+                                    print("\t\t\t\t  ","There are no actions this creature to preform.")
+                                    print("\t\t\t\t  ","Either that or the data is null.")
+                                    print("\t\t\t\t  ","Please examine the spreadsheet.")
+                                else:
+                                    temp_action_index = 0
+                                    actions_list = ast.literal_eval(
+                                        list_that_contains_dictionaries_that_are_monsters[monster_dict_index]["actions"]
+                                    )
+                                    action_format_header, action_format_row = _build_action_row_formatter(actions_list)
+                                    print("\t\t\t\t  ", action_format_header())
+                                    for action in actions_list:
+                                        #marker = "\t\t\t\t →" if temp_action_index == attack_selection_menu_index else "\t\t\t\t  "
+                                        #print(marker, action_format_row(action))
+                                        if temp_action_index == attack_selection_menu_index:
+                                            print("\t\t\t\t →",action_format_row(action))
+                                            if executed_attack_bool == True:
+
+                                                # it's a martial attack. so like melee or ranged
+                                                if ((action[
+                                                         markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                     ==
+                                                     markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value)
+                                                        or
+                                                        (action[
+                                                             markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                         ==
+                                                         markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value)):
+
+                                                    # pass a simple string to int conversion, into a funciton. to get the chance to hit
+                                                    chance_to_hit = get_chance_to_hit(hit_modifier=int(action[
+                                                                                                           markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value]))
+                                                    parsed_damage_dice_dict = get_parsed_dict_from_dice_string(
+                                                        dice_string=action[
+                                                            markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value])
+                                                    damage = get_damage(damage_dice=parsed_damage_dice_dict)
+
+                                                    print("\t\t\t\t\t  ", "chance to hit =", chance_to_hit)
+                                                    print("\t\t\t\t\t  ", "damage =", damage)
+                                                    print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
+                                                elif ( action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                       ==
+                                                       markdown_interpreter_related_enums.AttackTypeEnums.SAVING_THROW.value ):
+                                                    print("\t\t\t\t\t  ", "save_stat =",action[markdown_interpreter_related_enums.ActionKeyEnums.SAVE_STAT.value])
+                                                    print("\t\t\t\t\t  ", "save_dc =",action[markdown_interpreter_related_enums.ActionKeyEnums.SAVE_DC.value])
+                                                    print("\t\t\t\t\t  ", "damage =",get_damage
+                                                        (
+                                                            damage_dice=get_parsed_dict_from_dice_string
+                                                                (
+                                                                    dice_string=action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
+                                                                )
+                                                        )
+                                                    )
+                                                    print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
+                                                elif (action[
+                                                          markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                      ==
+                                                      markdown_interpreter_related_enums.AttackTypeEnums.AUTO_HIT.value):
+                                                    print("\t\t\t\t\t  ","This is a auto-hit attack so it just hits it's target")
+                                                    print("\t\t\t\t\t  ", "damage =", get_damage
+                                                        (
+                                                            damage_dice=get_parsed_dict_from_dice_string
+                                                                (
+                                                                    dice_string=action[
+                                                                        markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
+                                                                )
+                                                        )
+                                                    )
+                                                    print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
+                                                elif (action[
+                                                          markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                      ==
+                                                      markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value):
+                                                    print("\t\t\t\t\t  ","This is a utility, AKA aa trait. so there's no attack to execute.")
+                                                else:
+                                                    print("\t\t\t\t\t  ","The system cannot identify the attack_type this action has.")
+                                        else:
+                                            print("\t\t\t\t  ", action_format_row(action))
+                                        temp_action_index += 1
                             elif performing_damage_bool == True:
                                 print("\t\t\t\t →", "how much damage does", monster_dict["Name"], "take?")
                                 print("\t\t\t\t →", damage_or_heal_integer_that_actually_a_string)
@@ -109,12 +235,12 @@ def update_combat_sim_cycle_combat_interface(
         selected_pc_bool,
         npc_interaction_menu_bool,
         npc_interaction_menu_index,
-        performing_attack_bool,
         performing_damage_bool,
         performing_heal_bool,
         damage_or_heal_integer_that_actually_a_string,
         attack_selection_menu_bool,
-        attack_selection_menu_index
+        attack_selection_menu_index,
+        executed_attack_bool
 ):
     """
     This is also called "the update function" in other comment.s
@@ -142,14 +268,6 @@ def update_combat_sim_cycle_combat_interface(
         tells the GUI you've selected a specific NPC, and now you want to choose which interaction to do on it.
     :param npc_interaction_menu_index:
         tells the GUI where you are in the interaction menu.
-    :param performing_attack_bool:
-        tells the GUI you want the monster to attack
-        from there you can:
-        * select the monster's attack action
-        * whether you have a action left
-        * depending on the action,
-            * it tells you what it got to hit and what damage
-            * it tells you what the attacked person must get as a save and the damage.
     :param performing_damage_bool:
         tells the GUI and the logic minorly that the user is inputting a integer that is the damage
          being dealt to the monster
@@ -158,24 +276,19 @@ def update_combat_sim_cycle_combat_interface(
     :param damage_or_heal_integer_that_actually_a_string:
         this integer holds the damage a monster is dealt or the health a monster is healed.
         this is only a positive number. heal or hurt is determined by the bools.
+    :param attack_selection_menu_bool
+     tells the GUI you want the monster to attack
+        from there you can:
+        * select the monster's attack action
+        * whether you have a action left
+        * depending on the action,
+            * it tells you what it got to hit and what damage
+            * it tells you what the attacked person must get as a save and the damage.
+    :param attack_selection_menu_index:
     :return:
         returns nothing. this is a GUI printer.
     """
     universal_terminal_clear()
-
-    def default_detect_if_NPC_and_display_monster_if_yes():
-        detect_if_NPC_and_display_monster_if_yes(
-            sub_list=sub_list,
-            list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
-            selected_npc_bool=selected_npc_bool,
-            selected_npc_index=selected_npc_index,
-            npc_interaction_menu_bool=npc_interaction_menu_bool,
-            npc_interaction_menu_index=npc_interaction_menu_index,
-            performing_attack_bool=performing_attack_bool,
-            performing_damage_bool=performing_damage_bool,
-            performing_heal_bool=performing_heal_bool,
-            damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string
-        )
 
     update_combat_sim_cycle_combat_interface_start = """update_combat_sim_cycle_combat_interface
     you are in combat now.
@@ -193,6 +306,42 @@ def update_combat_sim_cycle_combat_interface(
     Use the LEFT arrow to go back in the menu.
 """
     print(update_combat_sim_cycle_combat_interface_start)
+    print()
+    list_of_parameter_vars = \
+    [
+        ["sorted_initiative_rolls_list",sorted_initiative_rolls_list],
+        ["user_selected_initiative_roll",user_selected_initiative_roll],
+        ["system_selected_initiative_roll",system_selected_initiative_roll],
+        ["list_that_contains_dictionaries_that_are_monsters","..."],
+        ["selected_npc_bool",selected_npc_bool],
+        ["selected_npc_index",selected_npc_index],
+        ["selected_pc_bool",selected_pc_bool],
+        ["npc_interaction_menu_bool",npc_interaction_menu_bool],
+        ["npc_interaction_menu_index",npc_interaction_menu_index],
+        ["performing_damage_bool",performing_damage_bool],
+        ["performing_heal_bool",performing_heal_bool],
+        ["damage_or_heal_integer_that_actually_a_string",damage_or_heal_integer_that_actually_a_string],
+        ["attack_selection_menu_bool",attack_selection_menu_bool],
+        ["attack_selection_menu_index",attack_selection_menu_index]
+    ]
+    for parameter_var in list_of_parameter_vars:
+        print("\t",parameter_var[0],":",parameter_var[1])
+
+    def default_detect_if_NPC_and_display_monster_if_yes():
+        detect_if_NPC_and_display_monster_if_yes(
+            sub_list=sub_list,
+            list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
+            selected_npc_bool=selected_npc_bool,
+            selected_npc_index=selected_npc_index,
+            npc_interaction_menu_bool=npc_interaction_menu_bool,
+            npc_interaction_menu_index=npc_interaction_menu_index,
+            performing_damage_bool=performing_damage_bool,
+            performing_heal_bool=performing_heal_bool,
+            damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string,
+            attack_selection_menu_bool=attack_selection_menu_bool,
+            attack_selection_menu_index=attack_selection_menu_index,
+            executed_attack_bool=executed_attack_bool
+        )
 
     # printing the NPCs and PCs
     for sub_list in sorted_initiative_rolls_list:
@@ -208,6 +357,7 @@ def update_combat_sim_cycle_combat_interface(
             else:
                 print("\t!→", sub_list[0], ":", sub_list[1])
                 default_detect_if_NPC_and_display_monster_if_yes()
+
         # is a system selected initiative roll
         elif sub_list[0] == system_selected_initiative_roll[0]:
             print("\t! ", sub_list[0], ":", sub_list[1])
@@ -264,20 +414,22 @@ def combat_sim_cycle_combat(
 
     universal_terminal_clear()
 
-    """
-    current hp, or hp used by the system.
-    i can't rename HP in the spreadsheet because legacy reasons / paranoia over legacy reasons.
-    so instead i'll call hp used by the system... in order to remember the max hp when the monster heals.
-    "current hp" :-)
-    """
     for monster_dict in list_that_contains_dictionaries_that_are_monsters:
+        """
+        current hp, or hp used by the system.
+        i can't rename HP in the spreadsheet because legacy reasons / paranoia over legacy reasons.
+        so instead i'll call hp used by the system... in order to remember the max hp when the monster heals.
+        "current hp" :-)
+        """
         monster_dict["current_hp"] = monster_dict["HP"]
 
     # adding the "life_status" key to the dictionary we just made above.
     for monster_dict in list_that_contains_dictionaries_that_are_monsters:
+        """
         # True = alive.
         # False = dead.
         #   computer has to eat less.
+        """
         monster_dict["life_status"] = True
 
     """
@@ -312,15 +464,18 @@ def combat_sim_cycle_combat(
     npc_interaction_menu_bool = False
     npc_interaction_menu_index = 0
 
-    performing_attack_bool = False
     performing_damage_bool = False
     performing_heal_bool = False
 
     # Am i ever going to learn anything good out of my classes?
     damage_or_heal_integer_that_actually_a_string = ""
 
+    # selecting a attack
     attack_selection_menu_bool = False
     attack_selection_menu_index = 0
+
+    # if the user pressed a attack from teh selection.
+    executed_attack_bool = False
 
     def default_input_update_combat_sim_cycle_combat_interface():
         """
@@ -338,12 +493,12 @@ def combat_sim_cycle_combat(
             selected_pc_bool=selected_pc_bool,
             npc_interaction_menu_bool=npc_interaction_menu_bool,
             npc_interaction_menu_index=npc_interaction_menu_index,
-            performing_attack_bool=performing_attack_bool,
             performing_damage_bool=performing_damage_bool,
             performing_heal_bool=performing_heal_bool,
             damage_or_heal_integer_that_actually_a_string=damage_or_heal_integer_that_actually_a_string,
             attack_selection_menu_bool=attack_selection_menu_bool,
-            attack_selection_menu_index=attack_selection_menu_index
+            attack_selection_menu_index=attack_selection_menu_index,
+            executed_attack_bool=executed_attack_bool
         )
 
     # do this once with the starter indexes.
@@ -373,19 +528,30 @@ def combat_sim_cycle_combat(
                 selected_pc_bool = False
                 default_input_update_combat_sim_cycle_combat_interface()
 
+            """
+            i had a conniption fit here trying to diagnose a bug.
+            selected_npc_bool is only for when you're in the NPC selection menu
+            but once you're in the NPC ** interaction ** menu the npc_interaction_menu_bool has to stay. 
+                from there the secular bools can be turned on / off.
+            """
             # the parent menu. where you select either PCs or NPCs to go into their children menus.
-            if selected_npc_bool == False and npc_interaction_menu_bool == False \
-                    and performing_attack_bool == False and performing_damage_bool == False and performing_heal_bool == False:
+            if (selected_npc_bool == False and
+                npc_interaction_menu_bool == False and
+                attack_selection_menu_bool == False and
+                performing_damage_bool == False and
+                performing_heal_bool == False):
 
                 # navigation. no actions here.
                 if keyboard.is_pressed("up"):
                     if user_initiative_roll_index > 0:
                         user_initiative_roll_index += -1
+                        # this is here to make the "sorry n implmeentatoin" text go away
                         selected_pc_bool = False
                         default_input_update_combat_sim_cycle_combat_interface()
                 elif keyboard.is_pressed("down"):
                     if user_initiative_roll_index < len(sorted_initiative_rolls_list) - 1:
                         user_initiative_roll_index += 1
+                        # this is here to make the "sorry n implmeentatoin" text go away
                         selected_pc_bool = False
                         default_input_update_combat_sim_cycle_combat_interface()
 
@@ -394,13 +560,20 @@ def combat_sim_cycle_combat(
                     name_of_selected_npc_or_pc = sorted_initiative_rolls_list[user_initiative_roll_index][0].lower()
                     if name_of_selected_npc_or_pc == "evil" or name_of_selected_npc_or_pc == "good":
                         selected_npc_bool = True
+                        npc_interaction_menu_bool = False
+                        attack_selection_menu_bool = False
+                        performing_damage_bool = False
+                        performing_heal_bool = False
                     else:
                         selected_pc_bool = True
                     default_input_update_combat_sim_cycle_combat_interface()
 
             # the child menu where you select monsters to do interaction actions on them.
-            elif selected_npc_bool == True and npc_interaction_menu_bool == False \
-                    and performing_attack_bool == False and performing_damage_bool == False and performing_heal_bool == False:
+            elif (selected_npc_bool == True and
+                  npc_interaction_menu_bool == False and
+                  attack_selection_menu_bool == False and
+                  performing_damage_bool == False and
+                  performing_heal_bool == False):
                 # basically the same functionality in the if statement
                 # except instead of in the parent NPC or PC menu
                 # you're in the NPC's child monster menu.
@@ -420,18 +593,27 @@ def combat_sim_cycle_combat(
                 elif keyboard.is_pressed("right"):
                     selected_npc_bool = False
                     npc_interaction_menu_bool = True
+                    attack_selection_menu_bool = False
+                    performing_damage_bool = False
+                    performing_heal_bool = False
                     default_input_update_combat_sim_cycle_combat_interface()
                 elif keyboard.is_pressed("left"):
                     # go back to parent menu.
                     selected_npc_bool = False
                     npc_interaction_menu_bool = False
+                    attack_selection_menu_bool = False
+                    performing_damage_bool = False
+                    performing_heal_bool = False
                     selected_npc_index = 0
                     npc_interaction_menu_index = 0
                     default_input_update_combat_sim_cycle_combat_interface()
 
-            # child-child menu. where you actually do the attack, take damage or heal actions.
-            elif selected_npc_bool == False and npc_interaction_menu_bool == True \
-                    and performing_attack_bool == False and performing_damage_bool == False and performing_heal_bool == False:
+            # child-child menu. attack / heal / damage selection menu
+            elif (selected_npc_bool == False and
+                  npc_interaction_menu_bool == True and
+                  attack_selection_menu_bool == False and
+                  performing_damage_bool == False and
+                  performing_heal_bool == False):
 
                 # navigation
                 if keyboard.is_pressed("up"):
@@ -445,28 +627,53 @@ def combat_sim_cycle_combat(
 
                 # actions
                 elif keyboard.is_pressed("left"):
+                    # go back to the NPC selection menu
                     selected_npc_bool = True
                     npc_interaction_menu_bool = False
+                    attack_selection_menu_bool = False
+                    performing_damage_bool = False
+                    performing_heal_bool = False
                     # don't modify the selected_npc_index.
                     npc_interaction_menu_index = 0
                     default_input_update_combat_sim_cycle_combat_interface()
                 elif keyboard.is_pressed("right"):
                     # monster does an attack
                     if npc_interaction_menu_index == 0:
+                        selected_npc_bool = False
+                        npc_interaction_menu_bool = True
                         attack_selection_menu_bool = True
+                        performing_damage_bool = False
+                        performing_heal_bool = False
+                        default_input_update_combat_sim_cycle_combat_interface()
                     # monster takes damage
                     elif npc_interaction_menu_index == 1:
+                        selected_npc_bool = False
+                        npc_interaction_menu_bool = True
+                        attack_selection_menu_bool = False
                         performing_damage_bool = True
+                        performing_heal_bool = False
                         default_input_update_combat_sim_cycle_combat_interface()
                     # monster heals health
                     elif npc_interaction_menu_index == 2:
+                        selected_npc_bool = False
+                        npc_interaction_menu_bool = True
+                        attack_selection_menu_bool = False
+                        performing_damage_bool = False
                         performing_heal_bool = True
                         default_input_update_combat_sim_cycle_combat_interface()
 
-            elif performing_damage_bool == True or performing_heal_bool == True:
+            elif (selected_npc_bool == False and
+                  npc_interaction_menu_bool == True and
+                  attack_selection_menu_bool == False and
+                  (performing_damage_bool == True or
+                  performing_heal_bool == True)):
+                # this is the damage or healing registration menu
+
                 # navigation
                 if keyboard.is_pressed("left"):
-                    performing_attack_bool = False
+                    selected_npc_bool = False
+                    npc_interaction_menu_bool = True
+                    attack_selection_menu_bool = False
                     performing_damage_bool = False
                     performing_heal_bool = False
                     default_input_update_combat_sim_cycle_combat_interface()
@@ -516,3 +723,56 @@ def combat_sim_cycle_combat(
                         performing_heal_bool = False
                         damage_or_heal_integer_that_actually_a_string = ""
                         default_input_update_combat_sim_cycle_combat_interface()
+
+            # this is where you select a attack
+            elif (selected_npc_bool == False and
+                  npc_interaction_menu_bool == True and
+                  attack_selection_menu_bool == True and
+                  performing_damage_bool == False and
+                  performing_heal_bool == False):
+
+                no_actions_present_bool = False
+
+                selected_monster_actions = []
+
+                if (list_that_contains_dictionaries_that_are_monsters[selected_npc_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value] != None and
+                    list_that_contains_dictionaries_that_are_monsters[selected_npc_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value] != "" and
+                    list_that_contains_dictionaries_that_are_monsters[selected_npc_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value] is not EMPTY_LIST):
+                    selected_monster_actions = \
+                        ast.literal_eval(
+                            list_that_contains_dictionaries_that_are_monsters[selected_npc_index][
+                                spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value]
+                        )
+                else:
+                    no_actions_present_bool = True
+
+                # navigation
+                if keyboard.is_pressed("up"):
+                    if no_actions_present_bool == True:
+                        pass
+                    else:
+                        executed_attack_bool = False
+                        if attack_selection_menu_index > 0:
+                            attack_selection_menu_index -= 1
+                            default_input_update_combat_sim_cycle_combat_interface()
+                if keyboard.is_pressed("down"):
+                    if no_actions_present_bool == True:
+                        pass
+                    else:
+                        executed_attack_bool = False
+                        if attack_selection_menu_index < len(selected_monster_actions)-1:
+                            attack_selection_menu_index += 1
+                            default_input_update_combat_sim_cycle_combat_interface()
+
+                if keyboard.is_pressed("left"):
+                    selected_npc_bool = False
+                    npc_interaction_menu_bool = True
+                    attack_selection_menu_bool = False
+                    performing_damage_bool = False
+                    performing_heal_bool = False
+                    default_input_update_combat_sim_cycle_combat_interface()
+                if keyboard.is_pressed("right"):
+                    executed_attack_bool = True
+                    default_input_update_combat_sim_cycle_combat_interface()
+
+
