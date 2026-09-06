@@ -18,13 +18,24 @@ from universal_functions.enums import spreadsheet_enums, markdown_interpreter_re
 def _make_hyperlink(display_text, url):
     """
     Wraps display_text in an OSC 8 terminal hyperlink escape sequence pointing
-    to url. Supported by Windows Terminal, PyCharm's terminal, and most modern
-    terminals -- NOT supported by plain cmd.exe, which will show raw escape
-    codes instead.
+    to url, colored blue when a url is present. Supported by Windows Terminal,
+    PyCharm's terminal, and most modern terminals -- NOT supported by plain
+    cmd.exe, which will show raw escape codes instead.
+
+    claude made this
     """
-    if url != None or url != "":
-        return f"\033]8;;{url}\033\\ {display_text} \033]8;;\033\\"
-    return display_text
+    link_start = "\033]8;;"
+    link_end = "\033]8;;\033\\"
+    color_blue = "\033[34m"
+    reset = "\033[0m"
+
+    if url != "":
+        # "order matters: color starts AFTER the link-open sequence,
+        # and must be reset BEFORE the link-close sequence, not after."
+        return f"{color_blue}{link_start}{url}\033\\{display_text}{reset}{link_end}"
+    else:
+        # "no url -- don't emit hyperlink escapes at all, just plain text"
+        return "no link"
 
 def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters):
     """
