@@ -23,8 +23,23 @@ def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monste
 
     claude made this
     """
-    columns = ["Name", "HP", "current_hp", "AC", "life_status"]
-    labels = {"Name": "name", "HP": "max_hp", "current_hp": "current_hp", "AC": "ac", "life_status": "life_status"}
+    # spreadsheet has capital case. my markdown interpreter enums are all lowercase.
+    columns = \
+        [
+            spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
+            spreadsheet_enums.SpreadsheetKeysEnums.HP.value,
+            "current_hp",  # current hp & life_status is system only vars.
+            spreadsheet_enums.SpreadsheetKeysEnums.AC.value,
+            "life_status"  # current hp & life_status is system only vars.
+        ]
+    labels = \
+        {
+            spreadsheet_enums.SpreadsheetKeysEnums.NAME.value: "name",
+            spreadsheet_enums.SpreadsheetKeysEnums.HP.value: "max_hp",
+            "current_hp": "current_hp",
+            spreadsheet_enums.SpreadsheetKeysEnums.AC.value: "ac",
+            "life_status": "life_status"
+        }
 
     widths = {}
     for col in columns:
@@ -50,12 +65,34 @@ def _build_action_row_formatter(actions_list):
 
     claude made this
     """
-    columns = ["name", "action_type", "attack_type", "hit_modifier", "range", "damage", "damage_type"]
+
+    # these are all ordered in which they appear
+    columns = \
+        [
+            markdown_interpreter_related_enums.ActionKeyEnums.NAME.value,
+            markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value,
+            markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value,
+            #markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value,
+            #markdown_interpreter_related_enums.ActionKeyEnums.SAVE_DC.value,
+            #markdown_interpreter_related_enums.ActionKeyEnums.SAVE_STAT.value,
+            #markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value,
+            #markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value,
+            #markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value
+        ]
 
     widths = {}
     for col in columns:
         max_width = len(col)
         for action in actions_list:
+            """
+            this _build function doesn't discriminate in it's renderings.
+            so if a key is not present in a action which is in the columns list above.
+            the function will piss and shit itself.
+            
+            unfortunately. i ran into the issue of the GUI breaking because the text rendered was too wise.
+            """
+            if col not in action:
+                action[col] = "unknown"
             max_width = max(max_width, len(str(action[col])))
         widths[col] = max_width
 
@@ -157,17 +194,25 @@ def detect_if_NPC_and_display_monster_if_yes(
                                                          ==
                                                          markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value)):
 
-                                                    # pass a simple string to int conversion, into a funciton. to get the chance to hit
-                                                    chance_to_hit = get_chance_to_hit(hit_modifier=int(action[
-                                                                                                           markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value]))
-                                                    parsed_damage_dice_dict = get_parsed_dict_from_dice_string(
-                                                        dice_string=action[
-                                                            markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value])
-                                                    damage = get_damage(damage_dice=parsed_damage_dice_dict)
+                                                    chance_to_hit = "unknown"
+                                                    if markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value in action:
+                                                        # pass a simple string to int conversion, into a function. to get the chance to hit
+                                                        chance_to_hit = get_chance_to_hit(
+                                                            hit_modifier=int(action[markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value])
+                                                        )
+
+                                                    damage = "unknown"
+                                                    if markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value in action:
+                                                        parsed_damage_dice_dict = get_parsed_dict_from_dice_string(
+                                                            dice_string=action[
+                                                                markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
+                                                        )
+                                                        damage = get_damage(damage_dice=parsed_damage_dice_dict)
 
                                                     print("\t\t\t\t\t  ", "chance to hit =", chance_to_hit)
                                                     print("\t\t\t\t\t  ", "damage =", damage)
                                                     print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
+                                                    print("\t\t\t\t\t  ", "range =",action[markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value])
                                                 elif ( action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
                                                        ==
                                                        markdown_interpreter_related_enums.AttackTypeEnums.SAVING_THROW.value ):
@@ -182,6 +227,7 @@ def detect_if_NPC_and_display_monster_if_yes(
                                                         )
                                                     )
                                                     print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
+                                                    print("\t\t\t\t\t  ", "range =", action[markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value])
                                                 elif (action[
                                                           markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
                                                       ==
@@ -197,6 +243,7 @@ def detect_if_NPC_and_display_monster_if_yes(
                                                         )
                                                     )
                                                     print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
+                                                    print("\t\t\t\t\t  ", "range =", action[markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value])
                                                 elif (action[
                                                           markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
                                                       ==

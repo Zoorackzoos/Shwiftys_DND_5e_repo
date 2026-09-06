@@ -49,8 +49,8 @@ def get_default_monster_list(
     a "Dragon, Chromatic, Black, Young"
 
     the reason they're called monster_name[0] in the dictionary delcartion
-    is becuase this funciton "get_rows..." retruns a list of dictionaries.
-        since my query is specfici enough were it returns a list with 1 dictionary
+    is because this function "get_rows..." returns a list of dictionaries.
+        since my query is specific enough were it returns a list with 1 dictionary
         we just use list[0] to get that 1 monster.
     """
     goblin_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
