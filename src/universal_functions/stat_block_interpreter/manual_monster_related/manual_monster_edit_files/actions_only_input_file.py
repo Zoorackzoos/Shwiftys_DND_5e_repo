@@ -72,6 +72,10 @@ actions_only_input_file_monster_dict = \
                 {
                     markdown_interpreter_related_enums.ActionKeyEnums.NAME.value:
                         "Amphibious",
+                    markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value:
+                        markdown_interpreter_related_enums.ActionTypeEnums.PASSIVE.value,
+                    markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value:
+                        markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value,
                     markdown_interpreter_related_enums.ActionKeyEnums.NOTES.value:
                         "The dragon can breathe air and water."
                 },
