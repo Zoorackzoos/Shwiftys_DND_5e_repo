@@ -10,16 +10,16 @@ the goal of this file is to:
     c. the spreadsheet would need a way to hold the action / attack information. and i'm not sure about that.
 5. ✅ smooth GUi interface. interaction instructions top,
    get_damage_and_chance_to_hit.py stuff middle, verbose bullshit below that.
-6. ❌ monsters can attack with accurate attack information
-7. ❌ utility abilities are showcased
+6. ✅ monsters can attack with accurate attack information
+7. ✅ utility abilities are showcased
 8. ❌ GUI shows how many actions / multiattacks a monster has left in the attack GUI
     a. so if you have a monster attack, and they can attack twice the gui would say
     something like 1/2 actions used or something.
-9. ❌ monster list selections screen
+9. ✅ monster list selections screen
     a. like you are asked which encounter you want to run.
     b. this means you have to have manually loaded monsters
     c. and those monsters have to have acceptable spreadsheet values.
-10. ❌ make action "markdown to dictionary" parser.
+10. ✅ make action "markdown to dictionary" parser.
     a. i'll read a stat block, put that information into a markdown file
     b. i'll put that markdown file through the markdown parser,
      and it will create a list of dictionaries that will store the attack information

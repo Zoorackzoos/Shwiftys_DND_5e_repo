@@ -1,10 +1,10 @@
 import copy
 import os
 import random
-import time
 from sympy import true
 
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
+from A_GUI_programs.wait_random_buffer import wait_random_buffer
 
 BUFFER_TIME_MAX = 2
 BUFFER_TIME_MIN = 0.001
@@ -113,23 +113,6 @@ def get_solved_random_numbers_array(array_in_question, tab_amount=""):
             else:
                 copied_array_in_question[i][j] = 0
     return copied_array_in_question
-
-def wait_random_buffer(min=BUFFER_TIME_MIN,
-                       max=BUFFER_TIME_MAX,
-                       tab_amount=""):
-    """
-    make the computer wait.
-    this makes it seem like it's important
-
-    :param min:
-    :param max:
-    :param tab_amount:
-    :return:
-    """
-    #this is a random decimal between the min & max values
-    random_buffer = random.uniform(min,max)
-    #print(tab_amount,"random_buffer =", random_buffer)
-    time.sleep(random_buffer)
 
 """
 ====================================================
