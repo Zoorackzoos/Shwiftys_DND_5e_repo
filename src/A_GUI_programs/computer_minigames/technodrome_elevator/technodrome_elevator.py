@@ -10,21 +10,25 @@ from A_GUI_programs.wait_random_buffer import wait_random_buffer
 
 
 def prompt_start_of_program():
+    start_of_program_bool = True
+
     print("start? (y/n)")
-    while True:
-        event = keyboard.read_event()
-        if event.event_type == keyboard.KEY_DOWN:
-            if event.name == "y":
-                print("\tstarting...")
-                print("\tinitializing Evil Ninja OS...")
-                break
-            elif event.name == "n":
-                print("\tquitting...")
-                exit(0)
-            else:
-                universal_terminal_clear()
-                print("start? (y/n)")
-                print("you didn't put in 'y' or 'n'. Choose.")
+    user_input = input()
+    while start_of_program_bool:
+        if user_input == "y" or user_input == "FUCK_YOU":
+            print("\tstarting...")
+            print("\tinitializing Evil Ninja OS...")
+            start_of_program_bool = False
+        elif user_input == "n":
+            print("\tquitting...")
+            exit(0)
+        else:
+            universal_terminal_clear()
+            print("start? (y/n)")
+            print("you didn't put in 'y' or 'n'. Choose.")
+            user_input = input()
+
+    return user_input
 
 def play_intro_noise():
     print("fuck man don't make me do my job.")
@@ -147,9 +151,10 @@ question types are the following
     print(question_choose_string)
 
     main_question_choose_loop_bool = True
-    question_confirmation_loop_bool = True
 
     while main_question_choose_loop_bool:
+        question_confirmation_loop_bool = True
+
         event = keyboard.read_event()
         if event.event_type == keyboard.KEY_DOWN:
 
@@ -159,49 +164,63 @@ question types are the following
                     exit(0)
 
             if event.name == "1":
-                print("You've chosen 'animation'. Are you sure?")
+                print("You've chosen 'animation'. Are you sure? (y/n)")
                 while question_confirmation_loop_bool:
                     event = keyboard.read_event()
                     if event.event_type == keyboard.KEY_DOWN:
                         if event.name == "y":
-                            animation_question()
                             question_confirmation_loop_bool = False
                             main_question_choose_loop_bool = False
+                            animation_question()
                         if event.name == "n":
                             question_confirmation_loop_bool = False
 
+                            universal_terminal_clear()
+                            print(question_choose_string)
+
             if event.name == "2":
-                print("You've chosen 'fix your teeth'. Are you sure?")
+                print("You've chosen 'fix your teeth'. Are you sure? (y/n)")
                 while question_confirmation_loop_bool:
                     event = keyboard.read_event()
                     if event.event_type == keyboard.KEY_DOWN:
                         if event.name == "y":
-                            fix_your_teeth_question()
                             question_confirmation_loop_bool = False
                             main_question_choose_loop_bool = False
+                            fix_your_teeth_question()
                         if event.name == "n":
                             question_confirmation_loop_bool = False
+
+                            universal_terminal_clear()
+                            print(question_choose_string)
 
 
 
 def animation_question():
-    pass
+    universal_terminal_clear()
+    print("animation")
+    #idk why it has a exit code that's random each time
+    #"Process finished with exit code -1073740771 (0xC000041D)"
 
 def fix_your_teeth_question():
-    pass
+    universal_terminal_clear()
+    print("fix your teeth")
 
 def technodrome_elevator():
     universal_terminal_clear()
     wait_random_buffer()
-    prompt_start_of_program()
+    user_input = prompt_start_of_program()
 
-    universal_terminal_clear()
-    wait_random_buffer()
-    play_intro_noise()
+    if user_input == "FUCK_YOU":
+        universal_terminal_clear()
+        let_user_choose_and_answer_question()
+    else:
+        universal_terminal_clear()
+        wait_random_buffer()
+        play_intro_noise()
 
-    universal_terminal_clear()
-    wait_random_buffer()
-    let_user_choose_and_answer_question()
+        universal_terminal_clear()
+        wait_random_buffer()
+        let_user_choose_and_answer_question()
 
 if __name__ == "__main__":
     technodrome_elevator()
