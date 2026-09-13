@@ -4,6 +4,8 @@ import random
 import keyboard
 
 from A_GUI_programs.computer_minigames.DMV_door_minigame.DMV_door_minigame import get_random_numbers_array
+from A_GUI_programs.computer_minigames.technodrome_elevator.animation_frames.technodrome_elevator_animation_frames import \
+    list_of_technodrome_elevator_animation_frames
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from A_GUI_programs.wait_random_buffer import wait_random_buffer
@@ -96,7 +98,7 @@ def play_intro_noise():
 
     terminal_size_rows = terminal_size.lines
     terminal_size_columns = terminal_size.columns
-    random_numbers_array = random_numbers_array = \
+    random_numbers_array = \
     [
         [0 for col in range(terminal_size_columns)]
         for row in range(terminal_size_rows)
@@ -109,13 +111,17 @@ def play_intro_noise():
 
     counter = 0
     for row in random_numbers_array:
+        row_string = ""
+        for number in row:
+            row_string += str(number)
+
         if counter >= 2:
             wait_random_buffer(min=0.001,max=0.1)
-            print(row)
+            print(row_string)
         else:
             wait_random_buffer()
             wait_random_buffer()
-            print(row)
+            print(row_string)
             counter += 1
 
     print("proceed? (y/n)")
@@ -129,7 +135,6 @@ def play_intro_noise():
                 print("\tquitting...")
                 exit(0)
             else:
-                universal_terminal_clear()
                 print("proceed? (y/n)")
                 print("you didn't put in 'y' or 'n'. Choose.")
 
@@ -197,9 +202,55 @@ question types are the following
 
 def animation_question():
     universal_terminal_clear()
-    print("animation")
-    #idk why it has a exit code that's random each time
-    #"Process finished with exit code -1073740771 (0xC000041D)"
+    animation_question_intro_string = \
+"""
+animation
+    I'm going to play a video. But since this is in a terminal it will be hard to see. 
+    I need you to tell me what you saw. if it's correct. I can power the elevator. if you got it wrong.
+
+    I'm not sure what happens if you get it wrong. just get it right.
+    I can only play this once.
+    
+    are you ready? (y/n)
+"""
+    print(animation_question_intro_string)
+    user_input = input()
+
+    temp_user_input_loop_bool = True
+
+    while temp_user_input_loop_bool:
+        if user_input == "y":
+            temp_user_input_loop_bool = False
+        elif user_input == "n":
+            if confirm_quit_via_keyboard():
+                exit(0)
+        else:
+            print(animation_question_intro_string)
+            user_input = input()
+
+    for frame in list_of_technodrome_elevator_animation_frames:
+        universal_terminal_clear()
+        print(frame)
+        wait_random_buffer(min=2.0,max=2.0)
+
+    animation_question_prompt_question_and_answer_string = \
+"""
+    Can you tell me what you saw?
+    Put in a number corrosponding to what you saw.
+    
+    1. Man jumping
+    2. Man running on a horse
+    3. 2 people fighting
+    4. Man getting shot
+    5. Man drinking soda
+    6. Girl playing vollyball
+"""
+    user_input = input()
+
+    temp_user_input_loop_bool = True
+    while temp_user_input_loop_bool:
+        if user_input == 1:
+            #TODO: HERE!!!!!!!
 
 def fix_your_teeth_question():
     universal_terminal_clear()
