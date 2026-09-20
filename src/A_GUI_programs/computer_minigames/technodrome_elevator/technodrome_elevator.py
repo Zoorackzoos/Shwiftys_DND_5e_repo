@@ -1,11 +1,15 @@
 import os
 import random
+from typing import Literal
 
 import keyboard
 
 from A_GUI_programs.computer_minigames.DMV_door_minigame.DMV_door_minigame import get_random_numbers_array
-from A_GUI_programs.computer_minigames.technodrome_elevator.animation_frames.technodrome_elevator_animation_frames import \
-    list_of_technodrome_elevator_animation_frames
+from A_GUI_programs.computer_minigames.technodrome_elevator.animation_frames.technodrome_animation_minigame_frames import \
+    list_of_technodrome_elevator_animation_minigame_frames
+from A_GUI_programs.computer_minigames.technodrome_elevator.animation_frames.technodrome_fix_your_teeth_animation_frames import \
+    list_of_technodrome_elevator_fix_your_teeth_minigame_frames_no_cleaning, \
+    list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from A_GUI_programs.wait_random_buffer import wait_random_buffer
@@ -228,7 +232,7 @@ animation
             print(animation_question_intro_string)
             user_input = input()
 
-    for frame in list_of_technodrome_elevator_animation_frames:
+    for frame in list_of_technodrome_elevator_animation_minigame_frames:
         universal_terminal_clear()
         print(frame)
         wait_random_buffer(min=2.0,max=2.0)
@@ -245,16 +249,111 @@ animation
     5. Man drinking soda
     6. Girl playing vollyball
 """
+    print(animation_question_prompt_question_and_answer_string)
     user_input = input()
 
     temp_user_input_loop_bool = True
     while temp_user_input_loop_bool:
-        if user_input == 1:
-            #TODO: HERE!!!!!!!
+        if user_input != 1:
+            print(":-( ")
+        elif user_input == 4:
+            print(":-) ")
+            temp_user_input_loop_bool = False
+
+    universal_terminal_clear()
+    print("starting up elevator")
+    wait_random_buffer()
+    print("brrrrrrr......")
+    wait_random_buffer()
+    wait_random_buffer()
+    print("lobotomzing program.")
+    exit(0)
 
 def fix_your_teeth_question():
     universal_terminal_clear()
     print("fix your teeth")
+    print("loading person to enslave...")
+    wait_random_buffer()
+
+    current_frame_selection = 0
+    continue_fixing_teeth_bool = True
+    teeth_selection_context_string = \
+"""
+    You need to fix this guy's teeth. 
+    input his teeth as if it were a array. so the first tooth is "[0][0]".
+    bad looking things need to be scrubed. 
+    good looking things don't need to be scrubed. and also can't be scrubed. 
+    I'm kind've stupid so don't make syntax mistakes or i won't know what you're on about.
+"""
+    teeth_cleaning_context_string = \
+"""
+    use the arrow keys to bring the toothbruth back and forth to clean his teeth.
+"""
+
+    while continue_fixing_teeth_bool:
+        universal_terminal_clear()
+        print("fixing your teeth")
+        print(teeth_selection_context_string)
+        print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_no_cleaning[current_frame_selection])
+        user_input = input()
+        if user_input == "[0][0]" and current_frame_selection == 0:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
+                                                                                         teeth_cleaning_context_string)
+        elif user_input == "[0][2]" and current_frame_selection == 1:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
+                                                                                         teeth_cleaning_context_string)
+        elif user_input == "[0][3]" and current_frame_selection == 2:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
+                                                                                         teeth_cleaning_context_string)
+        elif user_input == "[0][4]" and current_frame_selection == 3:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
+                                                                                     teeth_cleaning_context_string)
+        elif user_input == "[0][5]" and current_frame_selection == 4:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
+                                                                                         teeth_cleaning_context_string)
+        elif user_input == "[0][6]" and current_frame_selection == 5:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
+                                                                                         teeth_cleaning_context_string)
+        elif user_input == "[1][2]" and current_frame_selection == 6:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
+                                                                                         teeth_cleaning_context_string)
+        elif user_input == "[1][4]" and current_frame_selection == 7:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
+                                                                                         teeth_cleaning_context_string)
+
+    print("fix your teeth")
+    print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_no_cleaning[current_frame_selection])
+    print("you did it.")
+    print("brrrr....")
+    print("lobotomzing program.")
+    exit(0)
+
+def initiate_cleaning_sub_minigame_and_increment_frame(
+    current_frame_selection,
+   teeth_cleaning_context_string: str
+):
+    current_frame_selection += 1
+    still_cleaning_int = random.randint(3, 5)
+    times_cleaned = 0
+    current_frame_cleaning = 1
+
+    print("fix your teeth")
+    print(teeth_cleaning_context_string)
+    print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning[current_frame_cleaning])
+
+    while still_cleaning_int > times_cleaned:
+        event = keyboard.read_event()
+        if event.event_type == keyboard.KEY_DOWN:
+            if event.name == "left" and current_frame_cleaning != 0:
+                current_frame_cleaning = 0
+                print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning[current_frame_cleaning])
+                times_cleaned += 1
+            elif event.name == "right" and current_frame_cleaning != 2:
+                current_frame_cleaning = 2
+                print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning[current_frame_cleaning])
+                times_cleaned += 1
+    return current_frame_selection
+
 
 def technodrome_elevator():
     universal_terminal_clear()
