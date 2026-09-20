@@ -321,6 +321,7 @@ def fix_your_teeth_question():
             current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
                                                                                          teeth_cleaning_context_string)
 
+    universal_terminal_clear()
     print("fix your teeth")
     print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_no_cleaning[current_frame_selection])
     print("you did it.")
@@ -337,6 +338,8 @@ def initiate_cleaning_sub_minigame_and_increment_frame(
     times_cleaned = 0
     current_frame_cleaning = 1
 
+    universal_terminal_clear()
+
     print("fix your teeth")
     print(teeth_cleaning_context_string)
     print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning[current_frame_cleaning])
@@ -344,6 +347,7 @@ def initiate_cleaning_sub_minigame_and_increment_frame(
     while still_cleaning_int > times_cleaned:
         event = keyboard.read_event()
         if event.event_type == keyboard.KEY_DOWN:
+            universal_terminal_clear()
             if event.name == "left" and current_frame_cleaning != 0:
                 current_frame_cleaning = 0
                 print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning[current_frame_cleaning])
