@@ -27,6 +27,7 @@ the goal of this file is to:
         i. is that a good idea though?
         ii. counter question, it's not lik putting each action in their separate cell is a better idea.
 11. ❌ design and implement legendary actions
+13. ❌ fix bug where if i ahve multiple monsters of the same type and try to add or take away ehalth it counts for all mosnters of that type.
 """
 import time
 
