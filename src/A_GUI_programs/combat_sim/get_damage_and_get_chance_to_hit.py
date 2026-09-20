@@ -13,8 +13,15 @@ def get_chance_to_hit(hit_modifier,tab_amount="\t"):
     #print(tab_amount,"get_chance_to_hit")
     tab_amount += "\t"
     rolled_dice_to_hit = random.randint(1,20)
+
+    print(tab_amount,"rolled_dice_to_hit =",rolled_dice_to_hit)
+    print(tab_amount,"hit_modifier =",hit_modifier)
+
     #print(tab_amount,"rolled_dice_to_hit =",rolled_dice_to_hit)
-    adjusted_rolled_dice_to_hit = rolled_dice_to_hit+hit_modifier
+    adjusted_rolled_dice_to_hit = int(rolled_dice_to_hit)+int(hit_modifier)
+
+    print(tab_amount,"adjusted_rolled_dice_to_hit =",adjusted_rolled_dice_to_hit)
+
     #print(tab_amount,"rolled_dice_to_hit + modifier =",adjusted_rolled_dice_to_hit)
     return adjusted_rolled_dice_to_hit
 
@@ -48,9 +55,9 @@ if __name__ == "__main__":
         {
             20 : 0,
             12 : 0,
-            10 : 8,
+            10 : 0,
             8 : 0,
-            6 : 0,
+            6 : 4,
             4 : 0,
             "constant" : 5
         }
