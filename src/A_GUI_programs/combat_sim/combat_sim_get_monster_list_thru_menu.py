@@ -151,16 +151,38 @@ def get_technodrome_2nd_floor_west_entrance(
         string="Misc. Creature, Giant Rat",
     )[0]
 
-    #TODO: refactor this!
-    monster_list = \
-    [
-        zombie_cat, zombie_cat, zombie_cat, zombie_cat, zombie_cat,
-        goblin_dict, goblin_dict, goblin_dict, goblin_dict, goblin_dict,
-        rad_slime, rad_slime, rad_slime, rad_slime,
-        greatmaw_troll, greatmaw_troll,
-        chain_devil, chain_devil, chain_devil,
-        giant_rat_dict, giant_rat_dict, giant_rat_dict,
-    ]
+    monster_list = []
+
+    monster_list = get_list_with_quantity_of_monster_added_to_it(
+        list_to_be_returned=monster_list,
+        monster_dict=zombie_cat,
+        quantity=5
+    )
+    monster_list = get_list_with_quantity_of_monster_added_to_it(
+        list_to_be_returned=monster_list,
+        monster_dict=goblin_dict,
+        quantity=5
+    )
+    monster_list = get_list_with_quantity_of_monster_added_to_it(
+        list_to_be_returned=monster_list,
+        monster_dict=rad_slime,
+        quantity=4
+    )
+    monster_list = get_list_with_quantity_of_monster_added_to_it(
+        list_to_be_returned=monster_list,
+        monster_dict=greatmaw_troll,
+        quantity=2
+    )
+    monster_list = get_list_with_quantity_of_monster_added_to_it(
+        list_to_be_returned=monster_list,
+        monster_dict=chain_devil,
+        quantity=3
+    )
+    monster_list = get_list_with_quantity_of_monster_added_to_it(
+        list_to_be_returned=monster_list,
+        monster_dict=giant_rat_dict,
+        quantity=3
+    )
     return monster_list
 
 def update_monster_list_selection_screen_GUI(
