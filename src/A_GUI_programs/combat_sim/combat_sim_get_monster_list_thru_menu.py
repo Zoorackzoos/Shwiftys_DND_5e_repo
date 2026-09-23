@@ -1,3 +1,16 @@
+"""
+    this is where the monster list selections screen is.
+    it contains
+        * list of monsters the user can select from
+        * GUI for monster list selection screen
+    it returns
+        * the monster list selected
+    in teh future, you'll be able to
+        * make your own monster list and have it exported as a JSON file or something.
+            * that means yit imports the file as well, so make a directory search system.
+"""
+import copy
+
 import keyboard
 
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
@@ -8,6 +21,25 @@ from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_
     get_rows_from_dict_on_param_type_and_string
 from universal_functions.enums import spreadsheet_enums
 
+def get_list_with_quantity_of_monster_added_to_it(
+        list_to_be_returned,
+        monster_dict,
+        quantity
+):
+    """
+    if you have dictionaries of the same name then when you edit their
+    * hp
+    * life status
+    they'll share a health pool. which is bad.
+
+    :param list_to_be_returned:
+    :param monster_dict:
+    :param quantity:
+    :return:
+    """
+    for i in range(quantity):
+        list_to_be_returned.append( copy.deepcopy(monster_dict) )
+    return list_to_be_returned
 
 def get_default_monster_list(
     monsters_all_stats_homebrew_dict
@@ -54,11 +86,20 @@ def get_one_giant_rat_and_three_small_rats(
 
     monster_list = \
         [
-            giant_rat_dict,
-            rat_dict,
-            rat_dict,
-            rat_dict
+
         ]
+
+    monster_list = get_list_with_quantity_of_monster_added_to_it(
+        list_to_be_returned=monster_list,
+        monster_dict=giant_rat_dict,
+        quantity=1
+    )
+    monster_list = get_list_with_quantity_of_monster_added_to_it(
+        list_to_be_returned=monster_list,
+        monster_dict=rat_dict,
+        quantity=3
+    )
+
     return monster_list
 
 def get_one_ancient_gold_dragon(
@@ -110,6 +151,7 @@ def get_technodrome_2nd_floor_west_entrance(
         string="Misc. Creature, Giant Rat",
     )[0]
 
+    #TODO: refactor this!
     monster_list = \
     [
         zombie_cat, zombie_cat, zombie_cat, zombie_cat, zombie_cat,

@@ -333,6 +333,7 @@ def update_combat_sim_cycle_combat_interface(
     This is also called "the update function" in other comment.s
     Any time I need a new GUI blurb dynamically, I usually add a new variable, and a if statement here.
 
+    :param executed_attack_bool:
     :param sorted_initiative_rolls_list:
         list of mini lists. 1st value = name, 2nd value = initiative roll (integer)
     :param user_selected_initiative_roll:
@@ -392,6 +393,7 @@ def update_combat_sim_cycle_combat_interface(
     Use the "T" button to cycle through turns once the selected one has ended. (T for turn)
     Use the LEFT arrow to go back in the menu.
 """
+    """
     print(update_combat_sim_cycle_combat_interface_start)
     print()
     list_of_parameter_vars = \
@@ -413,6 +415,7 @@ def update_combat_sim_cycle_combat_interface(
     ]
     for parameter_var in list_of_parameter_vars:
         print("\t",parameter_var[0],":",parameter_var[1])
+    """
 
     def default_detect_if_NPC_and_display_monster_if_yes():
         detect_if_NPC_and_display_monster_if_yes(
@@ -501,6 +504,7 @@ def combat_sim_cycle_combat(
 
     universal_terminal_clear()
 
+    # adding current hp to the temporary monster objects so you can change them in the GUI.
     for monster_dict in list_that_contains_dictionaries_that_are_monsters:
         """
         current hp, or hp used by the system.
@@ -749,12 +753,12 @@ def combat_sim_cycle_combat(
                         performing_heal_bool = True
                         default_input_update_combat_sim_cycle_combat_interface()
 
+            # this is the damage or healing registration menu
             elif (selected_npc_bool == False and
                   npc_interaction_menu_bool == True and
                   attack_selection_menu_bool == False and
                   (performing_damage_bool == True or
                   performing_heal_bool == True)):
-                # this is the damage or healing registration menu
 
                 # navigation
                 if keyboard.is_pressed("left"):
