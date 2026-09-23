@@ -6,6 +6,11 @@
 
 from A_GUI_programs.combat_sim.helper_functions.get_monster_list_based_on_list_of_strings_and_ints import \
     get_monster_list_based_on_list_of_strings_and_ints
+from universal_functions.display.print_2d_list_that_contains_dictionaries import \
+    print_2d_list_that_contains_dictionaries
+from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
+    get_dict_from_csv_file
+
 
 def get_monster_list(
     spreadsheet_monsters_dict_in_question
@@ -22,3 +27,17 @@ def get_monster_list(
         spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
     )
     return monster_list
+
+if __name__ == "__main__":
+    path_to_csv_file = \
+        "../../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
+    spreadsheet_monsters_dict_in_question = get_dict_from_csv_file(
+        path_to_csv_file=path_to_csv_file
+    )
+    monster_list = get_monster_list(
+        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
+    )
+    print_2d_list_that_contains_dictionaries(
+        list_dict_variable=monster_list,
+        tab_amount=""
+    )

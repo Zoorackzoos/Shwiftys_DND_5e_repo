@@ -2,7 +2,11 @@ import os
 import importlib.util
 
 
-def build_monster_lists_from_folder(folder_path, spreadsheet_monsters_dict_in_question):
+def build_monster_lists_from_folder(
+        folder_path,
+        spreadsheet_monsters_dict_in_question,
+        tab_amount=""
+):
     """
     Scans folder_path for .py files, dynamically imports each one, and calls
     its get_monster_list(spreadsheet_monsters_dict_in_question) function.
@@ -15,16 +19,20 @@ def build_monster_lists_from_folder(folder_path, spreadsheet_monsters_dict_in_qu
 
     claude made this 🥀🥀🥀
     """
+    print(tab_amount,"build_monster_lists_from_folder")
+    tab_amount += "\t"
     results = []
 
     # --- validate the folder path itself first ---
     if not os.path.exists(folder_path):
         print(f"ERROR: build_monster_lists_from_folder: path does not exist: {folder_path}")
-        return results
+        #return results
+        exit(404)
 
     if not os.path.isdir(folder_path):
         print(f"ERROR: build_monster_lists_from_folder: path is not a directory: {folder_path}")
-        return results
+        #return results
+        exit(404)
 
     for filename in os.listdir(folder_path):
         if not filename.endswith(".py"):
@@ -41,11 +49,13 @@ def build_monster_lists_from_folder(folder_path, spreadsheet_monsters_dict_in_qu
             spec.loader.exec_module(module)
         except Exception as e:
             print(f"ERROR: build_monster_lists_from_folder: failed to import {filename}: {e}")
-            continue
+            #continue
+            exit(1)
 
         if not hasattr(module, "get_monster_list"):
             print(f"ERROR: build_monster_lists_from_folder: {filename} has no get_monster_list() function, skipping.")
-            continue
+            #continue
+            exit(1)
 
         try:
             monster_list = module.get_monster_list(
@@ -53,7 +63,8 @@ def build_monster_lists_from_folder(folder_path, spreadsheet_monsters_dict_in_qu
             )
         except Exception as e:
             print(f"ERROR: build_monster_lists_from_folder: {filename}'s get_monster_list() raised an error: {e}")
-            continue
+            #continue
+            exit(1)
 
         display_name = module_name  # or derive a nicer label from the file if you prefer
         results.append([display_name, monster_list])

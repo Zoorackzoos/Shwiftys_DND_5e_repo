@@ -12,11 +12,10 @@
 
 import keyboard
 
+from A_GUI_programs.combat_sim.combat_sim_user_creates_own_monster_list import combat_sim_user_creates_own_monster_list
 from A_GUI_programs.combat_sim.helper_functions.build_monster_lists_from_folder import build_monster_lists_from_folder
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
-from universal_functions.display.print_2d_list_that_contains_dictionaries import \
-    print_2d_list_that_contains_dictionaries
 
 
 def update_monster_list_selection_screen_GUI(
@@ -107,7 +106,8 @@ def combat_sim_get_monster_list_thru_menu(
     """
 
 
-    monster_list_of_dicts_folder = "A_GUI_programs/combat_sim/monster_lists"  # wherever these files live
+    path_to_monster_list_of_dicts_folder = \
+        "monster_list_of_dicts_folder"
 
     """
     list that contains lists.
@@ -115,7 +115,7 @@ def combat_sim_get_monster_list_thru_menu(
         sub_list[1] <-- list that contains dictionaries of the monsters
     """
     list_of_monster_lists = build_monster_lists_from_folder(
-        folder_path=monster_list_of_dicts_folder,
+        folder_path=path_to_monster_list_of_dicts_folder,
         spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
     )
 
@@ -144,7 +144,11 @@ def combat_sim_get_monster_list_thru_menu(
 
     default_update_monster_list_selection_screen_GUI()
 
+    create_your_own_monster_list_bool = False
+
+    # the "are you sure" bool in teh GUI logic.
     monster_list_selection_screen_keep_going_bool = True
+
     while monster_list_selection_screen_keep_going_bool:
         event = keyboard.read_event()
         if event.event_type == keyboard.KEY_DOWN:
@@ -177,23 +181,29 @@ def combat_sim_get_monster_list_thru_menu(
                 if event.name == "left":
                     pass
                 if event.name == "right":
+                    # the last element in list_of_monster_lists
+                    # is always the "create your own monster list" option
                     if monster_selection_screen_parent_index == len(list_of_monster_lists)-1:
-                        pass
+                        create_your_own_monster_list_bool = True
                     else:
                         monster_selection_are_you_sure_menu_trigger_bool = True
                         default_update_monster_list_selection_screen_GUI()
             elif monster_selection_are_you_sure_menu_trigger_bool == True:
                 if event.name == "left":
                     monster_selection_are_you_sure_menu_trigger_bool = False
+                    create_your_own_monster_list_bool = False
                     default_update_monster_list_selection_screen_GUI()
                 if event.name == "right":
                     monster_list_selection_screen_keep_going_bool = False
-                    return_value_monster_list = list_of_monster_lists[monster_selection_screen_parent_index]
+                    if create_your_own_monster_list_bool == True:
+                        return_value_monster_list = combat_sim_user_creates_own_monster_list(
+                            spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
+                        )
+                    else:
+                        return_value_monster_list = list_of_monster_lists[monster_selection_screen_parent_index]
 
-    print_2d_list_that_contains_dictionaries(
-        list_dict_variable=return_value_monster_list[1]
-    )
     return return_value_monster_list[1]
 
 if __name__ == "__main__":
     print("hello me, meet the real me.")
+
