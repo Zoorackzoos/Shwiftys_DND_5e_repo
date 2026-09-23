@@ -3,7 +3,7 @@ from src.universal_functions.display.print_2d_list_that_contains_dictionaries im
 from src.universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import get_dict_from_csv_file
 
 
-def get_rows_from_dict_on_param_type_and_string(dict_in_question, param_type, string, tab_amount="\t"):
+def get_rows_from_dict_on_param_type_and_string(spreadsheet_monsters_dict_in_question, param_type, string, tab_amount="\t"):
     """
     everything in the .tsv and .csv spreadsheet is a string. so there's no type errors when
     i compare the string variable, and the spreadsheet's cell values.
@@ -13,7 +13,7 @@ def get_rows_from_dict_on_param_type_and_string(dict_in_question, param_type, st
 
     
 
-    :param dict_in_question:
+    :param spreadsheet_monsters_dict_in_question:
     :param param_type:
     :param string:
     :param tab_amount:
@@ -26,10 +26,10 @@ def get_rows_from_dict_on_param_type_and_string(dict_in_question, param_type, st
 
     #print(tab_amount,dict_in_question[0].keys())
     #print(tab_amount,dict_in_question[0].values())
-    for i in range(len(dict_in_question)):
-        if param_type in dict_in_question[i]:
-            if string.lower() == dict_in_question[i][param_type].lower():
-                return_rows.append(dict_in_question[i])
+    for i in range(len(spreadsheet_monsters_dict_in_question)):
+        if param_type in spreadsheet_monsters_dict_in_question[i]:
+            if string.lower() == spreadsheet_monsters_dict_in_question[i][param_type].lower():
+                return_rows.append(spreadsheet_monsters_dict_in_question[i])
 
     """
     if this wasn't here, you would be returning a blank list anyway.
@@ -56,9 +56,10 @@ if __name__ == "__main__":
     tab_amount = "\t"
     path_to_csv_file = "../../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
     monsters_all_stats_homebrew_dict = get_dict_from_csv_file(path_to_csv_file=path_to_csv_file, tab_amount=tab_amount)
-    rows_for_humanoid = get_rows_from_dict_on_param_type_and_string(dict_in_question=monsters_all_stats_homebrew_dict,
-                                                                    param_type="Type",
-                                                                    string="Humanoid",
-                                                                    tab_amount=tab_amount)
+    rows_for_humanoid = get_rows_from_dict_on_param_type_and_string(
+        spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict,
+        param_type="Type",
+        string="Humanoid",
+        tab_amount=tab_amount)
     print_2d_list_that_contains_dictionaries(list_dict_variable=rows_for_humanoid,tab_amount=tab_amount)
     print(rows_for_humanoid[0]["CR"])

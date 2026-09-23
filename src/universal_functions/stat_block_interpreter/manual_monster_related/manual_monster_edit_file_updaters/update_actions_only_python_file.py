@@ -27,7 +27,7 @@ def update_actions_only_python_file(
         tab_amount=tab_amount
     )
     legacy_monster_values = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=all_monsters_homebrew_dict,
+        spreadsheet_monsters_dict_in_question=all_monsters_homebrew_dict,
         param_type=SpreadsheetKeysEnums.NAME.value,
         string=actions_only_input_file_monster_dict[SpreadsheetKeysEnums.NAME.value],
         tab_amount=tab_amount

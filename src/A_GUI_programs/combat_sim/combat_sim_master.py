@@ -55,19 +55,19 @@ def get_default_monster_list(
         we just use list[0] to get that 1 monster.
     """
     goblin_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
+        spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict,
         param_type=SpreadsheetKeysEnums.NAME.value,
         string="goblin",
         tab_amount=""
     )
     skeleton_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
+        spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict,
         param_type=SpreadsheetKeysEnums.NAME.value,
         string="skeleton",
         tab_amount=""
     )
     chromatic_blank_young_dragon_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
+        spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict,
         param_type=SpreadsheetKeysEnums.NAME.value,
         string="Dragon, Chromatic, Black, Young",
         tab_amount=""
@@ -140,7 +140,7 @@ def combat_sim_master():
         pass
     else:
         list_that_contains_dictionaries_that_are_monsters = combat_sim_get_monster_list_thru_menu(
-            monsters_all_stats_homebrew_dict=monsters_all_stats_homebrew_dict
+            spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict
         )
         initiative_rolls_dictionary = take_initiative_roles()
 

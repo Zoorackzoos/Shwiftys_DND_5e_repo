@@ -17,6 +17,8 @@ from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from universal_functions.display.print_2d_list_that_contains_dictionaries import \
     print_2d_list_that_contains_dictionaries
+from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
+    get_dict_from_csv_file
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
     get_rows_from_dict_on_param_type_and_string
 from universal_functions.enums import spreadsheet_enums
@@ -41,147 +43,99 @@ def get_list_with_quantity_of_monster_added_to_it(
         list_to_be_returned.append( copy.deepcopy(monster_dict) )
     return list_to_be_returned
 
-def get_default_monster_list(
-    monsters_all_stats_homebrew_dict
+def get_monster_list_based_on_list_of_strings_and_ints(
+        list_of_strings_and_ints,
+        spreadsheet_monsters_dict_in_question,
+        old_monster_list=[]
 ):
-    # in case it's not obvious this returns a list with dicts in it.
-    # so that's why i have the [0] on the end
-    goblin_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Goblin"
-    )[0]
-    skeleton_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Skeleton"
-    )[0]
-    black_dragon_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Dragon, Chromatic, Black, Young"
-    )[0]
-    monster_list = \
-    [
-        goblin_dict,
-        skeleton_dict,
-        black_dragon_dict
-    ]
+     """
+
+     :param list_of_strings_and_ints:
+        this contains a list of list which is the following:
+            1. the string, ex: "Goblin"
+                a. if this is not precise or you have a overloading row in the spreadsheet for some reason. then this won't work
+            2. the quantity of the monster. ex: 2
+                a. 2 goblins.
+     :param old_monster_list:
+        just in case the user (me) wants to add monsters to a existing list instead of just using this as a one stop shop.
+     :return:
+     """
+     return_list = copy.deepcopy(old_monster_list)
+     for sub_list in list_of_strings_and_ints:
+         # reminder that this function ets multiple rows so we just get the 1st one.
+         temp_monster_dict = get_rows_from_dict_on_param_type_and_string(
+            spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question,
+            param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
+            string=sub_list[0],
+            tab_amount="\t"
+         )[0]
+         return_list = get_list_with_quantity_of_monster_added_to_it(
+             list_to_be_returned=return_list,
+             monster_dict=temp_monster_dict,
+             quantity=sub_list[1]
+         )
+     return return_list
+
+def get_default_monster_list(
+    spreadsheet_monsters_dict_in_question
+):
+    list_of_strings_and_ints = \
+        [
+            ["Goblin",1],
+            ["Skeleton",1],
+            ["Dragon, Chromatic, Black, Young",1]
+        ]
+
+    monster_list = get_monster_list_based_on_list_of_strings_and_ints(
+        list_of_strings_and_ints=list_of_strings_and_ints,
+        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
+    )
     return monster_list
 
 
 def get_one_giant_rat_and_three_small_rats(
-    monsters_all_stats_homebrew_dict
+    spreadsheet_monsters_dict_in_question
 ):
-    rat_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Misc. Creature, Rat",
-    )[0]
-    giant_rat_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Misc. Creature, Giant Rat",
-    )[0]
-
-    monster_list = \
-        [
-
-        ]
-
-    monster_list = get_list_with_quantity_of_monster_added_to_it(
-        list_to_be_returned=monster_list,
-        monster_dict=giant_rat_dict,
-        quantity=1
-    )
-    monster_list = get_list_with_quantity_of_monster_added_to_it(
-        list_to_be_returned=monster_list,
-        monster_dict=rat_dict,
-        quantity=3
+    string_and_quantity_parent_list = \
+    [
+        ["Misc. Creature, Rat",3],
+        ["Misc. Creature, Giant Rat",1]
+    ]
+    monster_list = get_monster_list_based_on_list_of_strings_and_ints(
+        list_of_strings_and_ints=string_and_quantity_parent_list,
+        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
     )
 
     return monster_list
 
 def get_one_ancient_gold_dragon(
-    monsters_all_stats_homebrew_dict
+    spreadsheet_monsters_dict_in_question
 ):
-    ancient_gold_dragon_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Dragon, Metallic, Gold, Ancient"
-    )[0]
-    monster_list = \
+    strings_and_integer_list = \
     [
-       ancient_gold_dragon_dict
+        ["Dragon, Metallic, Gold, Ancient",1]
     ]
+    monster_list = get_monster_list_based_on_list_of_strings_and_ints(
+        list_of_strings_and_ints=strings_and_integer_list,
+        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question,
+    )
     return monster_list
 
 def get_technodrome_2nd_floor_west_entrance(
-    monsters_all_stats_homebrew_dict
+    spreadsheet_monsters_dict_in_question
 ):
-    #TODO: make a macro sourcing for the code so i only have to write strings intead of createing temp vars
-    zombie_cat = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Zombie, Cat"
-    )[0]
-    goblin_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Goblin"
-    )[0]
-    rad_slime = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Slime, Rad"
-    )[0]
-    greatmaw_troll = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Troll, Greatmaw"
-    )[0]
-    chain_devil = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Devil, Chain"
-    )[0]
-    giant_rat_dict = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-        string="Misc. Creature, Giant Rat",
-    )[0]
-
-    monster_list = []
-
-    monster_list = get_list_with_quantity_of_monster_added_to_it(
-        list_to_be_returned=monster_list,
-        monster_dict=zombie_cat,
-        quantity=5
-    )
-    monster_list = get_list_with_quantity_of_monster_added_to_it(
-        list_to_be_returned=monster_list,
-        monster_dict=goblin_dict,
-        quantity=5
-    )
-    monster_list = get_list_with_quantity_of_monster_added_to_it(
-        list_to_be_returned=monster_list,
-        monster_dict=rad_slime,
-        quantity=4
-    )
-    monster_list = get_list_with_quantity_of_monster_added_to_it(
-        list_to_be_returned=monster_list,
-        monster_dict=greatmaw_troll,
-        quantity=2
-    )
-    monster_list = get_list_with_quantity_of_monster_added_to_it(
-        list_to_be_returned=monster_list,
-        monster_dict=chain_devil,
-        quantity=3
-    )
-    monster_list = get_list_with_quantity_of_monster_added_to_it(
-        list_to_be_returned=monster_list,
-        monster_dict=giant_rat_dict,
-        quantity=3
+    list_of_strings_and_ints = \
+        [
+            ["Zombie, Cat",5],
+            ["Goblin",5],
+            ["Slime, Rad",4],
+            ["Troll, Greatmaw",2],
+            ["Devil, Chain",3],
+            ["Misc. Creature, Giant Rat",3]
+        ]
+    monster_list = get_monster_list_based_on_list_of_strings_and_ints(
+        list_of_strings_and_ints=list_of_strings_and_ints,
+        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
     )
     return monster_list
 
@@ -237,10 +191,8 @@ def update_monster_list_selection_screen_GUI(
                 print(tab_amount, "  ", sub_list[0])
             sub_list_loop_index +=1
 
-
-
 def combat_sim_get_monster_list_thru_menu(
-    monsters_all_stats_homebrew_dict
+    spreadsheet_monsters_dict_in_question
 ):
     """
     1. you have pre-determined monster lists to select from
@@ -284,28 +236,29 @@ def combat_sim_get_monster_list_thru_menu(
             [
                 "default_monster_list",
                 get_default_monster_list(
-                    monsters_all_stats_homebrew_dict=monsters_all_stats_homebrew_dict
+                    spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
                 )
             ],
             [
                 "one_giant_rat_and_three_small_rats",
                 get_one_giant_rat_and_three_small_rats(
-                    monsters_all_stats_homebrew_dict=monsters_all_stats_homebrew_dict
+                    spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
                 )
             ],
             [
                 "one_ancient_gold_dragon",
                 get_one_ancient_gold_dragon(
-                    monsters_all_stats_homebrew_dict=monsters_all_stats_homebrew_dict
+                    spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
                 )
             ],
             [
                 "technodrome_2nd_floor_west_entrance",
                 get_technodrome_2nd_floor_west_entrance(
-                    monsters_all_stats_homebrew_dict=monsters_all_stats_homebrew_dict
+                    spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
                 )
             ],
-            #this is for a GUI element. it's less ad-hac code to deal with this here.
+            # this is for a GUI element. it's less ad-hac code to deal with this here.
+            # TODO: make create a list with it's import and export of the list thing.
             [
                 "!!!!! create a monster list !!!!!",
                 "ERROR: list_of_monster_lists: tried calling create a monster list string"
@@ -379,3 +332,14 @@ def combat_sim_get_monster_list_thru_menu(
         list_dict_variable=return_value_monster_list[1]
     )
     return return_value_monster_list[1]
+
+if __name__ == "__main__":
+    path_to_csv_file = "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
+    monsters_spreadsheet = get_dict_from_csv_file(
+        path_to_csv_file=path_to_csv_file,
+        tab_amount=""
+    )
+    monster_list = get_one_giant_rat_and_three_small_rats(
+        spreadsheet_monsters_dict_in_question=monsters_spreadsheet
+    )
+    print_2d_list_that_contains_dictionaries(monster_list)

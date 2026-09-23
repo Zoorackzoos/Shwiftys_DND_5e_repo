@@ -28,7 +28,7 @@ def get_random_monster_row_from_cr_lvl(cr_lvl, tab_amount="\t"):
     )
 
     list_of_monsters_with_that_cr_value = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=monster_dict,
+        spreadsheet_monsters_dict_in_question=monster_dict,
         param_type=spreadsheet_enums.SpreadsheetKeysEnums.CR.value,
         string=str(cr_lvl),
         tab_amount=tab_amount

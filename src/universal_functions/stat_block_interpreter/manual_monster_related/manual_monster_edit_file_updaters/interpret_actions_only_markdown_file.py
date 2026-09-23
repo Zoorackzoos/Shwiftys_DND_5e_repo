@@ -80,7 +80,7 @@ def interpret_actions_only_markdown_file_and_update_spreadsheet_based_on_name(
         tab_amount=tab_amount
     )
     legacy_monster_values = get_rows_from_dict_on_param_type_and_string(
-        dict_in_question=all_monsters_homebrew_dict,
+        spreadsheet_monsters_dict_in_question=all_monsters_homebrew_dict,
         param_type=SpreadsheetKeysEnums.NAME.value,
         string=smaller_input_name_only,
         tab_amount=tab_amount
