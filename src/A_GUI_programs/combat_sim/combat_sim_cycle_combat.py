@@ -392,10 +392,10 @@ def update_combat_sim_cycle_combat_interface(
         * make them heal with an integer you input.
     Use the "T" button to cycle through turns once the selected one has ended. (T for turn)
     Use the LEFT arrow to go back in the menu.
-"""
     """
     print(update_combat_sim_cycle_combat_interface_start)
-    print()
+
+    """
     list_of_parameter_vars = \
     [
         ["sorted_initiative_rolls_list",sorted_initiative_rolls_list],

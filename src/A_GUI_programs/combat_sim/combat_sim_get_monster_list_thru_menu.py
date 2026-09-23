@@ -9,135 +9,22 @@
         * make your own monster list and have it exported as a JSON file or something.
             * that means yit imports the file as well, so make a directory search system.
 """
-import copy
 
 import keyboard
 
+from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.default_monster_list import get_default_monster_list
+from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.one_anchient_gold_dragon import get_one_ancient_gold_dragon
+from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.one_giant_rat_and_three_small_rats import \
+    get_one_giant_rat_and_three_small_rats
+from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.technodrome_second_floor_west_entrance import \
+    get_technodrome_second_floor_west_entrance
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from universal_functions.display.print_2d_list_that_contains_dictionaries import \
     print_2d_list_that_contains_dictionaries
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
     get_dict_from_csv_file
-from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
-    get_rows_from_dict_on_param_type_and_string
-from universal_functions.enums import spreadsheet_enums
 
-def get_list_with_quantity_of_monster_added_to_it(
-        list_to_be_returned,
-        monster_dict,
-        quantity
-):
-    """
-    if you have dictionaries of the same name then when you edit their
-    * hp
-    * life status
-    they'll share a health pool. which is bad.
-
-    :param list_to_be_returned:
-    :param monster_dict:
-    :param quantity:
-    :return:
-    """
-    for i in range(quantity):
-        list_to_be_returned.append( copy.deepcopy(monster_dict) )
-    return list_to_be_returned
-
-def get_monster_list_based_on_list_of_strings_and_ints(
-        list_of_strings_and_ints,
-        spreadsheet_monsters_dict_in_question,
-        old_monster_list=[]
-):
-     """
-
-     :param list_of_strings_and_ints:
-        this contains a list of list which is the following:
-            1. the string, ex: "Goblin"
-                a. if this is not precise or you have a overloading row in the spreadsheet for some reason. then this won't work
-            2. the quantity of the monster. ex: 2
-                a. 2 goblins.
-     :param old_monster_list:
-        just in case the user (me) wants to add monsters to a existing list instead of just using this as a one stop shop.
-     :return:
-     """
-     return_list = copy.deepcopy(old_monster_list)
-     for sub_list in list_of_strings_and_ints:
-         # reminder that this function ets multiple rows so we just get the 1st one.
-         temp_monster_dict = get_rows_from_dict_on_param_type_and_string(
-            spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question,
-            param_type=spreadsheet_enums.SpreadsheetKeysEnums.NAME.value,
-            string=sub_list[0],
-            tab_amount="\t"
-         )[0]
-         return_list = get_list_with_quantity_of_monster_added_to_it(
-             list_to_be_returned=return_list,
-             monster_dict=temp_monster_dict,
-             quantity=sub_list[1]
-         )
-     return return_list
-
-def get_default_monster_list(
-    spreadsheet_monsters_dict_in_question
-):
-    list_of_strings_and_ints = \
-        [
-            ["Goblin",1],
-            ["Skeleton",1],
-            ["Dragon, Chromatic, Black, Young",1]
-        ]
-
-    monster_list = get_monster_list_based_on_list_of_strings_and_ints(
-        list_of_strings_and_ints=list_of_strings_and_ints,
-        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
-    )
-    return monster_list
-
-
-def get_one_giant_rat_and_three_small_rats(
-    spreadsheet_monsters_dict_in_question
-):
-    string_and_quantity_parent_list = \
-    [
-        ["Misc. Creature, Rat",3],
-        ["Misc. Creature, Giant Rat",1]
-    ]
-    monster_list = get_monster_list_based_on_list_of_strings_and_ints(
-        list_of_strings_and_ints=string_and_quantity_parent_list,
-        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
-    )
-
-    return monster_list
-
-def get_one_ancient_gold_dragon(
-    spreadsheet_monsters_dict_in_question
-):
-    strings_and_integer_list = \
-    [
-        ["Dragon, Metallic, Gold, Ancient",1]
-    ]
-    monster_list = get_monster_list_based_on_list_of_strings_and_ints(
-        list_of_strings_and_ints=strings_and_integer_list,
-        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question,
-    )
-    return monster_list
-
-def get_technodrome_2nd_floor_west_entrance(
-    spreadsheet_monsters_dict_in_question
-):
-    list_of_strings_and_ints = \
-        [
-            ["Zombie, Cat",5],
-            ["Goblin",5],
-            ["Slime, Rad",4],
-            ["Troll, Greatmaw",2],
-            ["Devil, Chain",3],
-            ["Misc. Creature, Giant Rat",3]
-        ]
-    monster_list = get_monster_list_based_on_list_of_strings_and_ints(
-        list_of_strings_and_ints=list_of_strings_and_ints,
-        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
-    )
-    return monster_list
 
 def update_monster_list_selection_screen_GUI(
     list_of_monster_lists,
@@ -253,7 +140,7 @@ def combat_sim_get_monster_list_thru_menu(
             ],
             [
                 "technodrome_2nd_floor_west_entrance",
-                get_technodrome_2nd_floor_west_entrance(
+                get_technodrome_second_floor_west_entrance(
                     spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
                 )
             ],

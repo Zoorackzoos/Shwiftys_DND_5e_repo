@@ -1,0 +1,19 @@
+from A_GUI_programs.combat_sim.get_monster_list_based_on_list_of_strings_and_ints import \
+    get_monster_list_based_on_list_of_strings_and_ints
+
+
+def get_default_monster_list(
+    spreadsheet_monsters_dict_in_question
+):
+    list_of_strings_and_ints = \
+        [
+            ["Goblin",1],
+            ["Skeleton",1],
+            ["Dragon, Chromatic, Black, Young",1]
+        ]
+
+    monster_list = get_monster_list_based_on_list_of_strings_and_ints(
+        list_of_strings_and_ints=list_of_strings_and_ints,
+        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
+    )
+    return monster_list
