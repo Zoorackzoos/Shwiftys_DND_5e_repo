@@ -1,6 +1,6 @@
 import copy
 
-from A_GUI_programs.combat_sim.get_list_with_quantity_of_monster_added_to_it import \
+from A_GUI_programs.combat_sim.helper_functions.get_list_with_quantity_of_monster_added_to_it import \
     get_list_with_quantity_of_monster_added_to_it
 from universal_functions.enums import spreadsheet_enums
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \

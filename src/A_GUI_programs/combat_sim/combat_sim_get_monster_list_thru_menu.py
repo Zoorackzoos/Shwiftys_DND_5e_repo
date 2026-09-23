@@ -12,18 +12,11 @@
 
 import keyboard
 
-from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.default_monster_list import get_default_monster_list
-from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.one_anchient_gold_dragon import get_one_ancient_gold_dragon
-from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.one_giant_rat_and_three_small_rats import \
-    get_one_giant_rat_and_three_small_rats
-from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.technodrome_second_floor_west_entrance import \
-    get_technodrome_second_floor_west_entrance
+from A_GUI_programs.combat_sim.helper_functions.build_monster_lists_from_folder import build_monster_lists_from_folder
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from universal_functions.display.print_2d_list_that_contains_dictionaries import \
     print_2d_list_that_contains_dictionaries
-from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
-    get_dict_from_csv_file
 
 
 def update_monster_list_selection_screen_GUI(
@@ -113,44 +106,26 @@ def combat_sim_get_monster_list_thru_menu(
     :return:
     """
 
+
+    monster_list_of_dicts_folder = "A_GUI_programs/combat_sim/monster_lists"  # wherever these files live
+
     """
     list that contains lists.
         sub_list[0] <-- name of the sub list
         sub_list[1] <-- list that contains dictionaries of the monsters
     """
-    list_of_monster_lists = \
+    list_of_monster_lists = build_monster_lists_from_folder(
+        folder_path=monster_list_of_dicts_folder,
+        spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
+    )
+
+    # still append special GUI-only entry manually, since it's not a real file-backed list
+    list_of_monster_lists.append(
         [
-            [
-                "default_monster_list",
-                get_default_monster_list(
-                    spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
-                )
-            ],
-            [
-                "one_giant_rat_and_three_small_rats",
-                get_one_giant_rat_and_three_small_rats(
-                    spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
-                )
-            ],
-            [
-                "one_ancient_gold_dragon",
-                get_one_ancient_gold_dragon(
-                    spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
-                )
-            ],
-            [
-                "technodrome_2nd_floor_west_entrance",
-                get_technodrome_second_floor_west_entrance(
-                    spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
-                )
-            ],
-            # this is for a GUI element. it's less ad-hac code to deal with this here.
-            # TODO: make create a list with it's import and export of the list thing.
-            [
-                "!!!!! create a monster list !!!!!",
-                "ERROR: list_of_monster_lists: tried calling create a monster list string"
-            ]
+            "!!!!! create a monster list !!!!!",
+            "ERROR: list_of_monster_lists: tried calling create a monster list string"
         ]
+    )
 
     # to keep player cursor in correct position
     monster_selection_screen_parent_index = 0
@@ -221,12 +196,4 @@ def combat_sim_get_monster_list_thru_menu(
     return return_value_monster_list[1]
 
 if __name__ == "__main__":
-    path_to_csv_file = "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
-    monsters_spreadsheet = get_dict_from_csv_file(
-        path_to_csv_file=path_to_csv_file,
-        tab_amount=""
-    )
-    monster_list = get_one_giant_rat_and_three_small_rats(
-        spreadsheet_monsters_dict_in_question=monsters_spreadsheet
-    )
-    print_2d_list_that_contains_dictionaries(monster_list)
+    print("hello me, meet the real me.")

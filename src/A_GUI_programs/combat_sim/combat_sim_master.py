@@ -30,15 +30,12 @@ the goal of this file is to:
 import time
 
 from A_GUI_programs.combat_sim.combat_sim_cycle_combat import combat_sim_cycle_combat
-from A_GUI_programs.combat_sim.combat_sim_get_monster_list_thru_menu import combat_sim_get_monster_list_thru_menu, \
-    get_default_monster_list
+from A_GUI_programs.combat_sim.combat_sim_get_monster_list_thru_menu import combat_sim_get_monster_list_thru_menu
 from A_GUI_programs.combat_sim.combat_sim_initative import take_initiative_roles
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
     get_dict_from_csv_file
-from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
-    get_rows_from_dict_on_param_type_and_string
-from universal_functions.enums.spreadsheet_enums import SpreadsheetKeysEnums
+from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.default_monster_list import get_monster_list
 
 def ask_to_run_combat_sim_master():
     print("You've ran \"combat_sim_master.py\" . Would you like to continue? (y/n)")
@@ -87,7 +84,7 @@ def combat_sim_master():
     )
 
     # also gets overwritten by combat_sim_get_monster_list_thru_menu() later.
-    list_that_contains_dictionaries_that_are_monsters = get_default_monster_list(
+    list_that_contains_dictionaries_that_are_monsters = get_monster_list(
         spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict
     )
 
