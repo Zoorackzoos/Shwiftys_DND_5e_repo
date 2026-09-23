@@ -4,10 +4,7 @@ the goal of this file is to:
    ✅ to tell you who's initiative it is
 2. ✅ take in damage against monsters and tell if they're dead or not. hp stored as a variable
 3. ✅ take in healing against monsters and tell they're new hp value. hp stored as a variable
-4. 🤙 have monster dictionaries stored in a list.
-    a. i was just speculating on how monsters would work here.
-    b. they're in a list, but like. the attack feature isn't there.
-    c. the spreadsheet would need a way to hold the action / attack information. and i'm not sure about that.
+4. ✅ have monster dictionaries stored in a list.
 5. ✅ smooth GUi interface. interaction instructions top,
    get_damage_and_chance_to_hit.py stuff middle, verbose bullshit below that.
 6. ✅ monsters can attack with accurate attack information
@@ -27,12 +24,14 @@ the goal of this file is to:
         i. is that a good idea though?
         ii. counter question, it's not lik putting each action in their separate cell is a better idea.
 11. ❌ design and implement legendary actions
-13. ❌ fix bug where if i ahve multiple monsters of the same type and try to add or take away ehalth it counts for all mosnters of that type.
+13. ✅ fix bug where if i have multiple monsters of the same type and try to add or take away health it counts for all mosnters of that type.
+14. ❌ design and implement import and export system that stores monster list of dicts in files in a directory.
 """
 import time
 
 from A_GUI_programs.combat_sim.combat_sim_cycle_combat import combat_sim_cycle_combat
-from A_GUI_programs.combat_sim.combat_sim_get_monster_list_thru_menu import combat_sim_get_monster_list_thru_menu
+from A_GUI_programs.combat_sim.combat_sim_get_monster_list_thru_menu import combat_sim_get_monster_list_thru_menu, \
+    get_default_monster_list
 from A_GUI_programs.combat_sim.combat_sim_initative import take_initiative_roles
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
@@ -40,49 +39,6 @@ from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_rows_from_dict_on_param_type_and_string import \
     get_rows_from_dict_on_param_type_and_string
 from universal_functions.enums.spreadsheet_enums import SpreadsheetKeysEnums
-
-def get_default_monster_list(
-        monsters_all_stats_homebrew_dict
-):
-    """
-    a goblin
-    a skeleton
-    a "Dragon, Chromatic, Black, Young"
-
-    the reason they're called monster_name[0] in the dictionary delcartion
-    is because this function "get_rows..." returns a list of dictionaries.
-        since my query is specific enough were it returns a list with 1 dictionary
-        we just use list[0] to get that 1 monster.
-    """
-    goblin_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
-        spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=SpreadsheetKeysEnums.NAME.value,
-        string="goblin",
-        tab_amount=""
-    )
-    skeleton_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
-        spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=SpreadsheetKeysEnums.NAME.value,
-        string="skeleton",
-        tab_amount=""
-    )
-    chromatic_blank_young_dragon_list_that_contains_dict = get_rows_from_dict_on_param_type_and_string(
-        spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict,
-        param_type=SpreadsheetKeysEnums.NAME.value,
-        string="Dragon, Chromatic, Black, Young",
-        tab_amount=""
-    )
-
-    # you'd figure i would be taught how to name variables by now but no.
-    # "fuck them kids" -every university on earth.
-    list_that_contains_dictionaries_that_are_monsters = \
-        [
-            goblin_list_that_contains_dict[0],
-            skeleton_list_that_contains_dict[0],
-            chromatic_blank_young_dragon_list_that_contains_dict[0]
-        ]
-
-    return list_that_contains_dictionaries_that_are_monsters
 
 def ask_to_run_combat_sim_master():
     print("You've ran \"combat_sim_master.py\" . Would you like to continue? (y/n)")
@@ -127,11 +83,12 @@ def combat_sim_master():
     combat_sim_cycle_combat_path_to_monsters_csv_file = \
         "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
     monsters_all_stats_homebrew_dict = get_dict_from_csv_file(
-        path_to_csv_file=combat_sim_cycle_combat_path_to_monsters_csv_file)
+        path_to_csv_file=combat_sim_cycle_combat_path_to_monsters_csv_file
+    )
 
     # also gets overwritten by combat_sim_get_monster_list_thru_menu() later.
     list_that_contains_dictionaries_that_are_monsters = get_default_monster_list(
-        monsters_all_stats_homebrew_dict=monsters_all_stats_homebrew_dict
+        spreadsheet_monsters_dict_in_question=monsters_all_stats_homebrew_dict
     )
 
     # this skips initiative and also monster selection
