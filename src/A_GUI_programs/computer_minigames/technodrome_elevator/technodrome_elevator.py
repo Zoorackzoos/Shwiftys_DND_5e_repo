@@ -315,17 +315,19 @@ def fix_your_teeth_question():
                 teeth_cleaning_context_string=teeth_cleaning_context_string
             )
         # clean the crying face
-        elif user_input == "[1][1]" and current_frame_selection == 2:
+        elif user_input == "[1][1]" and current_frame_selection == 3:
             current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(
                 current_frame_selection=current_frame_selection,
                 teeth_cleaning_context_string=teeth_cleaning_context_string
             )
         # clean the "fuck you #2"
-        elif user_input == "[1][2]" and current_frame_selection == 3:
+        elif user_input == "[1][2]" and current_frame_selection == 4:
             current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(
                 current_frame_selection=current_frame_selection,
                 teeth_cleaning_context_string=teeth_cleaning_context_string
             )
+            current_frame_selection += 1
+            continue_fixing_teeth_bool = False
 
     universal_terminal_clear()
     print("fix your teeth")
