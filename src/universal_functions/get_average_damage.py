@@ -64,10 +64,10 @@ if __name__ == "__main__":
             4 : 8,
             6 : 0,
             8 : 0,
-            10 : 0,
+            10 : 20,
             12 : 0,
-            20 : 4,
-            "constant" : 8
+            20 : 0,
+            "constant" : 0
         }
 
     average_damage = (get_average_damage
