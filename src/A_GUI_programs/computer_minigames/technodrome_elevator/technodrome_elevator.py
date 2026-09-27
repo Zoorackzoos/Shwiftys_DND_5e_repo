@@ -251,11 +251,16 @@ animation
 
     temp_user_input_loop_bool = True
     while temp_user_input_loop_bool:
-        if user_input != 1:
-            print(":-( ")
-        elif user_input == 4:
+        if user_input == "4":
             print(":-) ")
             temp_user_input_loop_bool = False
+        else:
+            # just the last frame.
+            print(list_of_technodrome_elevator_animation_minigame_frames[
+                      len(list_of_technodrome_elevator_animation_minigame_frames) - 1])
+            print(animation_question_prompt_question_and_answer_string)
+            print(":-( ")
+            user_input = input()
 
     universal_terminal_clear()
     print("starting up elevator")
