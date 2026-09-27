@@ -281,18 +281,18 @@ def fix_your_teeth_question():
 """
     You need to fix this guy's teeth. 
     input his teeth as if it were a array. so the first tooth is "[0][0]".
-    bad looking things need to be scrubed. 
-    good looking things don't need to be scrubed. and also can't be scrubed. 
-    I'm kind've stupid so don't make syntax mistakes or i won't know what you're on about.
+    bad looking things need to be scrubbed. 
+    good looking things don't need to be scrubbed. and also can't be scrubbed. 
+    I'm kind of stupid so don't make syntax mistakes or i won't know what you're on about.
 """
     teeth_cleaning_context_string = \
 """
-    use the arrow keys to bring the toothbruth back and forth to clean his teeth.
+    use the arrow keys to bring the toothbrush back and forth to clean his teeth.
 """
 
     while continue_fixing_teeth_bool:
         universal_terminal_clear()
-        print("fixing your teeth")
+        print("fix your teeth")
         print(teeth_selection_context_string)
         print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_no_cleaning[current_frame_selection])
         user_input = input()
