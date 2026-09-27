@@ -1,15 +1,12 @@
 import os
 import random
-from typing import Literal
 
 import keyboard
 
-from A_GUI_programs.computer_minigames.DMV_door_minigame.DMV_door_minigame import get_random_numbers_array
 from A_GUI_programs.computer_minigames.technodrome_elevator.animation_frames.technodrome_animation_minigame_frames import \
     list_of_technodrome_elevator_animation_minigame_frames
 from A_GUI_programs.computer_minigames.technodrome_elevator.animation_frames.technodrome_fix_your_teeth_animation_frames import \
-    list_of_technodrome_elevator_fix_your_teeth_minigame_frames_no_cleaning, \
-    list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning
+    technodrome_elevator_fix_your_teeth_frame_list, technodrome_elevator_fix_your_teeth_cleaning_frame_list
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from A_GUI_programs.wait_random_buffer import wait_random_buffer
@@ -284,6 +281,7 @@ def fix_your_teeth_question():
     bad looking things need to be scrubbed. 
     good looking things don't need to be scrubbed. and also can't be scrubbed. 
     I'm kind of stupid so don't make syntax mistakes or i won't know what you're on about.
+    you need to clean in order. becuase.
 """
     teeth_cleaning_context_string = \
 """
@@ -294,36 +292,44 @@ def fix_your_teeth_question():
         universal_terminal_clear()
         print("fix your teeth")
         print(teeth_selection_context_string)
-        print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_no_cleaning[current_frame_selection])
+        print(technodrome_elevator_fix_your_teeth_frame_list[current_frame_selection])
+
         user_input = input()
+
+        # clean "fuck you" #1
         if user_input == "[0][0]" and current_frame_selection == 0:
-            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
-                                                                                         teeth_cleaning_context_string)
-        elif user_input == "[0][2]" and current_frame_selection == 1:
-            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
-                                                                                         teeth_cleaning_context_string)
-        elif user_input == "[0][3]" and current_frame_selection == 2:
-            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
-                                                                                         teeth_cleaning_context_string)
-        elif user_input == "[0][4]" and current_frame_selection == 3:
-            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
-                                                                                     teeth_cleaning_context_string)
-        elif user_input == "[0][5]" and current_frame_selection == 4:
-            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
-                                                                                         teeth_cleaning_context_string)
-        elif user_input == "[0][6]" and current_frame_selection == 5:
-            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
-                                                                                         teeth_cleaning_context_string)
-        elif user_input == "[1][2]" and current_frame_selection == 6:
-            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
-                                                                                         teeth_cleaning_context_string)
-        elif user_input == "[1][4]" and current_frame_selection == 7:
-            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(current_frame_selection,
-                                                                                         teeth_cleaning_context_string)
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(
+                current_frame_selection=current_frame_selection,
+                teeth_cleaning_context_string=teeth_cleaning_context_string
+            )
+        # clean the middle finger
+        elif user_input == "[0][3]" and current_frame_selection == 1:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(
+                current_frame_selection=current_frame_selection,
+                teeth_cleaning_context_string=teeth_cleaning_context_string
+            )
+        # clean the "i hate you"
+        elif user_input == "[1][0]" and current_frame_selection == 2:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(
+                current_frame_selection=current_frame_selection,
+                teeth_cleaning_context_string=teeth_cleaning_context_string
+            )
+        # clean the crying face
+        elif user_input == "[1][1]" and current_frame_selection == 2:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(
+                current_frame_selection=current_frame_selection,
+                teeth_cleaning_context_string=teeth_cleaning_context_string
+            )
+        # clean the "fuck you #2"
+        elif user_input == "[1][2]" and current_frame_selection == 3:
+            current_frame_selection = initiate_cleaning_sub_minigame_and_increment_frame(
+                current_frame_selection=current_frame_selection,
+                teeth_cleaning_context_string=teeth_cleaning_context_string
+            )
 
     universal_terminal_clear()
     print("fix your teeth")
-    print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_no_cleaning[current_frame_selection])
+    print(technodrome_elevator_fix_your_teeth_frame_list[current_frame_selection])
     print("you did it.")
     print("brrrr....")
     print("lobotomzing program.")
@@ -342,7 +348,7 @@ def initiate_cleaning_sub_minigame_and_increment_frame(
 
     print("fix your teeth")
     print(teeth_cleaning_context_string)
-    print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning[current_frame_cleaning])
+    print(technodrome_elevator_fix_your_teeth_cleaning_frame_list[current_frame_cleaning])
 
     while still_cleaning_int > times_cleaned:
         event = keyboard.read_event()
@@ -350,11 +356,11 @@ def initiate_cleaning_sub_minigame_and_increment_frame(
             universal_terminal_clear()
             if event.name == "left" and current_frame_cleaning != 0:
                 current_frame_cleaning = 0
-                print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning[current_frame_cleaning])
+                print(technodrome_elevator_fix_your_teeth_cleaning_frame_list[current_frame_cleaning])
                 times_cleaned += 1
             elif event.name == "right" and current_frame_cleaning != 2:
                 current_frame_cleaning = 2
-                print(list_of_technodrome_elevator_fix_your_teeth_minigame_frames_cleaning[current_frame_cleaning])
+                print(technodrome_elevator_fix_your_teeth_cleaning_frame_list[current_frame_cleaning])
                 times_cleaned += 1
     return current_frame_selection
 
