@@ -1,20 +1,22 @@
 import random
 
+from universal_functions.enums import spreadsheet_enums
+
 staff_of_the_spire_lvl_0_cr_options = \
 [
-    0,
-    0.125,
-    0.25,
-    0.5,
-    1
+    spreadsheet_enums.CRTypeEnums.ZERO_NO_CHALLENGE.value,
+    spreadsheet_enums.CRTypeEnums.ONE_EIGHTH_VERY_WEAK.value,
+    spreadsheet_enums.CRTypeEnums.ONE_FORTH_WEAK.value,
+    spreadsheet_enums.CRTypeEnums.ONE_HALF_MINOR.value,
+    spreadsheet_enums.CRTypeEnums.ONE.value
 ]
 
 staff_of_the_spire_lvl_1_cr_options = \
 [
-    1,
-    2,
-    3,
-    4
+    spreadsheet_enums.CRTypeEnums.ONE.value,
+    spreadsheet_enums.CRTypeEnums.TWO.value,
+    spreadsheet_enums.CRTypeEnums.THREE.value,
+    spreadsheet_enums.CRTypeEnums.FOUR.value,
 ]
 
 staff_of_the_spire_options_master = \
