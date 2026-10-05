@@ -212,7 +212,7 @@ def detect_if_NPC_and_display_monster_if_yes(
                                 else:
                                     temp_action_index = 0
                                     actions_list = ast.literal_eval(
-                                        list_that_contains_dictionaries_that_are_monsters[monster_dict_index]["actions"]
+                                        list_that_contains_dictionaries_that_are_monsters[monster_dict_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value]
                                     )
                                     action_format_header, action_format_row = _build_action_row_formatter(actions_list)
                                     print("\t\t\t\t  ", action_format_header())
@@ -224,15 +224,13 @@ def detect_if_NPC_and_display_monster_if_yes(
                                             if executed_attack_bool == True:
 
                                                 # it's a martial attack. so like melee or ranged
-                                                if ((action[
-                                                         markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                if ((action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
                                                      ==
                                                      markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value)
-                                                        or
-                                                        (action[
-                                                             markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                                                         ==
-                                                         markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value)):
+                                                     or
+                                                    (action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
+                                                     ==
+                                                     markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value)):
 
                                                     chance_to_hit = "unknown"
                                                     if markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value in action:

@@ -17,6 +17,9 @@ def get_chance_to_hit(hit_modifier,tab_amount="\t"):
     print(tab_amount,"rolled_dice_to_hit =",rolled_dice_to_hit)
     print(tab_amount,"hit_modifier =",hit_modifier)
 
+    if rolled_dice_to_hit == 20 or rolled_dice_to_hit == 1:
+        return rolled_dice_to_hit
+
     #print(tab_amount,"rolled_dice_to_hit =",rolled_dice_to_hit)
     adjusted_rolled_dice_to_hit = int(rolled_dice_to_hit)+int(hit_modifier)
 
@@ -25,7 +28,10 @@ def get_chance_to_hit(hit_modifier,tab_amount="\t"):
     #print(tab_amount,"rolled_dice_to_hit + modifier =",adjusted_rolled_dice_to_hit)
     return adjusted_rolled_dice_to_hit
 
-def get_damage(damage_dice,tab_amount="\t"):
+def get_damage(
+        damage_dice,
+        tab_amount="\t"
+):
     #print(tab_amount,"get_damage")
     tab_amount += "\t"
 
@@ -50,16 +56,16 @@ def get_damage(damage_dice,tab_amount="\t"):
 if __name__ == "__main__":
     print("program started")
     tab_amount = "\t"
-    hit_modifier = 9
+    hit_modifier = 12
     oracula_dmg_dice = \
         {
             20 : 0,
             12 : 0,
             10 : 0,
-            8 : 0,
-            6 : 2,
+            8 : 3,
+            6 : 0,
             4 : 0,
-            "constant" : 5
+            "constant" : 7
         }
     chance_to_hit = get_chance_to_hit(hit_modifier=hit_modifier,tab_amount=tab_amount)
     damage = get_damage(damage_dice=oracula_dmg_dice, tab_amount=tab_amount)
