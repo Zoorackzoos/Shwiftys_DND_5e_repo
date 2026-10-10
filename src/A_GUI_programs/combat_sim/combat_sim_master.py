@@ -48,7 +48,7 @@ def ask_to_run_combat_sim_master():
         elif user_info == "n":
             print("exiting program.")
             exit(0)
-        elif user_info == "skip_i":
+        elif user_info == "skip_i" or "FUCK_YOU":
             print("you're skipping the initiative setting with default values.")
             time.sleep(0.5)
             universal_terminal_clear()

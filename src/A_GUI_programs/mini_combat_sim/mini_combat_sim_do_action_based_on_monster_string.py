@@ -35,10 +35,10 @@ def update_mini_combat_sim_GUI(
 
     gui_based_action_index = 0
     actions_list_print_handler(
-        gui_based_action_index=gui_based_action_index,
+        attack_selection_menu_index=gui_based_action_index,
         action_index=action_index,
         actions_list=actions_list,
-        selecting_action_bool=selecting_action_bool,
+        executed_attack_bool=selecting_action_bool,
         tab_amount=tab_amount
     )
 

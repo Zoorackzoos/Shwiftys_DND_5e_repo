@@ -162,15 +162,13 @@ def detect_if_NPC_and_display_monster_if_yes(
                                     print(tab_amount,"\t\t ","Either that or the data is null.")
                                     print(tab_amount,"\t\t ","Please examine the spreadsheet.")
                                 else:
-                                    temp_action_index = 0
                                     actions_list = ast.literal_eval(
                                         list_that_contains_dictionaries_that_are_monsters[monster_dict_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value]
                                     )
                                     actions_list_print_handler(
-                                        gui_based_action_index=gui_logic_interaction_menu_index,
+                                        attack_selection_menu_index=attack_selection_menu_index,
                                         actions_list=actions_list,
-                                        action_index=temp_action_index,
-                                        selecting_action_bool=executed_attack_bool,
+                                        executed_attack_bool=executed_attack_bool,
                                         tab_amount=tab_amount
                                     )
                             elif performing_damage_bool == True:
