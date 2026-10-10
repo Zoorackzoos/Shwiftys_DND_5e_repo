@@ -6,8 +6,7 @@ from pickle import EMPTY_LIST
 
 import keyboard
 
-from A_GUI_programs.combat_sim.helper_functions.get_damage_and_get_chance_to_hit import get_chance_to_hit, get_damage
-from A_GUI_programs.combat_sim.helper_functions.get_parsed_dict_from_dice_string import get_parsed_dict_from_dice_string
+from A_GUI_programs.actions_list_print_handler import actions_list_print_handler
 from A_GUI_programs.combat_sim.helper_functions.get_sorted_initiative_rolls_from_greatest_to_least import \
     get_sorted_initiative_rolls_from_greatest_to_least
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
@@ -96,54 +95,6 @@ def _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monste
 
     return format_header, format_row
 
-def _build_action_row_formatter(actions_list):
-    """
-    Scans all action dicts once and returns a function that formats a single
-    action dict into an aligned
-    "name : action_type : attack_type : hit_modifier : range : damage : damage_type"
-    row, padded to the widest value seen in each column.
-
-    claude made this
-    """
-
-    # these are all ordered in which they appear
-    columns = \
-        [
-            markdown_interpreter_related_enums.ActionKeyEnums.NAME.value,
-            markdown_interpreter_related_enums.ActionKeyEnums.ACTION_TYPE.value,
-            markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value,
-            #markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value,
-            #markdown_interpreter_related_enums.ActionKeyEnums.SAVE_DC.value,
-            #markdown_interpreter_related_enums.ActionKeyEnums.SAVE_STAT.value,
-            #markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value,
-            #markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value,
-            #markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value
-        ]
-
-    widths = {}
-    for col in columns:
-        max_width = len(col)
-        for action in actions_list:
-            """
-            this _build function doesn't discriminate in it's renderings.
-            so if a key is not present in a action which is in the columns list above.
-            the function will piss and shit itself.
-            
-            unfortunately. i ran into the issue of the GUI breaking because the text rendered was too wise.
-            """
-            if col not in action:
-                action[col] = "unknown"
-            max_width = max(max_width, len(str(action[col])))
-        widths[col] = max_width
-
-    def format_header():
-        return " : ".join(f"{col:<{widths[col]}}" for col in columns)
-
-    def format_row(action):
-        return " : ".join(f"{str(action[col]):<{widths[col]}}" for col in columns)
-
-    return format_header, format_row
-
 def detect_if_NPC_and_display_monster_if_yes(
         sub_list,
         list_that_contains_dictionaries_that_are_monsters,
@@ -156,7 +107,8 @@ def detect_if_NPC_and_display_monster_if_yes(
         damage_or_heal_integer_that_actually_a_string,
         attack_selection_menu_bool,
         attack_selection_menu_index,
-        executed_attack_bool
+        executed_attack_bool,
+        tab_amount="\t\t"
 ):
     """
     displays good or evil NPC monsters.
@@ -177,14 +129,14 @@ def detect_if_NPC_and_display_monster_if_yes(
     """
     if sub_list[0].lower() == "evil" or sub_list[0].lower() == "good":
         format_header, format_row = _build_monster_row_formatter(list_that_contains_dictionaries_that_are_monsters)
-        print("\t\t  ", format_header())
+        print(tab_amount," ", format_header())
 
         # printing the selected monster and it's buddies.
         # but NOT the available actions.
         if selected_npc_bool:
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
-                marker = "\t\t →" if monster_dict_index == selected_npc_index else "\t\t  "
+                marker = tab_amount+" →" if monster_dict_index == selected_npc_index else tab_amount+"  "
                 print(marker, format_row(monster_dict))
                 monster_dict_index += 1
 
@@ -198,116 +150,45 @@ def detect_if_NPC_and_display_monster_if_yes(
             monster_dict_index = 0
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
                 if monster_dict_index == selected_npc_index:
-                    print("\t\t →", format_row(monster_dict))
+                    print(tab_amount,"→", format_row(monster_dict))
                     gui_logic_interaction_menu_index = 0
                     for string in interaction_option_menu_string_list:
                         if gui_logic_interaction_menu_index == npc_interaction_menu_index:
-                            print("\t\t\t →", string)
+                            print(tab_amount,"\t→", string)
                             if attack_selection_menu_bool == True:
                                 if (list_that_contains_dictionaries_that_are_monsters[monster_dict_index]["actions"] == None or
                                     list_that_contains_dictionaries_that_are_monsters[monster_dict_index]["actions"] == ""):
-                                    print("\t\t\t\t  ","There are no actions this creature to preform.")
-                                    print("\t\t\t\t  ","Either that or the data is null.")
-                                    print("\t\t\t\t  ","Please examine the spreadsheet.")
+                                    print(tab_amount,"\t\t ","There are no actions this creature to preform.")
+                                    print(tab_amount,"\t\t ","Either that or the data is null.")
+                                    print(tab_amount,"\t\t ","Please examine the spreadsheet.")
                                 else:
                                     temp_action_index = 0
                                     actions_list = ast.literal_eval(
                                         list_that_contains_dictionaries_that_are_monsters[monster_dict_index][spreadsheet_enums.SpreadsheetKeysEnums.ACTIONS.value]
                                     )
-                                    action_format_header, action_format_row = _build_action_row_formatter(actions_list)
-                                    print("\t\t\t\t  ", action_format_header())
-                                    for action in actions_list:
-                                        #marker = "\t\t\t\t →" if temp_action_index == attack_selection_menu_index else "\t\t\t\t  "
-                                        #print(marker, action_format_row(action))
-                                        if temp_action_index == attack_selection_menu_index:
-                                            print("\t\t\t\t →",action_format_row(action))
-                                            if executed_attack_bool == True:
-
-                                                # it's a martial attack. so like melee or ranged
-                                                if ((action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                                                     ==
-                                                     markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value)
-                                                     or
-                                                    (action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                                                     ==
-                                                     markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value)):
-
-                                                    chance_to_hit = "unknown"
-                                                    if markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value in action:
-                                                        # pass a simple string to int conversion, into a function. to get the chance to hit
-                                                        chance_to_hit = get_chance_to_hit(
-                                                            hit_modifier=int(action[markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value])
-                                                        )
-
-                                                    damage = "unknown"
-                                                    if markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value in action:
-                                                        parsed_damage_dice_dict = get_parsed_dict_from_dice_string(
-                                                            dice_string=action[
-                                                                markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
-                                                        )
-                                                        damage = get_damage(damage_dice=parsed_damage_dice_dict)
-
-                                                    print("\t\t\t\t\t  ", "chance to hit =", chance_to_hit)
-                                                    print("\t\t\t\t\t  ", "damage =", damage)
-                                                    print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
-                                                    print("\t\t\t\t\t  ", "range =",action[markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value])
-                                                elif ( action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                                                       ==
-                                                       markdown_interpreter_related_enums.AttackTypeEnums.SAVING_THROW.value ):
-                                                    print("\t\t\t\t\t  ", "save_stat =",action[markdown_interpreter_related_enums.ActionKeyEnums.SAVE_STAT.value])
-                                                    print("\t\t\t\t\t  ", "save_dc =",action[markdown_interpreter_related_enums.ActionKeyEnums.SAVE_DC.value])
-                                                    print("\t\t\t\t\t  ", "damage =",get_damage
-                                                        (
-                                                            damage_dice=get_parsed_dict_from_dice_string
-                                                                (
-                                                                    dice_string=action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
-                                                                )
-                                                        )
-                                                    )
-                                                    print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
-                                                    print("\t\t\t\t\t  ", "range =", action[markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value])
-                                                elif (action[
-                                                          markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                                                      ==
-                                                      markdown_interpreter_related_enums.AttackTypeEnums.AUTO_HIT.value):
-                                                    print("\t\t\t\t\t  ","This is a auto-hit attack so it just hits it's target")
-                                                    print("\t\t\t\t\t  ", "damage =", get_damage
-                                                        (
-                                                            damage_dice=get_parsed_dict_from_dice_string
-                                                                (
-                                                                    dice_string=action[
-                                                                        markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
-                                                                )
-                                                        )
-                                                    )
-                                                    print("\t\t\t\t\t  ", "damage_type =", action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
-                                                    print("\t\t\t\t\t  ", "range =", action[markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value])
-                                                elif (action[
-                                                          markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                                                      ==
-                                                      markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value):
-                                                    print("\t\t\t\t\t  ","This is a utility, AKA aa trait. so there's no attack to execute.")
-                                                else:
-                                                    print("\t\t\t\t\t  ","The system cannot identify the attack_type this action has.")
-                                        else:
-                                            print("\t\t\t\t  ", action_format_row(action))
-                                        temp_action_index += 1
+                                    actions_list_print_handler(
+                                        gui_based_action_index=gui_logic_interaction_menu_index,
+                                        actions_list=actions_list,
+                                        action_index=temp_action_index,
+                                        selecting_action_bool=executed_attack_bool,
+                                        tab_amount=tab_amount
+                                    )
                             elif performing_damage_bool == True:
-                                print("\t\t\t\t →", "how much damage does", monster_dict["Name"], "take?")
-                                print("\t\t\t\t →", damage_or_heal_integer_that_actually_a_string)
+                                print(tab_amount,"\t\t→", "how much damage does", monster_dict["Name"], "take?")
+                                print(tab_amount,"\t\t→", damage_or_heal_integer_that_actually_a_string)
                             elif performing_heal_bool == True:
-                                print("\t\t\t\t →", "how much health does", monster_dict["Name"], "heal?")
-                                print("\t\t\t\t →", damage_or_heal_integer_that_actually_a_string)
+                                print(tab_amount,"\t\t→", "how much health does", monster_dict["Name"], "heal?")
+                                print(tab_amount,"\t\t→", damage_or_heal_integer_that_actually_a_string)
                         else:
-                            print("\t\t\t  ", string)
+                            print(tab_amount,"\t ", string)
                         gui_logic_interaction_menu_index += 1
                 else:
-                    print("\t\t  ", format_row(monster_dict))
+                    print(tab_amount," ", format_row(monster_dict))
                 monster_dict_index += 1
 
         else:
             for monster_dict in list_that_contains_dictionaries_that_are_monsters:
-                print("\t\t  ", format_row(monster_dict))
+                print(tab_amount," ", format_row(monster_dict))
 
 
 def update_combat_sim_cycle_combat_interface(

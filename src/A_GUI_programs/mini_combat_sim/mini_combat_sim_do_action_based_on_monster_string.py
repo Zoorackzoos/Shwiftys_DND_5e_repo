@@ -2,6 +2,7 @@ import ast
 
 import keyboard
 
+from A_GUI_programs.actions_list_print_handler import actions_list_print_handler
 from A_GUI_programs.combat_sim.helper_functions.get_damage_and_get_chance_to_hit import get_damage, get_chance_to_hit
 from A_GUI_programs.combat_sim.helper_functions.get_parsed_dict_from_dice_string import get_parsed_dict_from_dice_string
 from A_GUI_programs.confirm_quit_via_keyboard import confirm_quit_via_keyboard
@@ -32,95 +33,15 @@ def update_mini_combat_sim_GUI(
     print(tab_amount, "you need to load \"chosen_monster_string\" with a different monster string.\"")
     print()
 
-    GUI_based_action_index = 0
-    for action in actions_list:
-        if GUI_based_action_index == action_index:
-            print(tab_amount,"→ ",action)
-            if selecting_action_bool == False:
-                tab_amount += "\t"
-                # TODO: refactor this.
-                # if it's a martial attack
-                if ((action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                    ==
-                    markdown_interpreter_related_enums.AttackTypeEnums.MELEE_ATTACK.value)
-                    or
-                    (action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                     ==
-                     markdown_interpreter_related_enums.AttackTypeEnums.RANGED_ATTACK.value)):
+    gui_based_action_index = 0
+    actions_list_print_handler(
+        gui_based_action_index=gui_based_action_index,
+        action_index=action_index,
+        actions_list=actions_list,
+        selecting_action_bool=selecting_action_bool,
+        tab_amount=tab_amount
+    )
 
-                    chance_to_hit = "unknown"
-                    if markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value in action:
-                        # pass a simple string to int conversion, into a function. to get the chance to hit
-                        chance_to_hit = get_chance_to_hit(
-                            hit_modifier=int(action[markdown_interpreter_related_enums.ActionKeyEnums.HIT_MODIFIER.value]),
-                            tab_amount=tab_amount
-                        )
-
-                    damage = "unknown"
-                    if markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value in action:
-                        parsed_damage_dice_dict = get_parsed_dict_from_dice_string(
-                            dice_string=action[
-                                markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value],
-                        )
-                        damage = get_damage(
-                            damage_dice=parsed_damage_dice_dict,
-                            tab_amount=tab_amount
-                        )
-
-                    print(tab_amount,"chance to hit =", chance_to_hit)
-                    print(tab_amount,"damage =", damage)
-                    print(tab_amount,"damage_type =",action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
-                    print(tab_amount,"range =",action[markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value])
-
-                # if it's a saving throw attack
-                elif (action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                    ==
-                    markdown_interpreter_related_enums.AttackTypeEnums.SAVING_THROW.value):
-
-                    print(tab_amount,"save_stat =",action[markdown_interpreter_related_enums.ActionKeyEnums.SAVE_STAT.value])
-                    print(tab_amount,"save_dc =",action[markdown_interpreter_related_enums.ActionKeyEnums.SAVE_DC.value])
-                    print(tab_amount,"damage =", get_damage
-                            (
-                                damage_dice=get_parsed_dict_from_dice_string
-                                    (
-                                        dice_string=action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
-                                    ),
-                                tab_amount=tab_amount
-                            )
-                          )
-                    print(tab_amount,"damage_type =",action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
-                    print(tab_amount,"range =",action[markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value])
-
-                # if it's auto-hit
-                elif (action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                    ==
-                    markdown_interpreter_related_enums.AttackTypeEnums.AUTO_HIT.value):
-
-                    print(tab_amount,"This is a auto-hit attack so it just hits it's target")
-                    print(tab_amount,"damage =", get_damage
-                            (
-                                damage_dice=get_parsed_dict_from_dice_string
-                                    (
-                                    dice_string=action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE.value]
-                                    ),
-                                tab_amount=tab_amount
-                            )
-                          )
-                    print(tab_amount,"damage_type =",action[markdown_interpreter_related_enums.ActionKeyEnums.DAMAGE_TYPE.value])
-                    print(tab_amount,"range =",action[markdown_interpreter_related_enums.ActionKeyEnums.RANGE.value])
-
-                # if it's a utility / trait
-                elif (action[markdown_interpreter_related_enums.ActionKeyEnums.ATTACK_TYPE.value]
-                        ==
-                        markdown_interpreter_related_enums.AttackTypeEnums.UTILITY.value):
-
-                    print(tab_amount,"This is a utility, AKA aa trait. so there's no attack to execute.")
-
-                else:
-                    print(tab_amount,"The system cannot identify the attack_type this action has.")
-        else:
-            print(tab_amount,"  ",action)
-        GUI_based_action_index += 1
 
 def mini_combat_sim_do_action_based_on_monster_string(
         monster_string,

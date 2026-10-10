@@ -1,11 +1,16 @@
 import random
 
 
-def get_chance_to_hit(hit_modifier,tab_amount="\t"):
+def get_chance_to_hit(
+        hit_modifier=0,
+        prints_or_no_prints_bool=False,
+        tab_amount="\t"
+):
     """
     gets number from 1 to 20 (a d210)
     then adds the hit_modifier onto that number.
 
+    :param prints_or_no_prints_bool:
     :param hit_modifier:
     :param tab_amount:
     :return:
@@ -14,8 +19,9 @@ def get_chance_to_hit(hit_modifier,tab_amount="\t"):
     tab_amount += "\t"
     rolled_dice_to_hit = random.randint(1,20)
 
-    print(tab_amount,"rolled_dice_to_hit =",rolled_dice_to_hit)
-    print(tab_amount,"hit_modifier =",hit_modifier)
+    if prints_or_no_prints_bool:
+        print(tab_amount,"rolled_dice_to_hit =",rolled_dice_to_hit)
+        print(tab_amount,"hit_modifier =",hit_modifier)
 
     if rolled_dice_to_hit == 20 or rolled_dice_to_hit == 1:
         return rolled_dice_to_hit
@@ -23,7 +29,8 @@ def get_chance_to_hit(hit_modifier,tab_amount="\t"):
     #print(tab_amount,"rolled_dice_to_hit =",rolled_dice_to_hit)
     adjusted_rolled_dice_to_hit = int(rolled_dice_to_hit)+int(hit_modifier)
 
-    print(tab_amount,"adjusted_rolled_dice_to_hit =",adjusted_rolled_dice_to_hit)
+    if prints_or_no_prints_bool:
+        print(tab_amount,"adjusted_rolled_dice_to_hit =",adjusted_rolled_dice_to_hit)
 
     #print(tab_amount,"rolled_dice_to_hit + modifier =",adjusted_rolled_dice_to_hit)
     return adjusted_rolled_dice_to_hit
