@@ -203,7 +203,11 @@ def slugify_python_name(value):
     return value
 
 
-def parse_markdown_stat_block(path_to_markdown_file, tab_amount="\t"):
+def parse_markdown_stat_block(
+        path_to_markdown_file,
+        tab_amount="\t",
+        show_prints=False
+):
     """
 
 
@@ -211,11 +215,13 @@ def parse_markdown_stat_block(path_to_markdown_file, tab_amount="\t"):
     :param tab_amount:
     :return:
     """
-    print(tab_amount, "parse_markdown_stat_block")
+    if show_prints:
+        print(tab_amount, "parse_markdown_stat_block")
     tab_amount += "\t"
 
     path_to_markdown_file = Path(path_to_markdown_file)
-    print(tab_amount, "path_to_markdown_file =", path_to_markdown_file)
+    if show_prints:
+        print(tab_amount, "path_to_markdown_file =", path_to_markdown_file)
 
     if not path_to_markdown_file.exists():
         print(tab_amount, "ERROR: parse_markdown_stat_block: markdown stat block file does not exist.")
@@ -333,8 +339,13 @@ def parse_markdown_stat_block(path_to_markdown_file, tab_amount="\t"):
     return parsed_stat_block
 
 
-def get_defaulted_monster_properties(parsed_stat_block, tab_amount="\t"):
-    print(tab_amount, "get_defaulted_monster_properties")
+def get_defaulted_monster_properties(
+        parsed_stat_block,
+        tab_amount="\t",
+        show_prints=False
+):
+    if show_prints:
+        print(tab_amount, "get_defaulted_monster_properties")
     tab_amount += "\t"
 
     metadata = parsed_stat_block["metadata"]
@@ -344,7 +355,8 @@ def get_defaulted_monster_properties(parsed_stat_block, tab_amount="\t"):
     cr_inputs = parsed_stat_block["cr_inputs"]
 
     if len(parsed_stat_block["languages"]) == 0:
-        print(tab_amount, "languages header missing or empty. Defaulting to Common.")
+        if show_prints:
+            print(tab_amount, "languages header missing or empty. Defaulting to Common.")
         languages = ["common"]
     else:
         languages = parsed_stat_block["languages"]
@@ -352,7 +364,8 @@ def get_defaulted_monster_properties(parsed_stat_block, tab_amount="\t"):
     if (len(parsed_stat_block["wri"]["weak"]) == 0 and
             len(parsed_stat_block["wri"]["resistant"]) == 0 and
             len(parsed_stat_block["wri"]["immune"]) == 0):
-        print(tab_amount, "WRI missing or empty. Defaulting to None.")
+        if show_prints:
+            print(tab_amount, "WRI missing or empty. Defaulting to None.")
 
     monster_properties = {
         "name": metadata.get("name", "Unnamed Monster"),
@@ -556,8 +569,13 @@ def get_inferred_defense_counts(wri_value):
     }
 
 
-def infer_cr_helper_values_from_monster_dict(monster_dict, tab_amount="\t"):
-    print(tab_amount, "infer_cr_helper_values_from_monster_dict")
+def infer_cr_helper_values_from_monster_dict(
+        monster_dict,
+        tab_amount="\t",
+        show_prints=False,
+):
+    if show_prints == True:
+        print(tab_amount, "infer_cr_helper_values_from_monster_dict")
     tab_amount += "\t"
 
     updated_monster_dict = dict(monster_dict)
@@ -641,7 +659,8 @@ def infer_cr_helper_values_from_monster_dict(monster_dict, tab_amount="\t"):
         inferred_values[spreadsheet_enums.SpreadsheetKeysEnums.ABILITY_COUNT.value] = utility_ability_count
 
     for key, value in inferred_values.items():
-        print(tab_amount, key, "=", value)
+        if show_prints:
+            print(tab_amount, key, "=", value)
         updated_monster_dict[key] = value
 
     updated_monster_dict[spreadsheet_enums.SpreadsheetKeysEnums.CR.value] = (
@@ -651,19 +670,21 @@ def infer_cr_helper_values_from_monster_dict(monster_dict, tab_amount="\t"):
         )
     )
 
-    print(
-        tab_amount,
-        spreadsheet_enums.SpreadsheetKeysEnums.CR.value,
-        "=",
-        updated_monster_dict[spreadsheet_enums.SpreadsheetKeysEnums.CR.value]
-    )
+    if show_prints:
+        print(
+            tab_amount,
+            spreadsheet_enums.SpreadsheetKeysEnums.CR.value,
+            "=",
+            updated_monster_dict[spreadsheet_enums.SpreadsheetKeysEnums.CR.value]
+        )
 
     return updated_monster_dict
 
 
 def get_monster_properties_from_generated_monster_dict(
         monster_dict,
-        tab_amount = "\t"
+        tab_amount = "\t",
+        show_prints=False
 ):
     """
     a strong but stupid function.
@@ -676,7 +697,8 @@ def get_monster_properties_from_generated_monster_dict(
     :param monster_dict:
     :return:
     """
-    print(tab_amount,"get_monster_properties_from_generated_monster_dict")
+    if show_prints:
+        print(tab_amount,"get_monster_properties_from_generated_monster_dict")
     tab_amount += "\t"
 
     monster_properties = {
@@ -746,7 +768,7 @@ def build_python_dictionary_file_text(
     :param dict_variable_name:
     :return:
     """
-    if show_prints == True:
+    if show_prints:
         print(tab_amount,"build_python_dictionary_file_text")
     tab_amount += "\t"
 
@@ -814,7 +836,6 @@ def build_python_dictionary_file_text(
         ")",
         "from src.universal_functions.enums import spreadsheet_enums",
         "",
-        "",
         dict_variable_name + " = \\",
         "    {",
     ]
@@ -835,7 +856,6 @@ def build_python_dictionary_file_text(
     lines.append("            " + repr(monster_properties["actions"]) + ",")
     lines.append("    }")
     lines.append("")
-    lines.append("")
     lines.append('if __name__ == "__main__":')
     lines.append("    #print(\"src/universal_functions/stat_block_interpreter/temp_monster_directory/"+dict_variable_name+".py --> START from \"current file\"\")")
     lines.append("    updated_monster_dict = infer_cr_helper_values_from_monster_dict(")
@@ -844,7 +864,9 @@ def build_python_dictionary_file_text(
     lines.append("    print(")
     lines.append("        build_replacement_python_dictionary_file_text_from_monster_dict(")
     lines.append("            monster_dict=updated_monster_dict,")
-    lines.append("            dict_variable_name=" + repr(dict_variable_name))
+    lines.append("            dict_variable_name=" + repr(dict_variable_name)+",")
+    lines.append("            tab_amount=" + repr(tab_amount)+",")
+    lines.append("            show_prints='" + str(show_prints)+"'")
     lines.append("        )")
     lines.append("    )")
     lines.append("    #print(\"src/universal_functions/stat_block_interpreter/temp_monster_directory/"+dict_variable_name+".py --> END from \"current file\"\")")
@@ -878,32 +900,39 @@ def interpret_markdown_stat_block_into_python_file(
         path_to_python_file,
         dict_variable_name=None,
         generate_file=True,
-        tab_amount="\t"
+        tab_amount="\t",
+        show_prints=False
 ):
     """
 
+    :param generate_file:
+    :param show_prints:
     :param path_to_markdown_file:
     :param path_to_python_file:
     :param dict_variable_name:
     :param tab_amount:
     :return:
     """
-    print(tab_amount, "interpret_markdown_stat_block_into_python_file")
+    if show_prints:
+        print(tab_amount, "interpret_markdown_stat_block_into_python_file")
     tab_amount += "\t"
 
     parsed_stat_block = parse_markdown_stat_block(
         path_to_markdown_file=path_to_markdown_file,
-        tab_amount=tab_amount
+        tab_amount=tab_amount,
+        show_prints=show_prints
     )
 
     monster_properties = get_defaulted_monster_properties(
         parsed_stat_block=parsed_stat_block,
-        tab_amount=tab_amount
+        tab_amount=tab_amount,
+        show_prints=show_prints
     )
 
     python_file_text = build_python_dictionary_file_text(
         monster_properties=monster_properties,
-        dict_variable_name=dict_variable_name
+        dict_variable_name=dict_variable_name,
+        show_prints=show_prints
     )
 
     path_to_python_file = Path(path_to_python_file)
@@ -913,14 +942,19 @@ def interpret_markdown_stat_block_into_python_file(
         with open(path_to_python_file, "w", encoding="utf-8") as file:
             file.write(python_file_text)
 
-    print(tab_amount, "path_to_python_file =", path_to_python_file)
-    print(tab_amount, "python stat block dictionary file created")
+    if show_prints:
+        print(tab_amount, "path_to_python_file =", path_to_python_file)
+        print(tab_amount, "python stat block dictionary file created")
 
     return monster_properties
 
 if __name__ == "__main__":
     temp_monster_file_name = "Template_Monster_Parser_Trial"
+    tab_amount = "\t"
     interpret_markdown_stat_block_into_python_file(
         path_to_markdown_file="temp_monster_directory/"+temp_monster_file_name+".md",
-        path_to_python_file="temp_monster_directory/"+temp_monster_file_name+".py"
+        path_to_python_file="temp_monster_directory/"+temp_monster_file_name+".py",
+        generate_file=True,
+        tab_amount=tab_amount,
+        show_prints=True,
     )

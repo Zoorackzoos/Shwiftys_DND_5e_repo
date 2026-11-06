@@ -99,19 +99,17 @@ template_monster_parser_trial_monster_dict = \
             [{'name': 'test spark', 'action_type': 'action', 'attack_type': 'ranged_spell_attack', 'hit_modifier': 4, 'damage': '1d6 + 2', 'damage_type': 'fire', 'range': 60, 'notes': 'Link in the action name should become plain text.'}, {'name': 'bad math shove', 'action_type': 'bonus_action', 'attack_type': 'saving_throw', 'save_dc': 11, 'save_stat': 'str', 'damage': '1d4 \\- 1', 'damage_type': 'bludgeoning', 'range': 5, 'notes': 'Negative constants should not scare the parser.'}],
     }
 
-
 if __name__ == "__main__":
-    print("src/universal_functions/stat_block_interpreter/temp_monster_directory/Template_Monster_Parser_Trial.py --> START from \"current file\"")
-    tab_amount = "\t"
+    #print("src/universal_functions/stat_block_interpreter/temp_monster_directory/template_monster_parser_trial_monster_dict.py --> START from "current file"")
     updated_monster_dict = infer_cr_helper_values_from_monster_dict(
-        monster_dict=template_monster_parser_trial_monster_dict,
-        tab_amount=tab_amount
+        monster_dict=template_monster_parser_trial_monster_dict
     )
     print(
         build_replacement_python_dictionary_file_text_from_monster_dict(
             monster_dict=updated_monster_dict,
             dict_variable_name='template_monster_parser_trial_monster_dict',
-            show_prints=True
+            tab_amount='\t\t',
+            show_prints='False'
         )
     )
-    print("src/universal_functions/stat_block_interpreter/temp_monster_directory/Template_Monster_Parser_Trial.py --> END from \"current file\"")
+    #print("src/universal_functions/stat_block_interpreter/temp_monster_directory/template_monster_parser_trial_monster_dict.py --> END from "current file"")

@@ -1,9 +1,12 @@
 # =====================================================
 # D&D 5E Monster CR Calculator
 # Based on the 2014 DMG monster creation math.
+#
+# Codex originally made this file. I edited the file.
 # =====================================================
 from universal_functions.enums import spreadsheet_enums
 
+# TODO: refactor these strings to my enum system.
 CR_TABLE = [
     {"CR": 0, "hp_min": 1, "hp_max": 6, "dpr_min": 0, "dpr_max": 1, "ac": 13, "attack_bonus": 3, "save_dc": 13},
     {"CR": 0.125, "hp_min": 7, "hp_max": 35, "dpr_min": 2, "dpr_max": 3, "ac": 13, "attack_bonus": 3, "save_dc": 13},
@@ -42,7 +45,14 @@ CR_TABLE = [
 ]
 
 
-def fail_cr_calculation(error_message, tab_amount="\t"):
+def fail_cr_calculation(
+        error_message,
+        tab_amount="\t",
+        show_prints=False,
+):
+    if show_prints:
+        print(tab_amount,"fail_cr_calculation")
+    tab_amount += "\t"
     print(tab_amount, "ERROR:", error_message)
     raise SystemExit(1)
 
@@ -60,8 +70,13 @@ def get_cr_from_index(index):
     return CR_TABLE[safe_index]["CR"]
 
 
-def get_expected_values_from_cr(cr, tab_amount="\t"):
-    print(tab_amount, "get_expected_values_from_cr")
+def get_expected_values_from_cr(
+        cr,
+        tab_amount="\t",
+        show_prints=False,
+):
+    if show_prints:
+        print(tab_amount, "get_expected_values_from_cr")
 
     for row in CR_TABLE:
         if row["CR"] == cr:
@@ -69,12 +84,21 @@ def get_expected_values_from_cr(cr, tab_amount="\t"):
 
     fail_cr_calculation(
         error_message="Could not find expected values for CR " + str(cr),
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount + "\t",
+        show_prints=show_prints
     )
 
+    return None
 
-def get_defensive_cr(hit_points, tab_amount="\t"):
-    print(tab_amount, "get_defensive_cr")
+
+def get_defensive_cr(
+        hit_points,
+        tab_amount="\t",
+        show_prints=False,
+):
+    if show_prints:
+        print(tab_amount, "get_defensive_cr")
+    tab_amount += "\t"
 
     for row in CR_TABLE:
         if row["hp_min"] <= hit_points <= row["hp_max"]:
@@ -83,72 +107,109 @@ def get_defensive_cr(hit_points, tab_amount="\t"):
     if hit_points <= 0:
         fail_cr_calculation(
             error_message="Hit points must be greater than 0.",
-            tab_amount=tab_amount + "\t"
+            tab_amount=tab_amount + "\t",
+            show_prints=show_prints
         )
 
     fail_cr_calculation(
         error_message="Hit points are outside the supported CR 0-30 table: " + str(hit_points),
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount + "\t",
+        show_prints=show_prints
     )
 
 
-def get_offensive_cr(damage_per_round, tab_amount="\t"):
-    print(tab_amount, "get_offensive_cr")
+def get_offensive_cr(
+        damage_per_round,
+        tab_amount="\t",
+        show_prints=False,
+):
+    if show_prints:
+        print(tab_amount, "get_offensive_cr")
+
     tab_amount += "\t"
-    print(tab_amount,"damage_per_round:",damage_per_round)
+
+    if show_prints:
+        print(tab_amount,"damage_per_round:",damage_per_round)
 
     rounded_damage_per_round = int(damage_per_round)
 
     for row in CR_TABLE:
-        print(tab_amount,row["dpr_min"],"<=",rounded_damage_per_round,"<=",row["dpr_max"])
+        if show_prints:
+            print(tab_amount,row["dpr_min"],"<=",rounded_damage_per_round,"<=",row["dpr_max"])
         if row["dpr_min"] <= rounded_damage_per_round <= row["dpr_max"]:
-            print(tab_amount+"\t","this one :-3")
-            print(tab_amount+"\t","returning -->",row["CR"],"")
+            if show_prints:
+                print(tab_amount+"\t","this one :-3")
+                print(tab_amount+"\t","returning -->",row["CR"],"")
             return row["CR"]
 
     if rounded_damage_per_round < 0:
         fail_cr_calculation(
             error_message="Damage per round cannot be negative.",
-            tab_amount=tab_amount + "\t"
+            tab_amount=tab_amount,
+            show_prints=show_prints
         )
 
     #canary :-3
     fail_cr_calculation(
         error_message="Damage per round is outside the supported CR 0-30 table: " + str(damage_per_round),
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount,
+        show_prints=show_prints
     )
 
 
-def adjust_cr_by_stat_difference(starting_cr, actual_value, expected_value, label, tab_amount="\t"):
-    print(tab_amount, "adjust_cr_by_stat_difference")
-    print(tab_amount + "\t", "label =", label)
-    print(tab_amount + "\t", "starting_cr =", starting_cr)
-    print(tab_amount + "\t", "actual_value =", actual_value)
-    print(tab_amount + "\t", "expected_value =", expected_value)
+def adjust_cr_by_stat_difference(
+        starting_cr,
+        actual_value,
+        expected_value,
+        label,
+        tab_amount="\t",
+        show_prints=False,
+):
+    if show_prints:
+        print(tab_amount, "adjust_cr_by_stat_difference")
+
+    tab_amount += "\t"
+
+    if show_prints:
+        print(tab_amount, "label =", label)
+        print(tab_amount, "starting_cr =", starting_cr)
+        print(tab_amount, "actual_value =", actual_value)
+        print(tab_amount, "expected_value =", expected_value)
 
     difference = actual_value - expected_value
     cr_step_adjustment = int(difference / 2)
     adjusted_cr = get_cr_from_index(get_cr_index(starting_cr) + cr_step_adjustment)
 
-    print(tab_amount + "\t", "difference =", difference)
-    print(tab_amount + "\t", "cr_step_adjustment =", cr_step_adjustment)
-    print(tab_amount + "\t", "adjusted_cr =", adjusted_cr)
+    if show_prints:
+        print(tab_amount, "difference =", difference)
+        print(tab_amount, "cr_step_adjustment =", cr_step_adjustment)
+        print(tab_amount, "adjusted_cr =", adjusted_cr)
 
     return adjusted_cr
 
 
-def get_hp_multiplier_from_defenses(defensive_cr, resistance_count, immunity_count, tab_amount="\t"):
-    print(tab_amount, "get_hp_multiplier_from_defenses")
+def get_hp_multiplier_from_defenses(
+        defensive_cr,
+        resistance_count,
+        immunity_count,
+        tab_amount="\t",
+        show_prints=False,
+):
+    if show_prints:
+        print(tab_amount, "get_hp_multiplier_from_defenses")
+    tab_amount += "\t"
 
     has_resistance = resistance_count > 0
     has_immunity = immunity_count > 0
 
-    print(tab_amount + "\t", "defensive_cr =", defensive_cr)
-    print(tab_amount + "\t", "resistance_count =", resistance_count)
-    print(tab_amount + "\t", "immunity_count =", immunity_count)
+    if show_prints:
+        print(tab_amount, "defensive_cr =", defensive_cr)
+        print(tab_amount, "resistance_count =", resistance_count)
+        print(tab_amount, "immunity_count =", immunity_count)
 
     if not has_resistance and not has_immunity:
-        print(tab_amount + "\t", "hp_multiplier = 1")
+        if show_prints:
+            print(tab_amount, "hp_multiplier = 1")
         return 1
 
     if defensive_cr <= 4:
@@ -160,7 +221,8 @@ def get_hp_multiplier_from_defenses(defensive_cr, resistance_count, immunity_cou
     else:
         hp_multiplier = 1.25 if has_immunity else 1
 
-    print(tab_amount + "\t", "hp_multiplier =", hp_multiplier)
+    if show_prints:
+        print(tab_amount, "hp_multiplier =", hp_multiplier)
     return hp_multiplier
 
 
@@ -184,17 +246,31 @@ def craft_cr_from_monster_stat_block(
         bonus_action_damage=0,
         legendary_action_damage=0,
         ability_cr_weight=2,
-        tab_amount="\t"
+        tab_amount="\t",
+        show_prints=False
 ):
-    print(tab_amount, "craft_cr_from_monster_stat_block")
+    if show_prints:
+        print(tab_amount, "craft_cr_from_monster_stat_block")
     tab_amount += "\t"
 
     if hit_points <= 0:
-        fail_cr_calculation("Hit points must be greater than 0.", tab_amount)
+        fail_cr_calculation(
+            error_message="Hit points must be greater than 0.",
+            tab_amount=tab_amount,
+            show_prints=show_prints
+        )
     if armor_class <= 0:
-        fail_cr_calculation("Armor class must be greater than 0.", tab_amount)
+        fail_cr_calculation(
+            error_message="Armor class must be greater than 0.",
+            tab_amount=tab_amount,
+            show_prints=show_prints
+        )
     if average_damage < 0:
-        fail_cr_calculation("Damage per round cannot be negative.", tab_amount)
+        fail_cr_calculation(
+            error_message="Damage per round cannot be negative.",
+            tab_amount=tab_amount,
+            show_prints=show_prints
+        )
 
     original_hit_points = hit_points
     original_damage_per_round = average_damage
@@ -202,124 +278,162 @@ def craft_cr_from_monster_stat_block(
     # -------------------------------
     # Defensive CR
     # -------------------------------
-    print(tab_amount, "Defensive CR")
+    if show_prints:
+        print(tab_amount, "Defensive CR")
 
     if regeneration_per_round > 0:
-        print(tab_amount + "\t", "regeneration_per_round =", regeneration_per_round)
-        print(tab_amount + "\t", "before: hit_points =", hit_points)
+        if show_prints:
+            print(tab_amount + "\t", "regeneration_per_round =", regeneration_per_round)
+            print(tab_amount + "\t", "before: hit_points =", hit_points)
         hit_points += regeneration_per_round * 3
-        print(tab_amount + "\t", "after: hit_points =", hit_points)
+        if show_prints:
+            print(tab_amount + "\t", "after: hit_points =", hit_points)
 
     if has_flight:
-        print(tab_amount + "\t", "has_flight =", has_flight)
-        print(tab_amount + "\t", "before: hit_points =", hit_points)
+        if show_prints:
+            print(tab_amount + "\t", "has_flight =", has_flight)
+            print(tab_amount + "\t", "before: hit_points =", hit_points)
         hit_points *= 1.25
-        print(tab_amount + "\t", "after: hit_points =", hit_points)
+        if show_prints:
+            print(tab_amount + "\t", "after: hit_points =", hit_points)
 
     preliminary_defensive_cr = get_defensive_cr(
         hit_points=hit_points,
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount + "\t",
+        show_prints=show_prints
     )
-    print(tab_amount + "\t", "preliminary_defensive_cr =", preliminary_defensive_cr)
+
+    if show_prints:
+        print(tab_amount + "\t", "preliminary_defensive_cr =", preliminary_defensive_cr)
 
     hp_multiplier = get_hp_multiplier_from_defenses(
         defensive_cr=preliminary_defensive_cr,
         resistance_count=resistance_count,
         immunity_count=immunity_count,
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount + "\t",
+        show_prints=show_prints
     )
 
     if hp_multiplier != 1:
-        print(tab_amount + "\t", "before defense multiplier: hit_points =", hit_points)
+        if show_prints:
+            print(tab_amount + "\t", "before defense multiplier: hit_points =", hit_points)
         hit_points *= hp_multiplier
-        print(tab_amount + "\t", "after defense multiplier: hit_points =", hit_points)
+        if show_prints:
+            print(tab_amount + "\t", "after defense multiplier: hit_points =", hit_points)
 
     if weakness_count > 0:
-        print(tab_amount + "\t", "weakness_count =", weakness_count)
-        print(tab_amount + "\t", "before weakness adjustment: hit_points =", hit_points)
+        if show_prints:
+            print(tab_amount + "\t", "weakness_count =", weakness_count)
+            print(tab_amount + "\t", "before weakness adjustment: hit_points =", hit_points)
         hit_points *= 0.5
-        print(tab_amount + "\t", "after weakness adjustment: hit_points =", hit_points)
+        if show_prints:
+            print(tab_amount + "\t", "after weakness adjustment: hit_points =", hit_points)
 
     defensive_cr = get_defensive_cr(
         hit_points=hit_points,
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount,
+        show_prints=show_prints
     )
-    print(tab_amount + "\t", "defensive_cr_from_effective_hp =", defensive_cr)
+
+    if show_prints:
+        print(tab_amount + "\t", "defensive_cr_from_effective_hp =", defensive_cr)
 
     defensive_stats = get_expected_values_from_cr(
         cr=defensive_cr,
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount + "\t",
+        show_prints=show_prints
     )
     defensive_cr = adjust_cr_by_stat_difference(
         starting_cr=defensive_cr,
         actual_value=armor_class,
         expected_value=defensive_stats["ac"],
         label="armor_class",
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount + "\t",
+        show_prints=show_prints
     )
 
     # -------------------------------
     # Offensive CR
     # -------------------------------
-    print(tab_amount, "Offensive CR")
+    if show_prints:
+        print(tab_amount, "Offensive CR")
 
     if multiattack_count > 0:
-        print(tab_amount + "\t", "multiattack_count =", multiattack_count)
-        print(tab_amount + "\t", "before: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "multiattack_count =", multiattack_count)
+            print(tab_amount + "\t", "before: damage_per_round =", average_damage)
         average_damage *= multiattack_count
-        print(tab_amount + "\t", "after: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "after: damage_per_round =", average_damage)
 
     if recharge_damage > 0:
         recharge_dpr = recharge_damage / 3
-        print(tab_amount + "\t", "recharge_damage =", recharge_damage)
-        print(tab_amount + "\t", "recharge_dpr =", recharge_dpr)
+        if show_prints:
+            print(tab_amount + "\t", "recharge_damage =", recharge_damage)
+            print(tab_amount + "\t", "recharge_dpr =", recharge_dpr)
         average_damage += recharge_dpr
-        print(tab_amount + "\t", "after recharge: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "after recharge: damage_per_round =", average_damage)
 
     if limited_use_damage > 0:
         limited_use_dpr = limited_use_damage / 3
-        print(tab_amount + "\t", "limited_use_damage =", limited_use_damage)
-        print(tab_amount + "\t", "limited_use_dpr =", limited_use_dpr)
+        if show_prints:
+            print(tab_amount + "\t", "limited_use_damage =", limited_use_damage)
+            print(tab_amount + "\t", "limited_use_dpr =", limited_use_dpr)
         average_damage += limited_use_dpr
-        print(tab_amount + "\t", "after limited use: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "after limited use: damage_per_round =", average_damage)
 
     if bonus_action_damage > 0:
-        print(tab_amount + "\t", "bonus_action_damage =", bonus_action_damage)
+        if show_prints:
+            print(tab_amount + "\t", "bonus_action_damage =", bonus_action_damage)
         average_damage += bonus_action_damage
-        print(tab_amount + "\t", "after bonus action: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "after bonus action: damage_per_round =", average_damage)
 
     if legendary_action_damage > 0:
-        print(tab_amount + "\t", "legendary_action_damage =", legendary_action_damage)
+        if show_prints:
+            print(tab_amount + "\t", "legendary_action_damage =", legendary_action_damage)
         average_damage += legendary_action_damage
-        print(tab_amount + "\t", "after legendary action damage: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "after legendary action damage: damage_per_round =", average_damage)
     elif has_legendary_action:
-        print(tab_amount + "\t", "has_legendary_action =", has_legendary_action)
-        print(tab_amount + "\t", "before legendary action estimate: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "has_legendary_action =", has_legendary_action)
+            print(tab_amount + "\t", "before legendary action estimate: damage_per_round =", average_damage)
         average_damage *= 1.25
-        print(tab_amount + "\t", "after legendary action estimate: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "after legendary action estimate: damage_per_round =", average_damage)
 
     if ability_count > 0:
-        print(tab_amount + "\t", "ability_count =", ability_count)
-        print(tab_amount + "\t", "ability_cr_weight =", ability_cr_weight)
-        print(tab_amount + "\t", "before ability estimate: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "ability_count =", ability_count)
+            print(tab_amount + "\t", "ability_cr_weight =", ability_cr_weight)
+            print(tab_amount + "\t", "before ability estimate: damage_per_round =", average_damage)
         average_damage += ability_count * ability_cr_weight
-        print(tab_amount + "\t", "after ability estimate: damage_per_round =", average_damage)
+        if show_prints:
+            print(tab_amount + "\t", "after ability estimate: damage_per_round =", average_damage)
 
     if is_spellcaster:
-        print(tab_amount + "\t", "is_spellcaster =", is_spellcaster)
-        print(tab_amount + "\t", "No direct multiplier was applied. Put spell damage into damage_per_round or ability damage fields.")
+        if show_prints:
+            print(tab_amount + "\t", "is_spellcaster =", is_spellcaster)
+            print(tab_amount + "\t", "No direct multiplier was applied. Put spell damage into damage_per_round or ability damage fields.")
 
     offensive_cr = get_offensive_cr(
         damage_per_round=average_damage,
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount,
+        show_prints=show_prints
     )
-    print(tab_amount + "\t", "offensive_cr_from_damage =", offensive_cr)
+    if show_prints:
+        print(tab_amount + "\t", "offensive_cr_from_damage =", offensive_cr)
 
     offensive_stats = get_expected_values_from_cr(
         cr=offensive_cr,
-        tab_amount=tab_amount + "\t"
+        tab_amount=tab_amount,
+        show_prints=show_prints
     )
-    print(tab_amount + "\t", "offensive_stats =", offensive_stats)
+    if show_prints:
+        print(tab_amount + "\t", "offensive_stats =", offensive_stats)
 
     if save_dc > 0:
         offensive_cr_from_attack_bonus = adjust_cr_by_stat_difference(
@@ -327,49 +441,60 @@ def craft_cr_from_monster_stat_block(
             actual_value=attack_modifier,
             expected_value=offensive_stats["attack_bonus"],
             label="attack_bonus",
-            tab_amount=tab_amount + "\t"
+            tab_amount=tab_amount,
+            show_prints=show_prints
         )
         offensive_cr_from_save_dc = adjust_cr_by_stat_difference(
             starting_cr=offensive_cr,
             actual_value=save_dc,
             expected_value=offensive_stats["save_dc"],
             label="save_dc",
-            tab_amount=tab_amount + "\t"
+            tab_amount=tab_amount,
+            show_prints=show_prints
         )
         offensive_cr = max(offensive_cr_from_attack_bonus, offensive_cr_from_save_dc)
-        print(tab_amount + "\t", "offensive_cr uses higher attack/save result =", offensive_cr)
+        if show_prints:
+            print(tab_amount + "\t", "offensive_cr uses higher attack/save result =", offensive_cr)
     else:
         offensive_cr = adjust_cr_by_stat_difference(
             starting_cr=offensive_cr,
             actual_value=attack_modifier,
             expected_value=offensive_stats["attack_bonus"],
             label="attack_bonus",
-            tab_amount=tab_amount + "\t"
+            tab_amount=tab_amount,
+            show_prints=show_prints
         )
 
     # -------------------------------
     # Final CR
     # -------------------------------
-    print(tab_amount, "Final CR")
+    if show_prints:
+        print(tab_amount, "Final CR")
 
     defensive_index = get_cr_index(defensive_cr)
     offensive_index = get_cr_index(offensive_cr)
     final_index = (defensive_index + offensive_index) / 2
     final_cr = get_cr_from_index(final_index)
 
-    print(tab_amount + "\t", "original_hit_points =", original_hit_points)
-    print(tab_amount + "\t", "effective_hit_points =", hit_points)
-    print(tab_amount + "\t", "original_damage_per_round =", original_damage_per_round)
-    print(tab_amount + "\t", "effective_damage_per_round =", average_damage)
-    print(tab_amount + "\t", "defensive_cr =", defensive_cr)
-    print(tab_amount + "\t", "offensive_cr =", offensive_cr)
-    print(tab_amount + "\t", "final_cr =", final_cr)
+    if show_prints:
+        print(tab_amount + "\t", "original_hit_points =", original_hit_points)
+        print(tab_amount + "\t", "effective_hit_points =", hit_points)
+        print(tab_amount + "\t", "original_damage_per_round =", original_damage_per_round)
+        print(tab_amount + "\t", "effective_damage_per_round =", average_damage)
+        print(tab_amount + "\t", "defensive_cr =", defensive_cr)
+        print(tab_amount + "\t", "offensive_cr =", offensive_cr)
+        print(tab_amount + "\t", "final_cr =", final_cr)
 
     return final_cr
 
 
-def plug_monster_var_values_into_get_cr_from_monster(monster_var, tab_amount="\t"):
-    print(tab_amount, "plug_monster_var_values_into_get_cr_from_monster")
+def plug_monster_var_values_into_get_cr_from_monster(
+        monster_var,
+        tab_amount="\t",
+        show_prints=False,
+):
+    if show_prints:
+        print(tab_amount, "plug_monster_var_values_into_get_cr_from_monster")
     tab_amount += "\t"
 
     def get_monster_value(spreadsheet_key, code_key, default_value=None):
@@ -399,5 +524,6 @@ def plug_monster_var_values_into_get_cr_from_monster(monster_var, tab_amount="\t
         bonus_action_damage=get_monster_value(spreadsheet_enums.SpreadsheetKeysEnums.BONUS_ACTION_DAMAGE.value, "bonus_action_damage", 0),
         legendary_action_damage=get_monster_value(spreadsheet_enums.SpreadsheetKeysEnums.LEGENDARY_ACTION_DAMAGE.value, "legendary_action_damage", 0),
         ability_cr_weight=get_monster_value(spreadsheet_enums.SpreadsheetKeysEnums.ABILITY_CR_WEIGHT.value, "ability_cr_weight", 2),
-        tab_amount=tab_amount
+        tab_amount=tab_amount,
+        show_prints=show_prints
     )
