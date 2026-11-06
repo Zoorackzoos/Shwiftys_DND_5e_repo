@@ -1,3 +1,9 @@
+"""
+    This file was made by Codex. Or as we know it now, ChatGPT's work mode.
+        terrible marketing decision bruz.
+        how the heck do you say you used ChatGPT's coding feature? "i used codex" ez pz.
+"""
+
 import re
 from pathlib import Path
 
@@ -75,7 +81,7 @@ def normalize_key(value):
 
 def normalize_lookup(value):
     """
-    by the looks of it this is normalizing values of the keys in the markdown notation.
+    by the looks of it this is normalizing values of the keys in the Markdown notation.
     #TODO: rename this
 
     :param value:
@@ -655,17 +661,23 @@ def infer_cr_helper_values_from_monster_dict(monster_dict, tab_amount="\t"):
     return updated_monster_dict
 
 
-def get_monster_properties_from_generated_monster_dict(monster_dict):
+def get_monster_properties_from_generated_monster_dict(
+        monster_dict,
+        tab_amount = "\t"
+):
     """
     a strong but stupid function.
-    just loads all of the "code" dictionary into a "system" dictionary.
+    just loads all the "code" dictionary into a "system" dictionary.
 
-    like from our psudo monster database, into a temp variable
+    like from our sudo-monster database, into a temp variable
      that gets passed from function to function like a blunt
 
+    :param tab_amount:
     :param monster_dict:
     :return:
     """
+    print(tab_amount,"get_monster_properties_from_generated_monster_dict")
+    tab_amount += "\t"
 
     monster_properties = {
         "name": monster_dict.get(spreadsheet_enums.SpreadsheetKeysEnums.NAME.value, "Unnamed Monster"),
@@ -719,7 +731,12 @@ def get_monster_properties_from_generated_monster_dict(monster_dict):
     return monster_properties
 
 
-def build_python_dictionary_file_text(monster_properties, dict_variable_name=None):
+def build_python_dictionary_file_text(
+        monster_properties,
+        dict_variable_name=None,
+        tab_amount="\t",
+        show_prints=False,
+):
     """
     after interpret_markdown_stat_block is crafting monster_properties.
     it has to make the python file that stores the dictionary.
@@ -729,6 +746,9 @@ def build_python_dictionary_file_text(monster_properties, dict_variable_name=Non
     :param dict_variable_name:
     :return:
     """
+    if show_prints == True:
+        print(tab_amount,"build_python_dictionary_file_text")
+    tab_amount += "\t"
 
     if dict_variable_name is None:
         dict_variable_name = slugify_python_name(monster_properties["name"]) + "_monster_dict"
@@ -817,6 +837,7 @@ def build_python_dictionary_file_text(monster_properties, dict_variable_name=Non
     lines.append("")
     lines.append("")
     lines.append('if __name__ == "__main__":')
+    lines.append("    #print(\"src/universal_functions/stat_block_interpreter/temp_monster_directory/"+dict_variable_name+".py --> START from \"current file\"\")")
     lines.append("    updated_monster_dict = infer_cr_helper_values_from_monster_dict(")
     lines.append("        monster_dict=" + dict_variable_name)
     lines.append("    )")
@@ -826,12 +847,21 @@ def build_python_dictionary_file_text(monster_properties, dict_variable_name=Non
     lines.append("            dict_variable_name=" + repr(dict_variable_name))
     lines.append("        )")
     lines.append("    )")
+    lines.append("    #print(\"src/universal_functions/stat_block_interpreter/temp_monster_directory/"+dict_variable_name+".py --> END from \"current file\"\")")
     lines.append("")
 
     return "\n".join(lines)
 
 
-def build_replacement_python_dictionary_file_text_from_monster_dict(monster_dict, dict_variable_name=None):
+def build_replacement_python_dictionary_file_text_from_monster_dict(
+        monster_dict,
+        dict_variable_name=None,
+        tab_amount = "\t",
+        show_prints=False,
+):
+    if show_prints:
+        print(tab_amount,"build_replacement_python_dictionary_file_text_from_monster_dict")
+    tab_amount += "\t"
     # file dictionary --> temp variable dictionary
     monster_properties = get_monster_properties_from_generated_monster_dict(
         monster_dict=monster_dict

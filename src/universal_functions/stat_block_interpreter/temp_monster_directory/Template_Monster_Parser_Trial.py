@@ -101,12 +101,17 @@ template_monster_parser_trial_monster_dict = \
 
 
 if __name__ == "__main__":
+    print("src/universal_functions/stat_block_interpreter/temp_monster_directory/Template_Monster_Parser_Trial.py --> START from \"current file\"")
+    tab_amount = "\t"
     updated_monster_dict = infer_cr_helper_values_from_monster_dict(
-        monster_dict=template_monster_parser_trial_monster_dict
+        monster_dict=template_monster_parser_trial_monster_dict,
+        tab_amount=tab_amount
     )
     print(
         build_replacement_python_dictionary_file_text_from_monster_dict(
             monster_dict=updated_monster_dict,
-            dict_variable_name='template_monster_parser_trial_monster_dict'
+            dict_variable_name='template_monster_parser_trial_monster_dict',
+            show_prints=True
         )
     )
+    print("src/universal_functions/stat_block_interpreter/temp_monster_directory/Template_Monster_Parser_Trial.py --> END from \"current file\"")
