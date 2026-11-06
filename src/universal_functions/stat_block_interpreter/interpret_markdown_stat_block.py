@@ -889,7 +889,7 @@ def interpret_markdown_stat_block_into_python_file(
     return monster_properties
 
 if __name__ == "__main__":
-    temp_monster_file_name = "actions_only_input_file"
+    temp_monster_file_name = "Template_Monster_Parser_Trial"
     interpret_markdown_stat_block_into_python_file(
         path_to_markdown_file="temp_monster_directory/"+temp_monster_file_name+".md",
         path_to_python_file="temp_monster_directory/"+temp_monster_file_name+".py"

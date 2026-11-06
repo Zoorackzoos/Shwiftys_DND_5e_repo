@@ -63,18 +63,18 @@ def get_damage(
 if __name__ == "__main__":
     print("program started")
     tab_amount = "\t"
-    hit_modifier = 12
+    hit_modifier = 11
     oracula_dmg_dice = \
         {
             20 : 0,
             12 : 0,
             10 : 0,
-            8 : 3,
+            8 : 8,
             6 : 0,
             4 : 0,
-            "constant" : 7
+            "constant" : 10
         }
-    chance_to_hit = get_chance_to_hit(hit_modifier=hit_modifier,tab_amount=tab_amount)
+    chance_to_hit = get_chance_to_hit(hit_modifier=hit_modifier,tab_amount=tab_amount,prints_or_no_prints_bool=True)
     damage = get_damage(damage_dice=oracula_dmg_dice, tab_amount=tab_amount)
 
     print(tab_amount,"chance_to_hit =",chance_to_hit)
