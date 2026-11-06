@@ -869,6 +869,23 @@ def build_python_dictionary_file_text(
     lines.append("            show_prints='" + str(show_prints)+"'")
     lines.append("        )")
     lines.append("    )")
+    """
+    update_homebrew_monster_spreadsheet(
+        monster_dict=calculus_monster_quotient_rule_monster_dict,
+        path_to_monsters_csv_file=path_to_monsters_csv_spreadsheet_file,
+        tab_amount=tab_amount
+    )
+    """
+    lines.append("    \"\"\"")
+    lines.append("    update_homebrew_monster_spreadsheet(")
+    lines.append("        monster_dict="+repr(dict_variable_name)+",")
+    lines.append("        # this path will change based on the directory you're in. so be careful please.")
+    lines.append("        path_to_monsters_csv_file=\"../../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv\""+",")
+    lines.append("        tab_amount="+repr(tab_amount)+",")
+    lines.append("    )")
+    lines.append("    \"\"\"")
+    lines.append("    # the spreadsheet database is added within a .csv context. but in order to export it to your cloud's google sheets, we need it in a .tsv file. It's a bit regressive, but i'll fix it one day.")
+    lines.append("    #convert_monsters_all_stats_homebrew_from_csv_to_tsv()")
     lines.append("    #print(\"src/universal_functions/stat_block_interpreter/temp_monster_directory/"+dict_variable_name+".py --> END from \"current file\"\")")
     lines.append("")
 
