@@ -11,8 +11,7 @@ from src.universal_functions.stat_block_interpreter.interpret_markdown_stat_bloc
     build_replacement_python_dictionary_file_text_from_monster_dict,
     infer_cr_helper_values_from_monster_dict,
 )
-from src.universal_functions.vars import spreadsheet_enums
-
+from src.universal_functions.enums import spreadsheet_enums
 
 template_monster_parser_trial_monster_dict = \
     {

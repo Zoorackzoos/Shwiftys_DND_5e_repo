@@ -792,7 +792,7 @@ def build_python_dictionary_file_text(monster_properties, dict_variable_name=Non
         "    build_replacement_python_dictionary_file_text_from_monster_dict,",
         "    infer_cr_helper_values_from_monster_dict,",
         ")",
-        "from src.universal_functions.vars import spreadsheet_enums",
+        "from src.universal_functions.enums import spreadsheet_enums",
         "",
         "",
         dict_variable_name + " = \\",
