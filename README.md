@@ -39,10 +39,13 @@ used to calculate combat difficulty in dungeons
 ## custom monster to cr and spreadsheet pipline
 1. make stat block on google docs using the recommended template monster
 2. download stat block as .md file
-3. go to ```interpret_markdown_stat_block.py``` and code it to hook up and "dictionar-ify" your Markdown file
-   1. this will come with it's own ```if __name__ == "__main__"``` helper function that updates it's cr and cr helper values
-   2. run the file to update the CR and the CR helper values by copying and pasting it in it's own file
-4. run ```convert_csv_file_into_tsv_file.py```
+3. go to ```interpret_markdown_stat_block.py``` and code it to hook up and "dictionary-ify" your Markdown file
+   1. currently it's hooked up to "Template_Monster_Parser_Trial.md"
+   2. when you run ```interpret_markdown_stat_block.py``` the file it spits out will come with it's own ```if __name__ == "__main__"``` helper function that updates it's cr and cr helper values
+   3. run the file to update the CR and the CR helper values by copying and pasting it in it's own file
+4. now, inside that file that ```interpret_markdown_stat_block.py``` gave you, uncomment out the 2 code sections that call "update_homebrew_monster_spreadsheet" and "convert_monsters_all_stats_homebrew_from_csv_to_tsv"
+   1. update_homebrew_monster_spreadsheet updates the spreadsheet
+   2. convert_monsters_all_stats_homebrew_from_csv_to_tsv turns the spreadsheet from a csv file into a tsv file
 5. open file explorer to the .tsv file
 6. cntrl + A 
 7. cntrl + C
