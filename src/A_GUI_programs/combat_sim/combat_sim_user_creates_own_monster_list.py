@@ -43,4 +43,5 @@ def combat_sim_user_creates_own_monster_list(
 
     print("combat_sim_user_creates_own_monster_list")
     print("this feature is not implemented yet. please come back later.")
-    exit(999)
+
+    return None

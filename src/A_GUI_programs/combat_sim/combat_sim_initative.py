@@ -255,7 +255,7 @@ def take_initiative_roles():
 
             if keyboard.is_pressed("q"):
                 if confirm_quit_via_keyboard():
-                    print("\tquitting...")
+                    print("quitting...")
                     exit(0)
 
             #the arrow keys

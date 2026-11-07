@@ -48,7 +48,7 @@ CR_TABLE = [
 def fail_cr_calculation(
         error_message,
         tab_amount="\t",
-        show_prints=False,
+        show_prints=True,
 ):
     if show_prints:
         print(tab_amount,"fail_cr_calculation")
@@ -73,7 +73,7 @@ def get_cr_from_index(index):
 def get_expected_values_from_cr(
         cr,
         tab_amount="\t",
-        show_prints=False,
+        show_prints=True,
 ):
     if show_prints:
         print(tab_amount, "get_expected_values_from_cr")
@@ -94,7 +94,7 @@ def get_expected_values_from_cr(
 def get_defensive_cr(
         hit_points,
         tab_amount="\t",
-        show_prints=False,
+        show_prints=True,
 ):
     if show_prints:
         print(tab_amount, "get_defensive_cr")
@@ -121,7 +121,7 @@ def get_defensive_cr(
 def get_offensive_cr(
         damage_per_round,
         tab_amount="\t",
-        show_prints=False,
+        show_prints=True,
 ):
     if show_prints:
         print(tab_amount, "get_offensive_cr")
@@ -163,7 +163,7 @@ def adjust_cr_by_stat_difference(
         expected_value,
         label,
         tab_amount="\t",
-        show_prints=False,
+        show_prints=True,
 ):
     if show_prints:
         print(tab_amount, "adjust_cr_by_stat_difference")
@@ -193,7 +193,7 @@ def get_hp_multiplier_from_defenses(
         resistance_count,
         immunity_count,
         tab_amount="\t",
-        show_prints=False,
+        show_prints=True,
 ):
     if show_prints:
         print(tab_amount, "get_hp_multiplier_from_defenses")
@@ -247,7 +247,7 @@ def craft_cr_from_monster_stat_block(
         legendary_action_damage=0,
         ability_cr_weight=2,
         tab_amount="\t",
-        show_prints=False
+        show_prints=True
 ):
     if show_prints:
         print(tab_amount, "craft_cr_from_monster_stat_block")
@@ -491,7 +491,7 @@ def craft_cr_from_monster_stat_block(
 def plug_monster_var_values_into_get_cr_from_monster(
         monster_var,
         tab_amount="\t",
-        show_prints=False,
+        show_prints=True,
 ):
     if show_prints:
         print(tab_amount, "plug_monster_var_values_into_get_cr_from_monster")

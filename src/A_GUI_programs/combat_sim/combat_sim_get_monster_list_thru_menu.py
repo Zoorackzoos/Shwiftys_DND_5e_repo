@@ -11,6 +11,7 @@
 """
 
 import keyboard
+from sympy import true
 
 from A_GUI_programs.combat_sim.combat_sim_user_creates_own_monster_list import combat_sim_user_creates_own_monster_list
 from A_GUI_programs.combat_sim.helper_functions.build_monster_lists_from_folder import build_monster_lists_from_folder
@@ -21,7 +22,8 @@ from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 def update_monster_list_selection_screen_GUI(
     list_of_monster_lists,
     monster_selection_screen_parent_index,
-    monster_selection_are_you_sure_menu_trigger_bool
+    monster_selection_are_you_sure_menu_trigger_bool,
+    create_your_own_monster_list_bool
 ):
     """
     later on you could add a child menu index system and have it so if someone
@@ -53,16 +55,30 @@ def update_monster_list_selection_screen_GUI(
 
     sub_list_loop_index = 0
 
+    # going through the list iteratively, once we
+    # find the one the user selected, we put our → there and expand on the details.
     for sub_list in list_of_monster_lists:
         if monster_selection_are_you_sure_menu_trigger_bool:
-            if sub_list_loop_index == monster_selection_screen_parent_index:
-                print(tab_amount, "→ ", sub_list[0])
-                print(tab_amount + "\t→ ", "are you sure you want to select this monster list?")
-                for monster_dict in sub_list[1]:
-                    print(tab_amount+"\t  ",monster_dict["Name"])
+            if create_your_own_monster_list_bool == True:
+
+                if sub_list_loop_index == monster_selection_screen_parent_index:
+                    print(tab_amount, "→ ", sub_list[0])
+                    print(tab_amount + "\t→ ", "This feature isn't implemented yet. Come back later.")
+                else:
+                    print(tab_amount, "  ", sub_list[0])
+                sub_list_loop_index +=1
+
             else:
-                print(tab_amount, "  ", sub_list[0])
-            sub_list_loop_index +=1
+
+                if sub_list_loop_index == monster_selection_screen_parent_index:
+                    print(tab_amount, "→ ", sub_list[0])
+                    print(tab_amount + "\t→ ", "are you sure you want to select this monster list?")
+                    for monster_dict in sub_list[1]:
+                        print(tab_amount+"\t  ",monster_dict["Name"])
+                else:
+                    print(tab_amount, "  ", sub_list[0])
+                sub_list_loop_index +=1
+
         else:
             if sub_list_loop_index == monster_selection_screen_parent_index:
                 print(tab_amount, "→ ", sub_list[0])
@@ -132,19 +148,20 @@ def combat_sim_get_monster_list_thru_menu(
 
     monster_selection_are_you_sure_menu_trigger_bool = False
 
+    create_your_own_monster_list_bool = False
+
     def default_update_monster_list_selection_screen_GUI():
         update_monster_list_selection_screen_GUI(
             list_of_monster_lists=list_of_monster_lists,
             monster_selection_screen_parent_index=monster_selection_screen_parent_index,
-            monster_selection_are_you_sure_menu_trigger_bool=monster_selection_are_you_sure_menu_trigger_bool
+            monster_selection_are_you_sure_menu_trigger_bool=monster_selection_are_you_sure_menu_trigger_bool,
+            create_your_own_monster_list_bool=create_your_own_monster_list_bool
         )
 
     # return value :-3
     return_value_monster_list = None
 
     default_update_monster_list_selection_screen_GUI()
-
-    create_your_own_monster_list_bool = False
 
     # the "are you sure" bool in teh GUI logic.
     monster_list_selection_screen_keep_going_bool = True
@@ -168,6 +185,7 @@ def combat_sim_get_monster_list_thru_menu(
                             pass
                         else:
                             monster_selection_screen_parent_index -= 1
+                    create_your_own_monster_list_bool = False
                     default_update_monster_list_selection_screen_GUI()
 
                 if event.name == "down":
@@ -176,6 +194,7 @@ def combat_sim_get_monster_list_thru_menu(
                             pass
                         else:
                             monster_selection_screen_parent_index += 1
+                    create_your_own_monster_list_bool = False
                     default_update_monster_list_selection_screen_GUI()
 
                 if event.name == "left":
@@ -185,21 +204,29 @@ def combat_sim_get_monster_list_thru_menu(
                     # is always the "create your own monster list" option
                     if monster_selection_screen_parent_index == len(list_of_monster_lists)-1:
                         create_your_own_monster_list_bool = True
+                        monster_selection_are_you_sure_menu_trigger_bool = True
                     else:
                         monster_selection_are_you_sure_menu_trigger_bool = True
-                        default_update_monster_list_selection_screen_GUI()
+                    default_update_monster_list_selection_screen_GUI()
+
             elif monster_selection_are_you_sure_menu_trigger_bool == True:
+
                 if event.name == "left":
                     monster_selection_are_you_sure_menu_trigger_bool = False
                     create_your_own_monster_list_bool = False
                     default_update_monster_list_selection_screen_GUI()
+
                 if event.name == "right":
-                    monster_list_selection_screen_keep_going_bool = False
+
+                    # currently this 1st if statement just isn't allowed to happen by the logic.
                     if create_your_own_monster_list_bool == True:
+                        """
                         return_value_monster_list = combat_sim_user_creates_own_monster_list(
                             spreadsheet_monsters_dict_in_question=spreadsheet_monsters_dict_in_question
                         )
+                        """
                     else:
+                        monster_list_selection_screen_keep_going_bool = False
                         return_value_monster_list = list_of_monster_lists[monster_selection_screen_parent_index]
 
     return return_value_monster_list[1]

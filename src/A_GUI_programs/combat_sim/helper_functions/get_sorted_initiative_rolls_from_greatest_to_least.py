@@ -5,10 +5,18 @@ i did this in sophomore year of high school dawg i can't fumble this bad.
 import time
 from copy import deepcopy
 
+from coverage.data import sorted_lines
+
+from A_GUI_programs.combat_sim.helper_functions.get_minus_minus_and_plus_plus_available_initiative_rolls_dictionary import \
+    get_minus_minus_and_plus_plus_available_initiative_rolls_list
 from universal_functions.display.print_2d_list import print_2d_list
 
 
-def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls_list):
+def get_sorted_initiative_rolls_from_greatest_to_least(
+        unsorted_initiative_rolls_list,
+        tab_amount="\t",
+        show_prints=True
+):
     """
     sorts the unsorted_initiative_rolls_list and returns the sorted initiative rolls.. list
 
@@ -56,15 +64,55 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
             is very difficult in python for some reason.
                 the muscle memory is failing.
 
+    :param show_prints:
+    :param tab_amount:
     :param unsorted_initiative_rolls_list:
     :return:
     """
-    print("get_sorted_initiative_rolls_from_greatest_to_least")
-    tab_amount = "\t"
+    if show_prints:
+        print(tab_amount,"get_sorted_initiative_rolls_from_greatest_to_least")
+    tab_amount += "\t"
+
+    """
+    # sort initiative roles based from first to last. 20 means first 1 means last.
+    #   to do this i'm going to have 'the structure that contains this' to be:
+    #   a list
+    #   that contains lists 
+    #       with the 1st value in the sub-list be the PC / NPC's name
+    #       the 2nd will be their roll (integer)
+    """
     sorted_initiative_rolls_list = deepcopy(unsorted_initiative_rolls_list)
 
+    if show_prints:
+        print(tab_amount,"sorted_initiative_rolls_list = ",sorted_initiative_rolls_list)
+
+    decimalify_the_sorted_initiative_rolls_list_bool = False
+    for sublist in sorted_initiative_rolls_list:
+        # if we had a roll off...
+        if sublist[1][-2:] == "--" or sublist[1][-2:] == "++":
+            #...rewrite the sorted_intiative_rolls_list to be decimals instead.
+            decimalify_the_sorted_initiative_rolls_list_bool = True
+            break
+
+    if show_prints:
+        print(tab_amount,"decimalify_the_sorted_initiative_rolls_list_bool = ",decimalify_the_sorted_initiative_rolls_list_bool)
+
+    if decimalify_the_sorted_initiative_rolls_list_bool:
+        decimalified_sorted_initiative_rolls_list = []
+        for sublist in sorted_initiative_rolls_list:
+            if sublist[1] is not None:
+                if sublist[1][-2:] == "--":
+                    decimalified_sorted_initiative_rolls_list.append([sublist[0], float(sublist[1][:-2]) + 0.25])
+                elif sublist[1][-2:] == "++":
+                    decimalified_sorted_initiative_rolls_list.append([sublist[0], float(sublist[1][:-2]) + 0.75])
+                else:
+                    decimalified_sorted_initiative_rolls_list.append([sublist[0],float(sublist[1])])
+            else:
+                # this is just None :-/
+                decimalified_sorted_initiative_rolls_list.append([sublist[0], sublist[1]])
+        sorted_initiative_rolls_list = deepcopy(decimalified_sorted_initiative_rolls_list)
+
     i = 0
-    j = 0
 
     """
     completely geeked if i should have had a - 1 on this or not.
@@ -83,7 +131,6 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
         # after the greatest value is found, we don't want the slot 0 to be slot 1 again.
         j = i
         while j < length_of_unsorted_initiative_rolls_list:
-
 
             #debug / display
             print(tab_amount,num_of_times_iterated)
@@ -197,4 +244,38 @@ def get_sorted_initiative_rolls_from_greatest_to_least(unsorted_initiative_rolls
     print_2d_list(list_in_question=sorted_initiative_rolls_list, tab_amount="\t\t")
     time.sleep(1)  # this "hey i did it :DDD" text will be pasted over by another function anyway.
 
-    return sorted_initiative_rolls_list
+    """
+    for the 11++ and 11-- roll of rule we have. 
+    i have to convert it from 11++ --> 11.75 --> 11++
+    i do the 1st conversion in combat_sim_initaitve.
+    this function call is the conversion back.
+        kinda munted but it's either this or like a table lookup.
+    """
+    print(tab_amount,"sorted_initiative_rolls_list =")
+    print(tab_amount+"\t",sorted_initiative_rolls_list)
+
+    plus_plus_and_minus_minus_compliant_sorted_initiative_rolls_dictionary = (
+        get_minus_minus_and_plus_plus_available_initiative_rolls_list(
+            sorted_initiative_rolls_list=sorted_initiative_rolls_list,
+            show_prints=show_prints,
+            tab_amount=tab_amount
+    ))
+
+    print(tab_amount,"plus_plus_and_minus_minus_compliant_sorted_initiative_rolls_dictionary =")
+    print(tab_amount+"\t",plus_plus_and_minus_minus_compliant_sorted_initiative_rolls_dictionary)
+
+    return plus_plus_and_minus_minus_compliant_sorted_initiative_rolls_dictionary
+
+if __name__ == "__main__":
+    initiative_rolls_unsorted = \
+    [
+        ["player 1", "11--"],
+        ["player 2", "11++"],
+        ["player 3", "9"],
+        ["player 4", "12"],
+    ]
+    get_sorted_initiative_rolls_from_greatest_to_least(
+        unsorted_initiative_rolls_list=initiative_rolls_unsorted,
+        show_prints=True,
+        tab_amount=""
+    )

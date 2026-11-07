@@ -110,7 +110,7 @@ if __name__ == "__main__":
             monster_dict=updated_monster_dict,
             dict_variable_name="'Template Monster, Parser Trial'",
             tab_amount='\t\t',
-            show_prints='True'
+            show_prints=True
         )
     )
     update_homebrew_monster_spreadsheet(

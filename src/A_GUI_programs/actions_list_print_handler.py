@@ -1,5 +1,3 @@
-from kivymd.tools.patterns.create_project import temp_main
-
 from A_GUI_programs.combat_sim.helper_functions.get_damage_and_get_chance_to_hit import get_chance_to_hit, get_damage
 from A_GUI_programs.combat_sim.helper_functions.get_parsed_dict_from_dice_string import get_parsed_dict_from_dice_string
 from universal_functions.enums import markdown_interpreter_related_enums

@@ -32,10 +32,11 @@ import time
 from A_GUI_programs.combat_sim.combat_sim_cycle_combat import combat_sim_cycle_combat
 from A_GUI_programs.combat_sim.combat_sim_get_monster_list_thru_menu import combat_sim_get_monster_list_thru_menu
 from A_GUI_programs.combat_sim.combat_sim_initative import take_initiative_roles
+from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.default_monster_list import get_monster_list
 from A_GUI_programs.universal_terminal_clear import universal_terminal_clear
 from universal_functions.spreadsheet_stuff.dict_based_database_interpretors.get_dict_from_csv_file import \
     get_dict_from_csv_file
-from A_GUI_programs.combat_sim.monster_list_of_dicts_folder.default_monster_list import get_monster_list
+
 
 def ask_to_run_combat_sim_master():
     print("You've ran \"combat_sim_master.py\" . Would you like to continue? (y/n)")
@@ -62,6 +63,9 @@ def ask_to_run_combat_sim_master():
     return None
 
 def combat_sim_master():
+    tab_amount = "\t"
+    show_prints = True
+
     universal_terminal_clear()
     possible_skip_code = ask_to_run_combat_sim_master()
 
@@ -80,7 +84,8 @@ def combat_sim_master():
     combat_sim_cycle_combat_path_to_monsters_csv_file = \
         "../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv"
     monsters_all_stats_homebrew_dict = get_dict_from_csv_file(
-        path_to_csv_file=combat_sim_cycle_combat_path_to_monsters_csv_file
+        path_to_csv_file=combat_sim_cycle_combat_path_to_monsters_csv_file,
+        tab_amount=tab_amount
     )
 
     # also gets overwritten by combat_sim_get_monster_list_thru_menu() later.
@@ -100,7 +105,9 @@ def combat_sim_master():
 
     combat_sim_cycle_combat(
         initiative_rolls_dictionary=initiative_rolls_dictionary,
-        list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters
+        list_that_contains_dictionaries_that_are_monsters=list_that_contains_dictionaries_that_are_monsters,
+        show_prints=show_prints,
+        tab_amount=tab_amount
     )
 
 if __name__ == "__main__":

@@ -344,7 +344,9 @@ def update_combat_sim_cycle_combat_interface(
 
 def combat_sim_cycle_combat(
         initiative_rolls_dictionary,
-        list_that_contains_dictionaries_that_are_monsters
+        list_that_contains_dictionaries_that_are_monsters,
+        show_prints=True,
+        tab_amount="\t"
 ):
     if initiative_rolls_dictionary is None:
         exit("ERROR: combat_sim_cycle_combat: initative_roles_dict is None.")
@@ -376,7 +378,9 @@ def combat_sim_cycle_combat(
     with open(log_file_path, "w") as log_file:
         with contextlib.redirect_stdout(log_file):
             sorted_initiative_rolls_list = get_sorted_initiative_rolls_from_greatest_to_least(
-                unsorted_initiative_rolls_list=unsorted_initiative_rolls_list
+                unsorted_initiative_rolls_list=unsorted_initiative_rolls_list,
+                show_prints=show_prints,
+                tab_amount=tab_amount,
             )
 
     universal_terminal_clear()
