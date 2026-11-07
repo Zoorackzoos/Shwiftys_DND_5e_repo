@@ -89,10 +89,11 @@ def get_sorted_initiative_rolls_from_greatest_to_least(
     decimalify_the_sorted_initiative_rolls_list_bool = False
     for sublist in sorted_initiative_rolls_list:
         # if we had a roll off...
-        if sublist[1][-2:] == "--" or sublist[1][-2:] == "++":
-            #...rewrite the sorted_intiative_rolls_list to be decimals instead.
-            decimalify_the_sorted_initiative_rolls_list_bool = True
-            break
+        if sublist[1] is not None:
+            if sublist[1][-2:] == "--" or sublist[1][-2:] == "++":
+                #...rewrite the sorted_intiative_rolls_list to be decimals instead.
+                decimalify_the_sorted_initiative_rolls_list_bool = True
+                break
 
     if show_prints:
         print(tab_amount,"decimalify_the_sorted_initiative_rolls_list_bool = ",decimalify_the_sorted_initiative_rolls_list_bool)

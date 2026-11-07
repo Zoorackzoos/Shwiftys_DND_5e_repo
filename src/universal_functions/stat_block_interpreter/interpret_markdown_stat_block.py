@@ -694,6 +694,7 @@ def get_monster_properties_from_generated_monster_dict(
     like from our sudo-monster database, into a temp variable
      that gets passed from function to function like a blunt
 
+    :param show_prints:
     :param tab_amount:
     :param monster_dict:
     :return:
@@ -839,6 +840,8 @@ def build_python_dictionary_file_text(
         ")",
         "from src.universal_functions.enums import spreadsheet_enums",
         "from update_homebrew_monster_spreadsheet import update_homebrew_monster_spreadsheet",
+        "from universal_functions.spreadsheet_stuff.convert_csv_file_into_tsv_file import convert_monsters_all_stats_homebrew_from_csv_to_tsv"
+        "",
         "",
         dict_variable_name + " = \\",
         "    {",
@@ -863,14 +866,16 @@ def build_python_dictionary_file_text(
     lines.append('if __name__ == "__main__":')
     lines.append("    #print(\"src/universal_functions/stat_block_interpreter/temp_monster_directory/"+dict_variable_name+".py --> START from \"current file\"\")")
     lines.append("    updated_monster_dict = infer_cr_helper_values_from_monster_dict(")
-    lines.append("        monster_dict=" + dict_variable_name)
+    lines.append("        monster_dict=" + dict_variable_name+",")
+    lines.append("        tab_amount=" + repr(tab_amount)+",")
+    lines.append("        show_prints= False")
     lines.append("    )")
     lines.append("    print(")
     lines.append("        build_replacement_python_dictionary_file_text_from_monster_dict(")
     lines.append("            monster_dict=updated_monster_dict,")
     lines.append("            dict_variable_name=" + repr(get_monster_value_expression("name", monster_properties["name"]))+",")
     lines.append("            tab_amount=" + repr(tab_amount)+",")
-    lines.append("            show_prints='" + str(show_prints)+"'")
+    lines.append("            show_prints= False")
     lines.append("        )")
     lines.append("    )")
     lines.append("    \"\"\"")
@@ -893,8 +898,16 @@ def build_replacement_python_dictionary_file_text_from_monster_dict(
         monster_dict,
         dict_variable_name=None,
         tab_amount = "\t",
-        show_prints=True,
+        show_prints=False,
 ):
+    """
+
+    :param monster_dict:
+    :param dict_variable_name:
+    :param tab_amount:
+    :param show_prints:
+    :return:
+    """
     if show_prints:
         print(tab_amount,"build_replacement_python_dictionary_file_text_from_monster_dict")
     tab_amount += "\t"

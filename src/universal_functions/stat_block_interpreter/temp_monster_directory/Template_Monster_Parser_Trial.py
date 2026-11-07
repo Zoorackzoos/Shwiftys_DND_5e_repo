@@ -13,6 +13,7 @@ from src.universal_functions.stat_block_interpreter.interpret_markdown_stat_bloc
 )
 from src.universal_functions.enums import spreadsheet_enums
 from update_homebrew_monster_spreadsheet import update_homebrew_monster_spreadsheet
+from universal_functions.spreadsheet_stuff.convert_csv_file_into_tsv_file import convert_monsters_all_stats_homebrew_from_csv_to_tsv
 
 template_monster_parser_trial_monster_dict = \
     {
@@ -103,22 +104,26 @@ template_monster_parser_trial_monster_dict = \
 if __name__ == "__main__":
     #print("src/universal_functions/stat_block_interpreter/temp_monster_directory/template_monster_parser_trial_monster_dict.py --> START from "current file"")
     updated_monster_dict = infer_cr_helper_values_from_monster_dict(
-        monster_dict=template_monster_parser_trial_monster_dict
+        monster_dict=template_monster_parser_trial_monster_dict,
+        tab_amount='\t\t',
+        show_prints= False
     )
     print(
         build_replacement_python_dictionary_file_text_from_monster_dict(
             monster_dict=updated_monster_dict,
             dict_variable_name="'Template Monster, Parser Trial'",
             tab_amount='\t\t',
-            show_prints=True
+            show_prints= False
         )
     )
+    """
     update_homebrew_monster_spreadsheet(
         monster_dict=template_monster_parser_trial_monster_dict,
         # this path will change based on the directory you're in. so be careful please.
         path_to_monsters_csv_file="../../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv",
         tab_amount='\t\t',
     )
+    """
     # the spreadsheet database is added within a .csv context. but in order to export it to your cloud's google sheets, we need it in a .tsv file. It's a bit regressive, but i'll fix it one day.
     #convert_monsters_all_stats_homebrew_from_csv_to_tsv()
     #print("src/universal_functions/stat_block_interpreter/temp_monster_directory/template_monster_parser_trial_monster_dict.py --> END from "current file"")
