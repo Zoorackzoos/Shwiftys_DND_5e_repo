@@ -835,6 +835,7 @@ def build_python_dictionary_file_text(
         "    infer_cr_helper_values_from_monster_dict,",
         ")",
         "from src.universal_functions.enums import spreadsheet_enums",
+        "from update_homebrew_monster_spreadsheet import update_homebrew_monster_spreadsheet",
         "",
         dict_variable_name + " = \\",
         "    {",
@@ -864,21 +865,14 @@ def build_python_dictionary_file_text(
     lines.append("    print(")
     lines.append("        build_replacement_python_dictionary_file_text_from_monster_dict(")
     lines.append("            monster_dict=updated_monster_dict,")
-    lines.append("            dict_variable_name=" + repr(dict_variable_name)+",")
+    lines.append("            dict_variable_name=" + repr(get_monster_value_expression("name", monster_properties["name"]))+",")
     lines.append("            tab_amount=" + repr(tab_amount)+",")
     lines.append("            show_prints='" + str(show_prints)+"'")
     lines.append("        )")
     lines.append("    )")
-    """
-    update_homebrew_monster_spreadsheet(
-        monster_dict=calculus_monster_quotient_rule_monster_dict,
-        path_to_monsters_csv_file=path_to_monsters_csv_spreadsheet_file,
-        tab_amount=tab_amount
-    )
-    """
     lines.append("    \"\"\"")
     lines.append("    update_homebrew_monster_spreadsheet(")
-    lines.append("        monster_dict="+repr(dict_variable_name)+",")
+    lines.append("        monster_dict="+dict_variable_name+",")
     lines.append("        # this path will change based on the directory you're in. so be careful please.")
     lines.append("        path_to_monsters_csv_file=\"../../../../sheets/monsters_all_stats_homebrew/monsters_all_stats_homebrew.csv\""+",")
     lines.append("        tab_amount="+repr(tab_amount)+",")
