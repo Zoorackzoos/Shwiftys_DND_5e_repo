@@ -52,15 +52,15 @@ template_monster_parser_trial_monster_dict = \
         spreadsheet_enums.SpreadsheetKeysEnums.CHA.value :
             4,
         spreadsheet_enums.SpreadsheetKeysEnums.SAVING_THROWS.value :
-            ", ".join([spreadsheet_enums.SavingThrowsEnums.STR.value, spreadsheet_enums.SavingThrowsEnums.DEX.value]),
+            'STR, DEX',
         spreadsheet_enums.SpreadsheetKeysEnums.SKILLS.value :
-            ", ".join([spreadsheet_enums.SkillsEnums.STEALTH.value, spreadsheet_enums.SkillsEnums.HISTORY.value]),
+            'Stealth, History',
         spreadsheet_enums.SpreadsheetKeysEnums.WEAKNESSES_RESISTANCES_AND_IMMUNITIES.value :
-            ", ".join([spreadsheet_enums.WRIEnums.RADIANT_WEAKNESS.value, spreadsheet_enums.WRIEnums.FIRE_RESISTANT.value, spreadsheet_enums.WRIEnums.NECROTIC_RESISTANT.value, spreadsheet_enums.WRIEnums.POISON_IMMUNE.value]),
+            'Radiantweak, Fireres, Necroticres, Poisonimmu',
         spreadsheet_enums.SpreadsheetKeysEnums.SENSES.value :
             spreadsheet_enums.SensesEnums.DARKVISION_SIXTY.value,
         spreadsheet_enums.SpreadsheetKeysEnums.LANGUAGES.value :
-            ", ".join([spreadsheet_enums.LanguagesEnums.COMMON.value, spreadsheet_enums.LanguagesEnums.THIEVES_CANT.value]),
+            'Common, Thieves Cant',
         spreadsheet_enums.SpreadsheetKeysEnums.ADDITIONAL.value :
             'None',
         spreadsheet_enums.SpreadsheetKeysEnums.AVERAGE_DAMAGE.value :
@@ -96,7 +96,7 @@ template_monster_parser_trial_monster_dict = \
         spreadsheet_enums.SpreadsheetKeysEnums.LIMITED_USE_DAMAGE.value :
             6,
         spreadsheet_enums.SpreadsheetKeysEnums.BONUS_ACTION_DAMAGE.value :
-            1,
+            1.5,
         "actions" :
             [{'name': 'test spark', 'action_type': 'action', 'attack_type': 'ranged_spell_attack', 'hit_modifier': 4, 'damage': '1d6 + 2', 'damage_type': 'fire', 'range': 60, 'notes': 'Link in the action name should become plain text.'}, {'name': 'bad math shove', 'action_type': 'bonus_action', 'attack_type': 'saving_throw', 'save_dc': 11, 'save_stat': 'str', 'damage': '1d4 \\- 1', 'damage_type': 'bludgeoning', 'range': 5, 'notes': 'Negative constants should not scare the parser.'}],
     }
@@ -111,7 +111,6 @@ if __name__ == "__main__":
     print(
         build_replacement_python_dictionary_file_text_from_monster_dict(
             monster_dict=updated_monster_dict,
-            dict_variable_name="'Template Monster, Parser Trial'",
             tab_amount='\t\t',
             show_prints= False
         )

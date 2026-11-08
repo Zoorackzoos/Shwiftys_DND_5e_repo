@@ -873,7 +873,6 @@ def build_python_dictionary_file_text(
     lines.append("    print(")
     lines.append("        build_replacement_python_dictionary_file_text_from_monster_dict(")
     lines.append("            monster_dict=updated_monster_dict,")
-    lines.append("            dict_variable_name=" + repr(get_monster_value_expression("name", monster_properties["name"]))+",")
     lines.append("            tab_amount=" + repr(tab_amount)+",")
     lines.append("            show_prints= False")
     lines.append("        )")
