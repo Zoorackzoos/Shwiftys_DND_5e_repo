@@ -53,29 +53,8 @@ def convert_monsters_all_stats_homebrew_from_csv_to_tsv(tab_amount="\t"):
 if __name__ == "__main__":
     print("src/universal_functions/spreadsheet_stuff/convert_csv_file_into_tsv_file.py --> start")
     tab_amount = "\t"
-    #convert_encounter_feedback_from_csv_to_tsv()
-    #convert_monsters_all_stats_homebrew_from_csv_to_tsv()
-    path_to_csv_file_one = "../../../sheets/misc/adjectives.csv"
-    path_to_csv_file_two = "../../../sheets/misc/adverbs.csv"
-    path_to_csv_file_three = "../../../sheets/misc/nouns.csv"
-    path_to_csv_file_four = "../../../sheets/misc/plural-nouns.csv"
-    path_to_csv_file_five = "../../../sheets/misc/verbs.csv"
-    path_to_csv_file_six = "../../../sheets/misc/words-multiple-present-participle.csv"
 
-    path_to_csv_file_master = \
-    [
-        path_to_csv_file_one,
-        path_to_csv_file_two,
-        path_to_csv_file_three,
-        path_to_csv_file_four,
-        path_to_csv_file_five,
-        path_to_csv_file_six
-    ]
-
-    for path in path_to_csv_file_master:
-        convert_csv_file_into_tsv_file(
-            path_to_csv_file=path,
-            tab_amount=tab_amount
-        )
+    convert_encounter_feedback_from_csv_to_tsv()
+    convert_monsters_all_stats_homebrew_from_csv_to_tsv()
 
     print("src/universal_functions/spreadsheet_stuff/convert_csv_file_into_tsv_file.py --> end")
